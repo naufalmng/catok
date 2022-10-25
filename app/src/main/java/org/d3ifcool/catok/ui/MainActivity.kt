@@ -1,7 +1,8 @@
-package org.d3ifcool.catok
+package org.d3ifcool.catok.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import org.d3ifcool.catok.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
