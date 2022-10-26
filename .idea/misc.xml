@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/font/poppins_semibold.xml" value="0.26875" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
