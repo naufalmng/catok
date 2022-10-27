@@ -11,25 +11,22 @@
         android:theme="@style/Theme.Catok">
         <activity
             android:name=".ui.SplashscreenActivity"
-            android:exported="false"
-            android:label="@string/title_activity_splashscreen"
-            android:theme="@style/Theme.Catok.NoActionBar" />
-        <activity
-            android:name=".ui.SplashScreenActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Catok.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>
