@@ -2,9 +2,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
-
-
-
+    android:id="@+id/catok_nav_graph.xml"
+    app:startDestination="@id/berandaFragment">
+    <fragment
+        android:id="@+id/berandaFragment"
+        android:name="org.d3ifcool.catok.ui.BerandaFragment"
+        android:label="fragment_beranda"
+        tools:layout="@layout/fragment_beranda" />
+    <fragment
+        android:id="@+id/profilFragment"
+        android:name="org.d3ifcool.catok.ui.profil.ProfilFragment"
+        android:label="fragment_profil"
+        tools:layout="@layout/fragment_profil" />
+    <fragment
+        android:id="@+id/pengaturanFragment"
+        android:name="org.d3ifcool.catok.ui.pengaturan.PengaturanFragment"
+        android:label="PengaturanFragment" />
 </navigation>

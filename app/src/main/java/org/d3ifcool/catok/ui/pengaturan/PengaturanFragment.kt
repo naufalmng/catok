@@ -1,4 +1,4 @@
-package org.d3ifcool.catok.ui
+package org.d3ifcool.catok.ui.pengaturan
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.d3ifcool.catok.R
-import org.d3ifcool.catok.databinding.FragmentMainBinding
+import org.d3ifcool.catok.databinding.FragmentPengaturanBinding
 
+class PengaturanFragment : Fragment() {
 
-class MainFragment : Fragment() {
-
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: FragmentPengaturanBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -19,7 +18,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentPengaturanBinding.inflate(inflater, container, false)
         return binding.root
     }
 

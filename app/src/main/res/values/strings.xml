@@ -3,5 +3,13 @@
     <string name="version">V1.0.0</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nama_toko">CaTok (Catatan Toko)</string>
+    <string name="data_produk">Data\nProduk</string>
+    <string name="pembelian_produk">Pembelian\nProduk</string>
+    <string name="penjualan_produk">Penjualan\nProduk</string>
+    <string name="histori_produk">Histori\nProduk</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="profil">Profil</string>
+    <string name="beranda">Beranda</string>
 
 </resources>
