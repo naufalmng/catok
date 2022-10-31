@@ -1,0 +1,157 @@
+package org.d3ifcool.catok.ui.beranda.produk
+
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import org.d3ifcool.catok.R
+import org.d3ifcool.catok.core.data.source.model.ProdukEntity
+import org.d3ifcool.catok.databinding.ItemDataProdukGridBinding
+import org.d3ifcool.catok.databinding.ItemDataProdukLinearBinding
+import java.util.*
+import kotlin.collections.ArrayList
+@SuppressLint("NotifyDataSetChanged")
+@Suppress("UNCHECKED_CAST")
+class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): ListAdapter<ProdukEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
+    companion object {
+        val selectionIds = ArrayList<Int>()
+        val diffCallback = object : DiffUtil.ItemCallback<ProdukEntity>() {
+            override fun areItemsTheSame(oldItem: ProdukEntity, newItem: ProdukEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: ProdukEntity, newItem: ProdukEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+    private var produkList = mutableListOf<ProdukEntity>()
+    private var produkFilterList : MutableList<ProdukEntity> = ArrayList()
+//    lateinit var onItemClick: ((ProdukEntity) -> Unit)
+
+    fun updateData(produkEntity: ArrayList<ProdukEntity>){
+        produkList.clear()
+        produkList.addAll(produkEntity)
+        produkFilterList = produkEntity
+        submitList(produkEntity)
+        notifyItemRangeRemoved(0, produkList.size)
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun toggleSelection(position: Int){
+        val id = getItem(position).id
+        if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
+        else selectionIds.add(id.toInt())
+        notifyDataSetChanged()
+    }
+
+    fun getSelection(): List<Int>{
+        return selectionIds
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun resetSelection(){
+        selectionIds.clear()
+        notifyDataSetChanged()
+    }
+
+
+
+
+    class GridViewHolder private constructor(val binding: ItemDataProdukGridBinding): RecyclerView.ViewHolder(binding.root) {
+        companion object{
+            fun from(parent: ViewGroup): GridViewHolder{
+                return GridViewHolder(ItemDataProdukGridBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+            }
+        }
+        fun bind(position: Int,produk: ArrayList<ProdukEntity>){
+            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
+            binding.rootView.setOnClickListener{
+//                    onItemClick.invoke(data[position])
+            }
+            itemView.isSelected = selectionIds.contains(id.toInt())
+            binding.nomor.text = id.toString()
+            binding.namaProduk.text = namaProduk
+            binding.deskripsi.text = deskripsi
+            binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg_2,hargaBeli.toString(),satuan.toString())
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual.toString(),satuan.toString())
+            binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+        }
+    }
+    class LinearViewHolder private constructor(val binding: ItemDataProdukLinearBinding): RecyclerView.ViewHolder(binding.root) {
+        companion object{
+            fun from(parent: ViewGroup): LinearViewHolder{
+                return LinearViewHolder(ItemDataProdukLinearBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+            }
+        }
+        fun bind(position: Int,produk: ArrayList<ProdukEntity>){
+            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
+            binding.rootView.setOnClickListener{
+//                    onItemClick.invoke(data[position])
+            }
+            itemView.isSelected = selectionIds.contains(id.toInt())
+            binding.nomor.text = id.toString()
+            binding.namaProduk.text = namaProduk
+            binding.deskripsi.text = deskripsi
+            binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg,hargaBeli.toString(),satuan.toString())
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg,hargaJual.toString(),satuan.toString())
+            binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val gridLayoutManager = GridViewHolder.from(parent)
+        val linearLayoutManager = LinearViewHolder.from(parent)
+        return if(isLinearLayoutManager) linearLayoutManager else gridLayoutManager
+    }
+
+    override fun getItemCount(): Int {
+        return produkFilterList.size
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder){
+            is LinearViewHolder -> {
+                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>)
+            }
+            is GridViewHolder -> {
+                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>)
+            }
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter(){
+            override fun performFiltering(char: CharSequence?): FilterResults {
+                val charSearch = char.toString()
+                if(charSearch.isEmpty()) produkFilterList = produkList
+                else{
+                    val resultList = ArrayList<ProdukEntity>()
+                    for(item in produkList){
+                        if(item.namaProduk.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
+                            item.deskripsi.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))){
+                            resultList.add(item)
+                        }
+                    }
+                    produkFilterList = resultList
+                }
+                return FilterResults().apply { values = produkFilterList }
+            }
+
+            override fun publishResults(constraint: CharSequence?, result: FilterResults?) {
+                produkFilterList = if(result?.values == null) ArrayList()
+                else result.values as ArrayList<ProdukEntity>
+                notifyItemRangeRemoved(0, produkFilterList.size)
+                notifyDataSetChanged()
+
+            }
+        }
+    }
+}

@@ -1,15 +1,31 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Catok</string>
     <string name="version">V1.0.0</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nama_toko">CaTok (Catatan Toko)</string>
     <string name="data_produk">Data\nProduk</string>
+    <string name="tambah_produk">Tambah Produk</string>
     <string name="pembelian_produk">Pembelian\nProduk</string>
     <string name="penjualan_produk">Penjualan\nProduk</string>
     <string name="histori_produk">Histori\nProduk</string>
     <string name="pengaturan">Pengaturan</string>
+    <string name="list_produk">List Produk</string>
     <string name="profil">Profil</string>
     <string name="beranda">Beranda</string>
+    <string name="pencarian">Pencarian</string>
+    <string name="harga_jual">Harga Jual</string>
+    <string name="harga_beli">Harga Beli</string>
+    <string name="harga_beli_arg">: Rp %1$s / %2$s</string>
+    <string name="harga_jual_arg">: Rp %1$s / %2$s</string>
+    <string name="harga_beli_arg_2">Harga Beli:\nRp %1$s / %2$s</string>
+    <string name="harga_jual_arg_2">Harga Jual:\n: Rp %1$s / %2$s</string>
+    <string name="stok_arg">Stok : %1$s</string>
+    <string name="scan">SCAN</string>
+    <string name="satuan">Satuan</string>
+    <string name="stok_awal">Stok Awal</string>
+    <string name="batal">Batal</string>
+    <string name="simpan">Simpan</string>
+    <string name="data_produk_kosong">Data produk kosong</string>
 
 </resources>

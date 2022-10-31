@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rectangle_10r"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="4dp"
+    android:padding="12dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nomor"
+        android:layout_width="@dimen/_34sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:backgroundTint="@color/orange"
+        android:includeFontPadding="false"
+        android:text="1000"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/rectangle_10r"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/namaProduk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/nomor"
+        app:layout_constraintTop_toTopOf="@id/nomor"
+        app:layout_constraintBottom_toBottomOf="@id/nomor"
+        android:layout_marginStart="8dp"
+        android:text="Momogi"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deskripsi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/nomor"
+        app:layout_constraintTop_toBottomOf="@id/nomor"
+        android:layout_marginTop="8dp"
+        android:text="Makanan ringan"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_10ssp"
+        style="@style/MediumTextStyle"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/deskripsi"
+        app:layout_constraintStart_toStartOf="@id/deskripsi">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hargaBeli"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/nomor"
+            app:layout_constraintTop_toTopOf="@id/nomor"
+            android:text="@string/harga_beli_arg_2"
+            android:textColor="@color/orange"
+            style="@style/MediumTextStyle"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hargaJual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/nomor"
+            app:layout_constraintTop_toTopOf="@id/nomor"
+            android:text="@string/harga_jual_arg_2"
+            android:textColor="@color/orange"
+            style="@style/MediumTextStyle"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--    -->
+    <!--    <androidx.appcompat.widget.AppCompatImageView-->
+    <!--        android:id="@+id/gambarProduk"-->
+    <!--        android:layout_width="@dimen/_55sdp"-->
+    <!--        android:layout_height="@dimen/_50sdp"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/stok"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/stok"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        android:src="@mipmap/ic_launcher"/>-->
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/stok_arg"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"
+        app:layout_constraintTop_toBottomOf="@id/llLabel"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
