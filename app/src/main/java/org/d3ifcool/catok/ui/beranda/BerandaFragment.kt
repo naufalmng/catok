@@ -2,31 +2,26 @@ package org.d3ifcool.catok.ui.beranda
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import coil.load
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.databinding.FragmentBerandaBinding
-import org.d3ifcool.catok.ui.main.SharedViewModel
-import org.d3ifcool.catok.ui.pengaturan.PengaturanViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.d3ifcool.catok.utils.onTouch
+
+//import org.d3ifcool.catok.utils.enableOnClickAnimation
 
 class BerandaFragment : Fragment() {
 
     private var _binding: FragmentBerandaBinding? = null
     private val binding get() = _binding!!
-    private val sharedViewModel: SharedViewModel by lazy {
-        ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-    }
-    private val pengaturanViewModel: PengaturanViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,21 +37,6 @@ class BerandaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         enableBtnAnimation()
         setupListeners()
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-        pengaturanViewModel.getDataProfil.observe(viewLifecycleOwner){
-            Log.d("PengaturanFragment", "setupObservers: $it")
-            if(it!=null){
-                binding.circleImage.load(sharedViewModel.getFotoToko.value?:it.gambar)
-                binding.namaToko.text = sharedViewModel.getNamaToko.value?:it.namaToko
-            }
-            else{
-                binding.circleImage.setImageBitmap(ContextCompat.getDrawable(requireContext(),R.drawable.ic_catok)!!.toBitmap())
-                binding.namaToko.text = getString(R.string.nama_toko)
-            }
-        }
     }
 
     private fun setupListeners() {
@@ -64,9 +44,14 @@ class BerandaFragment : Fragment() {
             dataProduk.setOnClickListener{
                findNavController().navigate(R.id.action_berandaFragment_to_dataProdukFragment)
             }
-            transaksiProduk.setOnClickListener{
-                findNavController().navigate(R.id.action_berandaFragment_to_transaksiFragment)
-
+            pembelianProduk.setOnClickListener{
+                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+            }
+            historiProduk.setOnClickListener{
+                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+            }
+            penjualanProduk.setOnClickListener{
+                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -74,7 +59,9 @@ class BerandaFragment : Fragment() {
     private fun enableBtnAnimation() {
         with(binding){
             dataProduk.enableOnClickAnimation()
-            transaksiProduk.enableOnClickAnimation()
+            pembelianProduk.enableOnClickAnimation()
+            penjualanProduk.enableOnClickAnimation()
+            historiProduk.enableOnClickAnimation()
         }
     }
 

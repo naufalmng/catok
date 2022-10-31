@@ -6,9 +6,13 @@
     app:startDestination="@id/berandaFragment">
     <fragment
         android:id="@+id/berandaFragment"
-        android:name="org.d3ifcool.catok.ui.BerandaFragment"
-        android:label="fragment_beranda"
-        tools:layout="@layout/fragment_beranda" />
+        android:name="org.d3ifcool.catok.ui.beranda.BerandaFragment"
+        android:label=""
+        tools:layout="@layout/fragment_beranda" >
+        <action
+            android:id="@+id/action_berandaFragment_to_dataProdukFragment"
+            app:destination="@id/dataProdukFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profilFragment"
         android:name="org.d3ifcool.catok.ui.profil.ProfilFragment"
@@ -18,4 +22,18 @@
         android:id="@+id/pengaturanFragment"
         android:name="org.d3ifcool.catok.ui.pengaturan.PengaturanFragment"
         android:label="PengaturanFragment" />
+    <fragment
+        android:id="@+id/dataProdukFragment"
+        android:name="org.d3ifcool.catok.ui.beranda.produk.DataProdukFragment"
+        android:label="Data Produk"
+        tools:layout="@layout/fragment_data_produk" >
+        <action
+            android:id="@+id/action_dataProdukFragment_to_insertProdukDialog"
+            app:destination="@id/insertProdukDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/insertProdukDialog"
+        android:name="org.d3ifcool.catok.ui.beranda.produk.insert.InsertProdukDialog"
+        android:label="dialog_insert_produk"
+        tools:layout="@layout/dialog_insert_produk" />
 </navigation>

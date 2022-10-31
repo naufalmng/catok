@@ -1,17 +1,17 @@
 package org.d3ifcool.catok.core.data.source.local.db
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import org.d3ifcool.catok.core.data.source.local.entities.*
-import org.d3ifcool.catok.utils.Converters
+import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 
 @Database(
-    entities = [ProdukEntity::class,TransaksiEntity::class,HistoriTransaksiEntity::class,TransaksiProdukEntity::class,ReturEntity::class,GrafikEntity::class,ProfilEntity::class],
-    version = 30,
+    entities = [ProdukEntity::class],
+    version = 1,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
 abstract class CatokDb : RoomDatabase() {
     abstract fun getRunDao(): CatokDao
 }

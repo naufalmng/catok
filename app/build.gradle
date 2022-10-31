@@ -79,5 +79,12 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // Koin Dependency Injection
+    implementation "io.insert-koin:koin-core:3.1.5"
+    implementation "io.insert-koin:koin-android:3.1.5"
+
+    // Data Store
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
 
 }
