@@ -58,7 +58,8 @@ class DataProdukFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchView.setupSearchView()
+        binding.llHeader.tvListProduk.text = getString(R.string.list_produk)
+        binding.llHeader.searchView.setupSearchView()
         setupListeners()
         setupObservers()
         setupLayoutPreference()
@@ -106,7 +107,7 @@ class DataProdukFragment : Fragment() {
     }
 
     private fun setupSearchViewFilter() {
-        binding.searchView.addTextChangedListener(object : TextWatcher {
+        binding.llHeader.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -116,7 +117,7 @@ class DataProdukFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                val searchQuery = binding.searchView.text.toString()
+                val searchQuery = binding.llHeader.searchView.text.toString()
                 produkAdapter.filter.filter(searchQuery)
             }
         })
@@ -128,7 +129,7 @@ class DataProdukFragment : Fragment() {
             btnTambah.setOnClickListener {
                 findNavController().navigate(R.id.action_dataProdukFragment_to_insertProdukDialog)
             }
-            btnSwitchLayout.setOnClickListener {
+            llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager
                 lifecycleScope.launch {
                     dataStorePreferences.saveLayoutSetting(
@@ -144,8 +145,8 @@ class DataProdukFragment : Fragment() {
     }
 
     private fun setupLayoutSwitcherIcon() {
-        if (viewModel.isLinearLayoutManager) binding.btnSwitchLayout.setBackgroundResource(R.drawable.ic_linear_layout)
-        else binding.btnSwitchLayout.setBackgroundResource(R.drawable.ic_grid_layout)
+        if (viewModel.isLinearLayoutManager) binding.llHeader.btnSwitchLayout.setBackgroundResource(R.drawable.ic_linear_layout)
+        else binding.llHeader.btnSwitchLayout.setBackgroundResource(R.drawable.ic_grid_layout)
     }
 
     private fun setupLayoutSwitcher() {
