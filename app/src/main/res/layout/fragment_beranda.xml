@@ -142,13 +142,13 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_pembelian_produk"
+                    android:background="@drawable/ic_transaksi_produk"
                     android:layout_marginTop="20dp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pembelian_produk"
+                    android:text="@string/transaksi_produk"
                     style="@style/MediumTextStyle"
                     android:textAlignment="center"
                     android:textSize="@dimen/_16ssp"
@@ -197,13 +197,13 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_penjualan_produk"
+                    android:background="@drawable/ic_grafik"
                     android:layout_marginTop="20dp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/penjualan_produk"
+                    android:text="@string/grafik_produk"
                     style="@style/MediumTextStyle"
                     android:textAlignment="center"
                     android:textSize="@dimen/_16ssp"

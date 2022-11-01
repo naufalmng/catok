@@ -6,67 +6,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="?attr/actionBarSize"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:paddingBottom="16dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".ui.beranda.produk.DataProdukFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <include
+        android:id="@+id/llHeader"
+        layout="@layout/base_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="16dp"
-            android:textSize="@dimen/_12ssp"
-            android:hint="@string/pencarian"
-            android:drawableStart="@drawable/search_icon_selector"
-            android:drawablePadding="16dp"
-            android:maxLines="1"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:inputType="textMultiLine|textVisiblePassword"
-            android:background="@drawable/et_bg_selector" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvListProduk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/orange"
-                android:layout_marginStart="4dp"
-                style="@style/SemiboldTextStyle"
-                android:layout_weight="1"
-                android:text="@string/list_produk"
-                android:layout_marginTop="16dp"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnSwitchLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/ic_linear_layout"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_data_produk_linear"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_data_produk_linear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llHeader"/>
 
 
     <androidx.appcompat.widget.AppCompatButton

@@ -9,6 +9,22 @@
     app:layout_constraintEnd_toEndOf="parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/_12ssp"
+        android:hint="@string/pencarian"
+        android:drawableStart="@drawable/search_icon_selector"
+        android:drawablePadding="16dp"
+        android:maxLines="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:inputType="textMultiLine|textVisiblePassword"
+        android:background="@drawable/et_bg_selector" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -16,53 +32,26 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="14dp"
-        android:gravity="end"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
+            android:id="@+id/tvListProduk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="visible"
-            android:textColor="@color/orange"
             android:textSize="@dimen/_12ssp"
-            android:text="@string/data_produk2"
-            android:includeFontPadding="false"
-            android:layout_gravity="start|center"/>
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/resetSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_15sdp"
-            android:visibility="gone"
-            android:checked="false"
-            android:enabled="false"
             android:textColor="@color/orange"
-            android:theme="@style/SwitchTheme"
-            android:layout_gravity="center"
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llHeader"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvReset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/RegularTextStyle"
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:includeFontPadding="false"
-            android:text="@string/reset_pilihan"
+            android:layout_marginStart="4dp"
+            style="@style/SemiboldTextStyle"
             android:layout_weight="1"
-            android:textColor="@color/orange"
-            android:layout_marginStart="8dp"/>
+            android:text="@string/list_produk"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnSwitchLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             android:background="@drawable/ic_linear_layout"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rectangle_10r"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="4dp"
+    android:layout_marginStart="8dp"
     android:padding="12dp">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -16,6 +16,7 @@
         android:backgroundTint="@color/orange"
         android:includeFontPadding="false"
         android:text="1000"
+        android:textSize="@dimen/_11ssp"
         android:gravity="center"
         android:textColor="@color/white"
         android:background="@drawable/rectangle_10r"
@@ -28,8 +29,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/nomor"
         app:layout_constraintTop_toTopOf="@id/nomor"
-        app:layout_constraintBottom_toBottomOf="@id/nomor"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="-3dp"
         android:text="Momogi"
         android:textStyle="bold"
         android:textColor="@color/orange"
@@ -40,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/nomor"
-        app:layout_constraintTop_toBottomOf="@id/nomor"
+        app:layout_constraintTop_toBottomOf="@id/namaProduk"
         android:layout_marginTop="8dp"
         android:text="Makanan ringan"
         android:textStyle="bold"
@@ -64,6 +65,7 @@
             app:layout_constraintTop_toTopOf="@id/nomor"
             android:text="@string/harga_beli_arg_2"
             android:textColor="@color/orange"
+            android:textSize="@dimen/_10ssp"
             style="@style/MediumTextStyle"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -74,6 +76,7 @@
             app:layout_constraintTop_toTopOf="@id/nomor"
             android:text="@string/harga_jual_arg_2"
             android:textColor="@color/orange"
+            android:textSize="@dimen/_10ssp"
             style="@style/MediumTextStyle"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
