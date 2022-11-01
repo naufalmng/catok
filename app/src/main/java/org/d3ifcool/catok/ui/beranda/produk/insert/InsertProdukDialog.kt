@@ -83,6 +83,8 @@ class InsertProdukDialog : DialogFragment() {
                 return
             }
             viewModel.insertData(namaProduk = etNamaProduk.text.toString(), deskripsi = etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(), hargaJual = etHargaJual.text.toString().toDouble(), satuan = etSatuan.text.toString().toInt(), stok = etStokAwal.text.toString().toInt(), tanggal = tanggal.text.toString())
+            Toast.makeText(requireContext(), "Produk berhasil ditambah !", Toast.LENGTH_SHORT)
+                .show()
             dismiss()
         }
     }

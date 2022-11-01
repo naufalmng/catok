@@ -98,8 +98,6 @@ class DataProdukFragment : Fragment() {
         }
         viewModel.getDataProduk.observe(viewLifecycleOwner) {
             if (it != null) {
-                Toast.makeText(requireContext(), "Produk berhasil ditambah !", Toast.LENGTH_SHORT)
-                    .show()
                 setupRecyclerViews()
                 produkAdapter.updateData(it)
                 setupLayoutSwitcher()
