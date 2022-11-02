@@ -26,12 +26,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
-        val config = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController,config)
         navController.addOnDestinationChangedListener{_,destination,_->
             if(destination.id != R.id.berandaFragment) binding.bottomNav.visibility = View.GONE
             else binding.bottomNav.visibility = View.VISIBLE
         }
+        val config = AppBarConfiguration(navController.graph)
+        binding.toolbar.setupWithNavController(navController,config)
 
 
         val options = NavOptions.Builder()
