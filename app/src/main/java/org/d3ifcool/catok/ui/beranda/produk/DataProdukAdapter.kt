@@ -13,10 +13,11 @@ import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 import org.d3ifcool.catok.databinding.ItemDataProdukGridBinding
 import org.d3ifcool.catok.databinding.ItemDataProdukLinearBinding
 import java.util.*
+import java.util.logging.Handler
 import kotlin.collections.ArrayList
 @SuppressLint("NotifyDataSetChanged")
 @Suppress("UNCHECKED_CAST")
-class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): ListAdapter<ProdukEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
+class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, private val handler: ClickHandler): ListAdapter<ProdukEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
     companion object {
         val selectionIds = ArrayList<Int>()
         val diffCallback = object : DiffUtil.ItemCallback<ProdukEntity>() {
@@ -70,7 +71,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
                 return GridViewHolder(ItemDataProdukGridBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
         }
-        fun bind(position: Int,produk: ArrayList<ProdukEntity>){
+        fun bind(position: Int,produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
@@ -82,6 +83,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
             binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg_2,hargaBeli.toString(),satuan.toString())
             binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual.toString(),satuan.toString())
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+            itemView.setOnClickListener {
+                handler.onClick(position, produk)
+            }
+            itemView.setOnLongClickListener { handler.onLongClick(position) }
         }
     }
     class LinearViewHolder private constructor(val binding: ItemDataProdukLinearBinding): RecyclerView.ViewHolder(binding.root) {
@@ -90,7 +95,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
                 return LinearViewHolder(ItemDataProdukLinearBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
         }
-        fun bind(position: Int,produk: ArrayList<ProdukEntity>){
+        fun bind(position: Int,produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
@@ -102,6 +107,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
             binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg,hargaBeli.toString(),satuan.toString())
             binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg,hargaJual.toString(),satuan.toString())
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+            itemView.setOnClickListener {
+                handler.onClick(position, produk)
+            }
+            itemView.setOnLongClickListener { handler.onLongClick(position) }
 
         }
     }
@@ -119,10 +128,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is LinearViewHolder -> {
-                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>)
+                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
             is GridViewHolder -> {
-                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>)
+                holder.bind(position,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
         }
     }
@@ -153,5 +162,9 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true): List
 
             }
         }
+    }
+    interface ClickHandler {
+        fun onClick(position: Int, produk: ArrayList<ProdukEntity>)
+        fun onLongClick(position: Int): Boolean
     }
 }

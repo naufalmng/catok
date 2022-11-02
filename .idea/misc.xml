@@ -3,50 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/bg_focused.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/bg_normal.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/bottom_nav_bg.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/bottom_nav_icon_color_state.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/custom_rectangle_10r.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/edittext_stroke_selector.xml" value="0.244" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/et_bg_selector.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_catok.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_histori_produk.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_linear_layout.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_pembelian_produk.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_pengaturan.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_penjualan_produk.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_produk.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_profil.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_search.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_search_focused.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_10r.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_10r_tl_tr.xml" value="0.244" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_5r.xml" value="0.196" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/search_icon_selector.xml" value="0.144" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/stroke_selector.xml" value="0.244" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/font/poppins_bold.xml" value="0.21875" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/font/poppins_semibold.xml" value="0.26875" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_main.xml" value="0.11" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_splashscreen.xml" value="0.10960144927536232" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/base_header.xml" value="0.2141025641025641" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/base_toolbar.xml" value="0.18" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_insert_produk.xml" value="0.25" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_beranda.xml" value="0.33" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_blank1.xml" value="0.36666666666666664" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_blank2.xml" value="0.36666666666666664" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_blank3.xml" value="0.36666666666666664" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_data_produk.xml" value="0.22" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_main.xml" value="0.22" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_pengaturan.xml" value="0.18854166666666666" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_profil.xml" value="0.18802083333333333" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_transaksi.xml" value="0.2141025641025641" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk.xml" value="0.33" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk_grid.xml" value="0.25" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk_linear.xml" value="0.33" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
+        <entry key="..\:/1.semester 5/Mobpro 2/44-mobpro-izm-44gab2-catok-catatan-toko/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.304" />
+        <entry key="..\:/1.semester 5/Mobpro 2/44-mobpro-izm-44gab2-catok-catatan-toko/app/src/main/res/layout/activity_splashscreen.xml" value="0.1" />
+        <entry key="..\:/1.semester 5/Mobpro 2/44-mobpro-izm-44gab2-catok-catatan-toko/app/src/main/res/menu/action_menu.xml" value="0.35104166666666664" />
       </map>
     </option>
   </component>

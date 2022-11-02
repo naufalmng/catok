@@ -6,13 +6,13 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +24,9 @@ import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
+import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
+import org.d3ifcool.catok.ui.MainActivity
 import org.d3ifcool.catok.ui.beranda.produk.insert.InsertProdukDialog
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
@@ -66,7 +68,7 @@ class DataProdukFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager)
+        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager, handler)
         with(binding.recyclerView) {
             isNestedScrollingEnabled = true
             adapter = produkAdapter
@@ -162,5 +164,62 @@ class DataProdukFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private var actionMode: ActionMode? = null
+    private val actionModeCallback =object : ActionMode.Callback{
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            if(item?.itemId == R.id.menu_delete){
+                deleteData()
+                return true
+            }
+            return false
+        }
+
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode?.menuInflater?.inflate(R.menu.action_menu, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode?.title = produkAdapter.getSelection().size.toString()
+            return true
+        }
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            produkAdapter.resetSelection()
+        }
+    }
+    private fun deleteData() = AlertDialog.Builder(requireContext()).apply {
+        setMessage(R.string.pesan_hapus)
+        setPositiveButton(R.string.hapus) { _, _ ->
+            viewModel.deleteData(produkAdapter.getSelection())
+            actionMode?.finish()
+        }
+        setNegativeButton(R.string.batal) { dialog, _ ->
+            dialog.cancel()
+            actionMode?.finish()
+        }
+        show()
+    }
+    private val handler = object : DataProdukAdapter.ClickHandler{
+        override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
+            if (actionMode != null) {
+                produkAdapter.toggleSelection(position)
+                if (produkAdapter.getSelection().isEmpty())
+                    actionMode?.finish()
+                else
+                    actionMode?.invalidate()
+                return
+            }
+            val message = getString(R.string.produk_klik, produk[position].namaProduk)
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        }
+        override fun onLongClick(position: Int): Boolean {
+            if(actionMode != null)return false
+            produkAdapter.toggleSelection(position)
+            val activity = requireActivity() as MainActivity
+            actionMode =  activity.startSupportActionMode(actionModeCallback)
+            return true
+        }
     }
 }
