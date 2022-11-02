@@ -27,5 +27,8 @@
     <string name="batal">Batal</string>
     <string name="simpan">Simpan</string>
     <string name="data_produk_kosong">Data produk kosong</string>
+    <string name="hapus">Hapus</string>
+    <string name="pesan_hapus">Hapus produk terpilih?</string>
+    <string name="produk_klik">%1$s diklik!</string>
 
 </resources>

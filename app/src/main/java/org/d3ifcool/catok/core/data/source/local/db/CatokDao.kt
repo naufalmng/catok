@@ -1,10 +1,7 @@
 package org.d3ifcool.catok.core.data.source.local.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 
@@ -18,5 +15,7 @@ interface CatokDao {
 
     @Query("SELECT (SELECT COUNT(*) FROM produk) == 0")
     fun isDataProdukEmpty(): LiveData<Boolean>
+    @Query("DELETE FROM produk WHERE id IN (:ids)")
+    fun deleteData(ids: List<Int>)
 
 }

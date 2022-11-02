@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.d3ifcool.catok.core.data.repository.AppRepository
 import org.d3ifcool.catok.core.data.source.local.db.CatokDao
 import org.d3ifcool.catok.core.data.source.local.db.CatokDb
@@ -30,5 +31,12 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
     // TODO HAPUS DATA
 
     fun isDataProdukEmpty(){}
-
+    fun deleteData(ids: List<Int>) {
+        val newIds = ids.toList()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repo.deleteData(newIds)
+            }
+        }
+    }
 }
