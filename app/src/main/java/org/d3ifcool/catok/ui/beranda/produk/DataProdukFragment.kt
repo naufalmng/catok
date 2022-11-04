@@ -193,6 +193,7 @@ class DataProdukFragment : Fragment() {
         setMessage(R.string.pesan_hapus)
         setPositiveButton(R.string.hapus) { _, _ ->
             viewModel.deleteData(produkAdapter.getSelection())
+            Toast.makeText(requireContext(), "Berhasil Menghapus Produk !", Toast.LENGTH_SHORT).show()
             actionMode?.finish()
         }
         setNegativeButton(R.string.batal) { dialog, _ ->

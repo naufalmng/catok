@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Catok" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/ActionModeTheme</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionModeCloseButtonStyle</item>
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/orange2</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -16,6 +19,20 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ActionModeTheme" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@drawable/ic_header</item>
+        <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
+    </style>
+
+    <style name="ActionModeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ActionModeCloseButtonStyle" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
     <style name="Theme.Catok.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
