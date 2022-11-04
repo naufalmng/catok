@@ -10,7 +10,9 @@ import android.view.View.OnTouchListener
 import android.view.ViewAnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.appcompat.view.ActionMode
 import org.d3ifcool.catok.R
+import org.d3ifcool.catok.ui.beranda.produk.DataProdukAdapter
 
 
 fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
