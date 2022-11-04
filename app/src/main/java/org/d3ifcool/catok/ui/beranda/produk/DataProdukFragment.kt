@@ -1,13 +1,17 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ActionMode
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,10 +24,11 @@ import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.MainActivity
+import org.d3ifcool.catok.ui.beranda.produk.DataProdukAdapter.Companion.selectionIds
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+@SuppressLint("ClickableViewAccessibility")
 class DataProdukFragment : Fragment() {
 
     private var _binding: FragmentDataProdukBinding? = null
@@ -120,12 +125,15 @@ class DataProdukFragment : Fragment() {
 
     private fun setupListeners() {
         with(binding) {
+            setupSearchView()
             btnTambah.enableOnClickAnimation()
             btnTambah.setOnClickListener {
                 findNavController().navigate(R.id.action_dataProdukFragment_to_insertProdukDialog)
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager
+                llHeader.searchView.text?.clear()
+                llHeader.searchView.clearFocus()
                 lifecycleScope.launch {
                     dataStorePreferences.saveLayoutSetting(
                         requireContext(), viewModel.isLinearLayoutManager
@@ -139,6 +147,59 @@ class DataProdukFragment : Fragment() {
             swipeRefreshLayout.setOnRefreshListener {
                 setupObservers()
             }
+        }
+    }
+
+    private fun setupSearchView() {
+        with(binding.llHeader.searchView){
+            setOnFocusChangeListener { view, b ->
+                if(view.hasFocus()){
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon_selector,0,R.drawable.ic_baseline_close_24,0)
+                    produkAdapter.resetSelection()
+                    actionMode?.finish()
+                    actionMode = null
+                }else {
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon_selector,0,0,0)
+                    view.clearFocus()
+                }
+            }
+            doOnTextChanged { text, start, before, count ->
+                if(count>=1){
+                    produkAdapter.resetSelection()
+                    actionMode?.finish()
+                    actionMode = null
+                }
+            }
+            setOnTouchListener(View.OnTouchListener { v, event ->
+                val imm =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                var hasConsumed = false
+                if (event.x >= width - totalPaddingRight) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        v.clearFocus()
+                        text?.clear()
+                        setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.search_icon_selector,
+                            0,
+                            0,
+                            0
+                        )
+                        imm.hideSoftInputFromWindow(windowToken, 0)
+                        produkAdapter.resetSelection()
+                        actionMode?.finish()
+                        actionMode = null
+                        return@OnTouchListener true
+                    } else setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.search_icon_selector,
+                        0,
+                        R.drawable.ic_baseline_close_24,
+                        0
+                    )
+
+                    hasConsumed = true
+                }
+                hasConsumed
+            })
         }
     }
 
@@ -169,6 +230,8 @@ class DataProdukFragment : Fragment() {
                 else {
                     produkAdapter.resetSelection()
                     viewModel.isAllItemSelected.value = false
+                    actionMode!!.finish()
+                    actionMode = null
                 }
                 return true
             }
@@ -216,8 +279,8 @@ class DataProdukFragment : Fragment() {
     private val handler = object : DataProdukAdapter.ClickHandler{
         override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
             if (actionMode != null) {
-                viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)
-                produkAdapter.toggleSelection(position)
+                viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkList.minus(1).size
+                produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
                 if (produkAdapter.getSelection().isEmpty())
                     actionMode?.finish()
                 else
@@ -227,12 +290,13 @@ class DataProdukFragment : Fragment() {
             val message = getString(R.string.produk_klik, produk[position].namaProduk)
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
-        override fun onLongClick(position: Int): Boolean {
-            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)
+        override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
+            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkList.minus(1).size
             if(actionMode != null) return false
-            produkAdapter.toggleSelection(position)
+            produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
+//            Toast.makeText(requireContext(), "item ${produk.indexOf(item)} is ${item.namaProduk}", Toast.LENGTH_SHORT).show()
             val activity = requireActivity() as MainActivity
-            actionMode =  activity.startSupportActionMode(actionModeCallback)
+            actionMode = activity.startSupportActionMode(actionModeCallback)
             return true
         }
 
