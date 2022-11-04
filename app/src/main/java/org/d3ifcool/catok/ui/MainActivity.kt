@@ -34,8 +34,20 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener{_,destination,_->
-            if(destination.id != R.id.berandaFragment) binding.bottomNav.visibility = View.GONE
-            else binding.bottomNav.visibility = View.VISIBLE
+            when(destination.id){
+                R.id.berandaFragment -> {
+                    binding.bottomNav.visibility = View.VISIBLE
+                }
+                R.id.profilFragment -> {
+                    binding.bottomNav.visibility = View.VISIBLE
+                    binding.toolbar.visibility = View.GONE
+                }
+                R.id.pengaturanFragment -> {
+                    binding.bottomNav.visibility = View.VISIBLE
+                    binding.toolbar.visibility = View.GONE
+                }
+                else -> binding.bottomNav.visibility = View.GONE
+            }
         }
         val config = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController,config)
