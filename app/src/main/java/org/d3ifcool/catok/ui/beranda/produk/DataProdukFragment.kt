@@ -1,25 +1,18 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.GridLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
@@ -27,7 +20,6 @@ import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.model.ProdukEntity
 import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.MainActivity
-import org.d3ifcool.catok.ui.beranda.produk.insert.InsertProdukDialog
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -172,6 +164,11 @@ class DataProdukFragment : Fragment() {
                 deleteData()
                 return true
             }
+            if(item?.itemId == R.id.menu_select_all){
+                produkAdapter.getAllSelection()
+                return true
+            }
+
             return false
         }
 
@@ -181,7 +178,9 @@ class DataProdukFragment : Fragment() {
         }
 
         override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode?.title = produkAdapter.getSelection().size.toString()
+            viewModel.isAllItemSelected.observe(viewLifecycleOwner){
+                mode?.title = produkAdapter.getSelection().size.toString()
+            }
             return true
         }
         override fun onDestroyActionMode(mode: ActionMode?) {
@@ -189,12 +188,21 @@ class DataProdukFragment : Fragment() {
             produkAdapter.resetSelection()
         }
     }
+
     private fun deleteData() = AlertDialog.Builder(requireContext()).apply {
-        setMessage(R.string.pesan_hapus)
+        var deleteMsg = -1
+        var resultMsg = -1
+        viewModel.isAllItemSelected.observe(viewLifecycleOwner){
+            deleteMsg = if(it!=false) R.string.pesan_hapus_semua else R.string.pesan_hapus
+            resultMsg = if(it!=false) R.string.berhasil_menghapus_semua_produk else R.string.berhasil_menghapus_produk
+        }
+        setMessage(deleteMsg)
         setPositiveButton(R.string.hapus) { _, _ ->
-            viewModel.deleteData(produkAdapter.getSelection())
-            Toast.makeText(requireContext(), "Berhasil Menghapus Produk !", Toast.LENGTH_SHORT).show()
-            actionMode?.finish()
+            if(resultMsg!=-1 && deleteMsg!=-1){
+                viewModel.deleteData(produkAdapter.getSelection())
+                Toast.makeText(requireContext(), resultMsg, Toast.LENGTH_SHORT).show()
+                actionMode?.finish()
+            }
         }
         setNegativeButton(R.string.batal) { dialog, _ ->
             dialog.cancel()
@@ -205,6 +213,7 @@ class DataProdukFragment : Fragment() {
     private val handler = object : DataProdukAdapter.ClickHandler{
         override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
             if (actionMode != null) {
+                if(produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)) viewModel.isAllItemSelected.value = true
                 produkAdapter.toggleSelection(position)
                 if (produkAdapter.getSelection().isEmpty())
                     actionMode?.finish()
@@ -216,11 +225,18 @@ class DataProdukFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int): Boolean {
-            if(actionMode != null)return false
+            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount
+            if(actionMode != null) return false
             produkAdapter.toggleSelection(position)
             val activity = requireActivity() as MainActivity
             actionMode =  activity.startSupportActionMode(actionModeCallback)
             return true
+        }
+
+        override fun isAllItemSelected(isAllItemSelected: Boolean) {
+            if(isAllItemSelected){
+                viewModel.isAllItemSelected.value = isAllItemSelected
+            }
         }
     }
 }

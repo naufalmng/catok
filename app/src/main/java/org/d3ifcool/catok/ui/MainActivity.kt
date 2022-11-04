@@ -19,6 +19,7 @@ import org.d3ifcool.catok.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+    private lateinit var config: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var isBackButtonPressedOnce = false
 
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val config = AppBarConfiguration(navController.graph)
+        config = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController,config)
 
 
@@ -100,8 +101,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(isBackButtonPressedOnce){
-            super.onBackPressed()
+        if(navController.currentDestination?.id != R.id.berandaFragment){
+            navigateUp(navController,config)
+        }
+        if(navController.graph.startDestinationId == navController.currentDestination?.id && isBackButtonPressedOnce )  {
+            navigateUp(navController,config)
             return
         }
         this.isBackButtonPressedOnce = true
