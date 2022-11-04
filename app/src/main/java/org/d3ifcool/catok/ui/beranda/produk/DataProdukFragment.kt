@@ -165,10 +165,13 @@ class DataProdukFragment : Fragment() {
                 return true
             }
             if(item?.itemId == R.id.menu_select_all){
-                produkAdapter.getAllSelection()
+                if(viewModel.isAllItemSelected.value!=true) produkAdapter.getAllSelection()
+                else {
+                    produkAdapter.resetSelection()
+                    viewModel.isAllItemSelected.value = false
+                }
                 return true
             }
-
             return false
         }
 
@@ -213,7 +216,7 @@ class DataProdukFragment : Fragment() {
     private val handler = object : DataProdukAdapter.ClickHandler{
         override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
             if (actionMode != null) {
-                if(produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)) viewModel.isAllItemSelected.value = true
+                viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)
                 produkAdapter.toggleSelection(position)
                 if (produkAdapter.getSelection().isEmpty())
                     actionMode?.finish()
@@ -225,7 +228,7 @@ class DataProdukFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int): Boolean {
-            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount
+            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.itemCount.minus(1)
             if(actionMode != null) return false
             produkAdapter.toggleSelection(position)
             val activity = requireActivity() as MainActivity
