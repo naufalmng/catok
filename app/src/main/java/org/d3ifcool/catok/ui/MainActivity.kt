@@ -1,36 +1,33 @@
 package org.d3ifcool.catok.ui
 
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.databinding.ActivityMainBinding
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private var isBackButtonPressedOnce = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener{_,destination,_->
@@ -46,7 +43,10 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.GONE
                 }
-                else -> binding.bottomNav.visibility = View.GONE
+                else -> {
+                    binding.bottomNav.visibility = View.GONE
+                    binding.toolbar.visibility = View.VISIBLE
+                }
             }
         }
         val config = AppBarConfiguration(navController.graph)
@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity() {
             .setPopExitAnim(com.google.android.material.R.anim.abc_popup_exit)
             .setPopUpTo(navController.graph.startDestinationRoute,false)
             .build()
+
+        binding.toolbar.setNavigationOnClickListener {
+            navigateUp(navController,config)
+        }
 
         with(binding.bottomNav){
             setOnItemSelectedListener{ item->
@@ -92,6 +96,19 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+    }
+
+    override fun onBackPressed() {
+        if(isBackButtonPressedOnce){
+            super.onBackPressed()
+            return
+        }
+        this.isBackButtonPressedOnce = true
+        Toast.makeText(this, "Tekan sekali lagi untuk keluar", Toast.LENGTH_SHORT).show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            isBackButtonPressedOnce = false
+        },1000)
     }
 
 }
