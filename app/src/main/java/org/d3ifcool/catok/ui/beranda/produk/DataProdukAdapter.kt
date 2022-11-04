@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -86,7 +87,9 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             itemView.setOnClickListener {
                 handler.onClick(position, produk)
             }
-            itemView.setOnLongClickListener { handler.onLongClick(position) }
+            itemView.setOnLongClickListener {
+                handler.onLongClick(position)
+            }
         }
     }
     class LinearViewHolder private constructor(val binding: ItemDataProdukLinearBinding): RecyclerView.ViewHolder(binding.root) {
