@@ -45,8 +45,19 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    fun getAllSelection(){
+        selectionIds.clear()
+        for(i in produkList.indices){
+            val id = produkList[i].id
+            selectionIds.add(id.toInt())
+            notifyDataSetChanged()
+        }
+        handler.isAllItemSelected(true)
+
+    }
+
     fun toggleSelection(position: Int){
+        if(getSelection().size != produkList.size) handler.isAllItemSelected(false)
         val id = getItem(position).id
         if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
         else selectionIds.add(id.toInt())
@@ -62,9 +73,6 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         selectionIds.clear()
         notifyDataSetChanged()
     }
-
-
-
 
     class GridViewHolder private constructor(val binding: ItemDataProdukGridBinding): RecyclerView.ViewHolder(binding.root) {
         companion object{
@@ -169,5 +177,6 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     interface ClickHandler {
         fun onClick(position: Int, produk: ArrayList<ProdukEntity>)
         fun onLongClick(position: Int): Boolean
+        fun isAllItemSelected(isAllItemSelected: Boolean = false)
     }
 }

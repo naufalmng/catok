@@ -30,5 +30,9 @@
     <string name="hapus">Hapus</string>
     <string name="pesan_hapus">Hapus produk terpilih?</string>
     <string name="produk_klik">%1$s diklik!</string>
+    <string name="select_all">Select All</string>
+    <string name="pesan_hapus_semua">Hapus <b>semua</b> produk ?</string>
+    <string name="berhasil_menghapus_produk">Berhasil Menghapus Produk !</string>
+    <string name="berhasil_menghapus_semua_produk">Berhasil Menghapus Semua Produk !</string>
 
 </resources>
