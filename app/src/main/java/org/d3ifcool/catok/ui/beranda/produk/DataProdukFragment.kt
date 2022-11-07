@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -51,6 +52,9 @@ class DataProdukFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDataProdukBinding.inflate(inflater, container, false)
+        val animation = AnimationUtils.loadAnimation(binding.llHeader.llHeader.context,android.R.anim.fade_in)
+        binding.llHeader.llHeader.startAnimation(animation)
+        binding.btnTambah.startAnimation(animation)
         return binding.root
     }
 

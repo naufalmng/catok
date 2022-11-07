@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
@@ -135,11 +136,14 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context,android.R.anim.fade_in)
         when(holder){
             is LinearViewHolder -> {
+                holder.itemView.startAnimation(animation)
                 holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
             is GridViewHolder -> {
+                holder.itemView.startAnimation(animation)
                 holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
         }
