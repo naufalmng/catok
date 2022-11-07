@@ -136,14 +136,11 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context,android.R.anim.fade_in)
         when(holder){
             is LinearViewHolder -> {
-                holder.itemView.startAnimation(animation)
                 holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
             is GridViewHolder -> {
-                holder.itemView.startAnimation(animation)
                 holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
         }

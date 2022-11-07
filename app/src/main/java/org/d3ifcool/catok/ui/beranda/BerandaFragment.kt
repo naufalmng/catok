@@ -44,14 +44,9 @@ class BerandaFragment : Fragment() {
             dataProduk.setOnClickListener{
                findNavController().navigate(R.id.action_berandaFragment_to_dataProdukFragment)
             }
-            pembelianProduk.setOnClickListener{
-                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-            }
-            historiProduk.setOnClickListener{
-                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-            }
-            penjualanProduk.setOnClickListener{
-                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+            transaksiProduk.setOnClickListener{
+                findNavController().navigate(R.id.action_berandaFragment_to_transaksiFragment)
+
             }
         }
     }
@@ -59,9 +54,7 @@ class BerandaFragment : Fragment() {
     private fun enableBtnAnimation() {
         with(binding){
             dataProduk.enableOnClickAnimation()
-            pembelianProduk.enableOnClickAnimation()
-            penjualanProduk.enableOnClickAnimation()
-            historiProduk.enableOnClickAnimation()
+            transaksiProduk.enableOnClickAnimation()
         }
     }
 

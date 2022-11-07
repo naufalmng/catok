@@ -80,7 +80,9 @@ class DataProdukDialog : DialogFragment() {
     }
 
     private fun setupProduk() {
-        val item = args.produk!!
+        var item: ProdukEntity?
+        if(args.produk!=null) item = args.produk!! else item = null
+
         with(binding){
             if(TextUtils.isEmpty(etNamaProduk.text.toString())){
                 Toast.makeText(requireContext(), "Nama Produk Tidak Boleh Kosong !", Toast.LENGTH_SHORT).show()
@@ -108,7 +110,11 @@ class DataProdukDialog : DialogFragment() {
             }
 
             if(args.isInsert) viewModel.insertData(namaProduk = etNamaProduk.text.toString(), deskripsi = etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(), hargaJual = etHargaJual.text.toString().toDouble(), satuan = etSatuan.text.toString().toInt(), stok = etStokAwal.text.toString().toInt(), tanggal = tanggal.text.toString())
-            else viewModel.updateData(ProdukEntity(item.id,item.barcode,etNamaProduk.text.toString(),etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(),etHargaJual.text.toString().toDouble(),etSatuan.text.toString().toInt(),etStokAwal.text.toString().toInt(),tanggal.text.toString()))
+            else {
+                if(item!=null){
+                    viewModel.updateData(ProdukEntity(item.id,item.barcode,etNamaProduk.text.toString(),etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(),etHargaJual.text.toString().toDouble(),etSatuan.text.toString().toInt(),etStokAwal.text.toString().toInt(),tanggal.text.toString()))
+                }
+            }
 
             Toast.makeText(requireContext(), if(!args.isInsert) "Berhasil menyunting produk !" else "Produk berhasil ditambah !", Toast.LENGTH_SHORT)
                 .show()

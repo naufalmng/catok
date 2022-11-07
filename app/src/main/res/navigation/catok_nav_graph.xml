@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_berandaFragment_to_dataProdukFragment"
             app:destination="@id/dataProdukFragment" />
+        <action
+            android:id="@+id/action_berandaFragment_to_transaksiFragment"
+            app:destination="@id/transaksiFragment" />
     </fragment>
     <fragment
         android:id="@+id/profilFragment"
@@ -46,4 +49,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </dialog>
+    <fragment
+        android:id="@+id/transaksiFragment"
+        android:name="org.d3ifcool.catok.ui.beranda.transaksi.TransaksiFragment"
+        android:label="Transaksi Produk"
+        tools:layout="@layout/fragment_transaksi" />
 </navigation>

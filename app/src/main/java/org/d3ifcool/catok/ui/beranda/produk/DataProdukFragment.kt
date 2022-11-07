@@ -3,6 +3,7 @@ package org.d3ifcool.catok.ui.beranda.produk
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -25,6 +26,7 @@ import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.MainActivity
+import org.d3ifcool.catok.ui.beranda.produk.insert.DataProdukDialog
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,9 +54,6 @@ class DataProdukFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDataProdukBinding.inflate(inflater, container, false)
-        val animation = AnimationUtils.loadAnimation(binding.llHeader.llHeader.context,android.R.anim.fade_in)
-        binding.llHeader.llHeader.startAnimation(animation)
-        binding.btnTambah.startAnimation(animation)
         return binding.root
     }
 
@@ -122,6 +121,7 @@ class DataProdukFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 val searchQuery = binding.llHeader.searchView.text.toString()
                 produkAdapter.filter.filter(searchQuery)
+                binding.dataKosong.visibility =  if(produkAdapter.produkFilterList.size==0) View.VISIBLE else View.GONE
             }
         })
     }
@@ -131,12 +131,16 @@ class DataProdukFragment : Fragment() {
             setupSearchView()
             btnTambah.enableOnClickAnimation()
             btnTambah.setOnClickListener {
+                if (SystemClock.elapsedRealtime() - viewModel.mLastClickTime < 1000){
+                    return@setOnClickListener
+                }
+                viewModel.mLastClickTime = SystemClock.elapsedRealtime();
+
                 produkAdapter.resetSelection()
                 actionMode?.finish()
                 llHeader.searchView.clearFocus()
                 llHeader.searchView.text?.clear()
                 findNavController().navigate(R.id.action_dataProdukFragment_to_dataProdukDialog)
-
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager

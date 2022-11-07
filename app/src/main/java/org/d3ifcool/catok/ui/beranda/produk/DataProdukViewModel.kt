@@ -9,8 +9,8 @@ import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.utils.State
 @Suppress("UNCHECKED_CAST")
 class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
-
-    val isAllItemSelected = MutableLiveData<Boolean>(false)
+    var mLastClickTime = 0L
+    val isAllItemSelected = MutableLiveData(false)
     val tempProdukEntity = MutableLiveData<ProdukEntity>(null)
     var isLinearLayoutManager = true
     private var _state = MutableLiveData<State>()
