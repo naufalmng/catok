@@ -9,7 +9,9 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.DialogFragment
-import org.d3ifcool.catok.databinding.DialogInsertProdukBinding
+import androidx.navigation.fragment.navArgs
+import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
+import org.d3ifcool.catok.databinding.DialogDataProdukBinding
 import org.d3ifcool.catok.ui.beranda.produk.DataProdukViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import java.text.SimpleDateFormat
@@ -17,11 +19,12 @@ import java.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class InsertProdukDialog : DialogFragment() {
+class DataProdukDialog : DialogFragment() {
 
-    private var _binding: DialogInsertProdukBinding? = null
+    private var _binding: DialogDataProdukBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DataProdukViewModel by viewModel()
+    private val args: DataProdukDialogArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +37,22 @@ class InsertProdukDialog : DialogFragment() {
     ): View {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        _binding = DialogInsertProdukBinding.inflate(inflater, container, false)
+        _binding = DialogDataProdukBinding.inflate(inflater, container, false)
+        with(binding){
+            tvTambahProduk.visibility = if(args.isInsert) View.VISIBLE else View.GONE
+            tvEditProduk.visibility = if(args.isInsert) View.GONE else View.VISIBLE
+        }
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+        if(args.produk!=null){
+            updateUi()
+        }
 
 
 //        val layoutParams1 = LinearLayout.LayoutParams(
@@ -55,8 +67,20 @@ class InsertProdukDialog : DialogFragment() {
 //        else binding.llBarcode.layoutParams = layoutParams2
         setupDate()
     }
+    private fun updateUi() {
+        val item = args.produk!!
+        with(binding){
+            etNamaProduk.setText(item.namaProduk)
+            etDeskripsi.setText(item.deskripsi)
+            etHargaBeli.setText(item.hargaBeli.toString())
+            etHargaJual.setText(item.hargaJual.toString())
+            etSatuan.setText(item.satuan.toString())
+            etStokAwal.setText(item.stok.toString())
+        }
+    }
 
-    private fun insertProduk() {
+    private fun setupProduk() {
+        val item = args.produk!!
         with(binding){
             if(TextUtils.isEmpty(etNamaProduk.text.toString())){
                 Toast.makeText(requireContext(), "Nama Produk Tidak Boleh Kosong !", Toast.LENGTH_SHORT).show()
@@ -83,8 +107,10 @@ class InsertProdukDialog : DialogFragment() {
                 return
             }
 
-            viewModel.insertData(namaProduk = etNamaProduk.text.toString(), deskripsi = etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(), hargaJual = etHargaJual.text.toString().toDouble(), satuan = etSatuan.text.toString().toInt(), stok = etStokAwal.text.toString().toInt(), tanggal = tanggal.text.toString())
-            Toast.makeText(requireContext(), "Produk berhasil ditambah !", Toast.LENGTH_SHORT)
+            if(args.isInsert) viewModel.insertData(namaProduk = etNamaProduk.text.toString(), deskripsi = etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(), hargaJual = etHargaJual.text.toString().toDouble(), satuan = etSatuan.text.toString().toInt(), stok = etStokAwal.text.toString().toInt(), tanggal = tanggal.text.toString())
+            else viewModel.updateData(ProdukEntity(item.id,item.barcode,etNamaProduk.text.toString(),etDeskripsi.text.toString(),etHargaBeli.text.toString().toDouble(),etHargaJual.text.toString().toDouble(),etSatuan.text.toString().toInt(),etStokAwal.text.toString().toInt(),tanggal.text.toString()))
+
+            Toast.makeText(requireContext(), if(!args.isInsert) "Berhasil menyunting produk !" else "Produk berhasil ditambah !", Toast.LENGTH_SHORT)
                 .show()
             dismiss()
         }
@@ -99,7 +125,7 @@ class InsertProdukDialog : DialogFragment() {
                 dismiss()
             }
             btnSimpan.setOnClickListener{
-                insertProduk()
+                setupProduk()
             }
             btnBatal.setOnClickListener{
                 dismiss()

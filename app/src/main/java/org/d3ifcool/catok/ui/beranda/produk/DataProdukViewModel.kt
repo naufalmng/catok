@@ -2,18 +2,16 @@ package org.d3ifcool.catok.ui.beranda.produk
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.d3ifcool.catok.core.data.repository.AppRepository
-import org.d3ifcool.catok.core.data.source.local.db.CatokDao
-import org.d3ifcool.catok.core.data.source.local.db.CatokDb
-import org.d3ifcool.catok.core.data.source.model.ProdukEntity
+import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.utils.State
 @Suppress("UNCHECKED_CAST")
 class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
 
     val isAllItemSelected = MutableLiveData<Boolean>(false)
+    val tempProdukEntity = MutableLiveData<ProdukEntity>(null)
     var isLinearLayoutManager = true
     private var _state = MutableLiveData<State>()
     private val state : LiveData<State> = _state
@@ -29,15 +27,18 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
         }
     }
 
-    // TODO HAPUS DATA
-
-    fun isDataProdukEmpty(){}
     fun deleteData(ids: List<Int>) {
         val newIds = ids.toList()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repo.deleteData(newIds)
             }
+        }
+    }
+
+    fun updateData(produkEntity: ProdukEntity) {
+        viewModelScope.launch(Dispatchers.IO){
+            repo.updateData(produkEntity)
         }
     }
 }

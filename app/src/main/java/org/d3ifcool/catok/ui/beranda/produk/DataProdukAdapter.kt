@@ -6,17 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.catok.R
-import org.d3ifcool.catok.core.data.source.model.ProdukEntity
+import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.ItemDataProdukGridBinding
 import org.d3ifcool.catok.databinding.ItemDataProdukLinearBinding
 import java.util.*
-import java.util.logging.Handler
 import kotlin.collections.ArrayList
 @SuppressLint("NotifyDataSetChanged")
 @Suppress("UNCHECKED_CAST")
@@ -49,8 +46,8 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
 
     fun getAllSelection(){
         selectionIds.clear()
-        for(i in produkList.indices){
-            val id = produkList[i].id
+        for(i in produkFilterList.indices){
+            val id = produkFilterList[i].id
             selectionIds.add(id.toInt())
             notifyDataSetChanged()
         }
@@ -83,7 +80,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
                 return GridViewHolder(ItemDataProdukGridBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
         }
-        fun bind(position: Int,produk: ArrayList<ProdukEntity>, handler: ClickHandler){
+        fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
             binding.rootView.isSelected = selectionIds.contains(id.toInt())
             itemView.isSelected = selectionIds.contains(id.toInt())
@@ -107,7 +104,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
                 return LinearViewHolder(ItemDataProdukLinearBinding.inflate(LayoutInflater.from(parent.context),parent,false))
             }
         }
-        fun bind(position: Int,produk: ArrayList<ProdukEntity>, handler: ClickHandler){
+        fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
