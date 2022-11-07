@@ -21,10 +21,9 @@ import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
-import org.d3ifcool.catok.core.data.source.model.ProdukEntity
+import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.MainActivity
-import org.d3ifcool.catok.ui.beranda.produk.DataProdukAdapter.Companion.selectionIds
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -128,7 +127,12 @@ class DataProdukFragment : Fragment() {
             setupSearchView()
             btnTambah.enableOnClickAnimation()
             btnTambah.setOnClickListener {
-                findNavController().navigate(R.id.action_dataProdukFragment_to_insertProdukDialog)
+                produkAdapter.resetSelection()
+                actionMode?.finish()
+                llHeader.searchView.clearFocus()
+                llHeader.searchView.text?.clear()
+                findNavController().navigate(R.id.action_dataProdukFragment_to_dataProdukDialog)
+
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager
@@ -235,6 +239,9 @@ class DataProdukFragment : Fragment() {
                 }
                 return true
             }
+            if(item?.itemId == R.id.menu_edit){
+                findNavController().navigate(DataProdukFragmentDirections.actionDataProdukFragmentToDataProdukDialog(false,viewModel.tempProdukEntity.value))
+            }
             return false
         }
 
@@ -244,6 +251,10 @@ class DataProdukFragment : Fragment() {
         }
 
         override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            menu!!.findItem(R.id.menu_edit).isVisible = produkAdapter.getSelection().size == 1
+            viewModel.isAllItemSelected.observe(viewLifecycleOwner){
+                if(it==true) menu.findItem(R.id.menu_edit).isVisible = false
+            }
             viewModel.isAllItemSelected.observe(viewLifecycleOwner){
                 mode?.title = produkAdapter.getSelection().size.toString()
             }
@@ -291,7 +302,8 @@ class DataProdukFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
-            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkList.minus(1).size
+            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.minus(1).size
+            viewModel.tempProdukEntity.value = produk[position]
             if(actionMode != null) return false
             produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
 //            Toast.makeText(requireContext(), "item ${produk.indexOf(item)} is ${item.namaProduk}", Toast.LENGTH_SHORT).show()

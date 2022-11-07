@@ -6,6 +6,13 @@
         android:icon="@drawable/ic_select_all"
         android:title="@string/select_all"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_edit"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="@string/select_all"
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/menu_delete"
         android:icon="@drawable/ic_baseline_delete_24"

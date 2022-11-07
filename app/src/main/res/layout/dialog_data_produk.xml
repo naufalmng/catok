@@ -6,10 +6,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:minWidth="325dp"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:backgroundTint="@color/orange"
     app:cardPreventCornerOverlap="false"
     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut"
-    tools:context=".ui.beranda.produk.insert.InsertProdukDialog">
+    tools:context=".ui.beranda.produk.insert.DataProdukDialog">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,11 +30,28 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTambahProduk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:text="@string/tambah_produk"
+                style="@style/MediumTextStyle"
+                android:textAlignment="center"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEditProduk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:text="@string/edit_produk"
                 style="@style/MediumTextStyle"
                 android:textAlignment="center"
                 android:textSize="@dimen/_12ssp"

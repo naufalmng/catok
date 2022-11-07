@@ -34,5 +34,6 @@
     <string name="pesan_hapus_semua">Hapus <b>semua</b> produk ?</string>
     <string name="berhasil_menghapus_produk">Berhasil Menghapus Produk !</string>
     <string name="berhasil_menghapus_semua_produk">Berhasil Menghapus Semua Produk !</string>
+    <string name="edit_produk">Edit Produk</string>
 
 </resources>

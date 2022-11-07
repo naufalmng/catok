@@ -28,12 +28,22 @@
         android:label="Data Produk"
         tools:layout="@layout/fragment_data_produk" >
         <action
-            android:id="@+id/action_dataProdukFragment_to_insertProdukDialog"
-            app:destination="@id/insertProdukDialog" />
+            android:id="@+id/action_dataProdukFragment_to_dataProdukDialog"
+            app:destination="@id/dataProdukDialog" />
     </fragment>
     <dialog
-        android:id="@+id/insertProdukDialog"
-        android:name="org.d3ifcool.catok.ui.beranda.produk.insert.InsertProdukDialog"
-        android:label="dialog_insert_produk"
-        tools:layout="@layout/dialog_insert_produk" />
+        android:id="@+id/dataProdukDialog"
+        android:name="org.d3ifcool.catok.ui.beranda.produk.insert.DataProdukDialog"
+        android:label="dialog_data_produk"
+        tools:layout="@layout/dialog_data_produk" >
+        <argument
+            android:name="isInsert"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <argument
+            android:name="produk"
+            app:argType="org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 </navigation>
