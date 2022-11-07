@@ -254,8 +254,6 @@ class DataProdukFragment : Fragment() {
             menu!!.findItem(R.id.menu_edit).isVisible = produkAdapter.getSelection().size == 1
             viewModel.isAllItemSelected.observe(viewLifecycleOwner){
                 if(it==true) menu.findItem(R.id.menu_edit).isVisible = false
-            }
-            viewModel.isAllItemSelected.observe(viewLifecycleOwner){
                 mode?.title = produkAdapter.getSelection().size.toString()
             }
             return true
@@ -290,7 +288,8 @@ class DataProdukFragment : Fragment() {
     private val handler = object : DataProdukAdapter.ClickHandler{
         override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
             if (actionMode != null) {
-                viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkList.minus(1).size
+                viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.size.minus(1)
+                Toast.makeText(requireContext(), "${produkAdapter.produkFilterList.size.minus(1)}", Toast.LENGTH_SHORT).show()
                 produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
                 if (produkAdapter.getSelection().isEmpty())
                     actionMode?.finish()
@@ -302,7 +301,7 @@ class DataProdukFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
-            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.minus(1).size
+            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.size.minus(1)
             viewModel.tempProdukEntity.value = produk[position]
             if(actionMode != null) return false
             produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
