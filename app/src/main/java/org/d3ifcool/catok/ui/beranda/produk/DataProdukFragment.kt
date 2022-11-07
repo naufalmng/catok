@@ -289,7 +289,6 @@ class DataProdukFragment : Fragment() {
         override fun onClick(position: Int, produk: ArrayList<ProdukEntity>) {
             if (actionMode != null) {
                 viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.size.minus(1)
-                Toast.makeText(requireContext(), "${produkAdapter.produkFilterList.size.minus(1)}", Toast.LENGTH_SHORT).show()
                 produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
                 if (produkAdapter.getSelection().isEmpty())
                     actionMode?.finish()
@@ -305,7 +304,6 @@ class DataProdukFragment : Fragment() {
             viewModel.tempProdukEntity.value = produk[position]
             if(actionMode != null) return false
             produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
-//            Toast.makeText(requireContext(), "item ${produk.indexOf(item)} is ${item.namaProduk}", Toast.LENGTH_SHORT).show()
             val activity = requireActivity() as MainActivity
             actionMode = activity.startSupportActionMode(actionModeCallback)
             return true
