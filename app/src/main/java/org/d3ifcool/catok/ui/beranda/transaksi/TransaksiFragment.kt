@@ -19,6 +19,7 @@ class TransaksiFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransaksiBinding.inflate(inflater, container, false)
+        binding.llHeader.tvListProduk.text = getString(R.string.transaksi_produk2)
         return binding.root
     }
 
