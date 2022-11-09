@@ -11,15 +11,15 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/nomor"
-        android:layout_width="@dimen/_34sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:backgroundTint="@color/orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:text="1000"
-        android:textSize="@dimen/_11ssp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@drawable/rectangle_10r"
+        android:textSize="@dimen/_12ssp"
+        style="@style/BoldTextStyle"
+        android:padding="4dp"
+        android:background="@drawable/nomor_bg_selector"
+        android:textColor="@color/orange"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

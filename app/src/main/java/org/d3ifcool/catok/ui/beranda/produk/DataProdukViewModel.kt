@@ -13,8 +13,6 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
     val isAllItemSelected = MutableLiveData(false)
     val tempProdukEntity = MutableLiveData<ProdukEntity>(null)
     var isLinearLayoutManager = true
-    private var _state = MutableLiveData<State>()
-    private val state : LiveData<State> = _state
 
     val getDataProduk : LiveData<ArrayList<ProdukEntity>> = repo.getArrayListDataProduk() as LiveData<ArrayList<ProdukEntity>>
     val isDataProdukEmpty: LiveData<Boolean> = repo.isDataProdukEmpty()

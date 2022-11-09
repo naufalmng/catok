@@ -1,16 +1,15 @@
-package org.d3ifcool.catok.ui.profil
+package org.d3ifcool.catok.ui.grafik
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.d3ifcool.catok.R
-import org.d3ifcool.catok.databinding.FragmentProfilBinding
+import org.d3ifcool.catok.databinding.FragmentGrafikBinding
 
-class ProfilFragment : Fragment() {
+class GrafikFragment : Fragment() {
 
-    private var _binding: FragmentProfilBinding? = null
+    private var _binding: FragmentGrafikBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +17,7 @@ class ProfilFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfilBinding.inflate(inflater, container, false)
+        _binding = FragmentGrafikBinding.inflate(inflater, container, false)
         return binding.root
     }
 

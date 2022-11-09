@@ -11,15 +11,15 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/nomor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_34sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:backgroundTint="@color/orange"
         android:includeFontPadding="false"
         android:text="1000"
-        android:textSize="@dimen/_12ssp"
-        style="@style/BoldTextStyle"
-        android:padding="4dp"
-        android:background="@drawable/nomor_bg"
-        android:textColor="@color/orange"
+        android:textSize="@dimen/_11ssp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/rectangle_10r"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -27,11 +27,12 @@
         android:id="@+id/namaProduk"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/nomor"
         app:layout_constraintTop_toTopOf="@id/nomor"
-        app:layout_constraintBottom_toBottomOf="@id/nomor"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/stok"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="-3dp"
         android:text="Momogi"
         android:textStyle="bold"
         android:textColor="@color/orange"
@@ -41,9 +42,9 @@
         android:id="@+id/deskripsi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/nomor"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/nomor"
         app:layout_constraintTop_toBottomOf="@id/namaProduk"
-        android:layout_marginTop="8dp"
         android:text="Makanan ringan"
         android:textStyle="bold"
         android:textColor="@color/orange"
@@ -55,8 +56,47 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/deskripsi"
         app:layout_constraintStart_toStartOf="@id/deskripsi">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/nomor"
+            app:layout_constraintTop_toTopOf="@id/nomor"
+            android:text="@string/harga_beli"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/_10ssp"
+            style="@style/MediumTextStyle"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/nomor"
+            app:layout_constraintTop_toTopOf="@id/nomor"
+            android:textSize="@dimen/_10ssp"
+            android:text="@string/harga_jual"
+            android:textColor="@color/orange"
+            style="@style/MediumTextStyle"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="145dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@id/llLabel"
+        app:layout_constraintStart_toStartOf="@id/guideline">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/hargaBeli"
@@ -64,9 +104,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/nomor"
             app:layout_constraintTop_toTopOf="@id/nomor"
-            android:text="@string/harga_beli_arg_2"
-            android:textColor="@color/orange"
             android:textSize="@dimen/_10ssp"
+            android:text="@string/harga_beli_arg"
+            android:textColor="@color/orange"
             style="@style/MediumTextStyle"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -75,9 +115,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/nomor"
             app:layout_constraintTop_toTopOf="@id/nomor"
-            android:text="@string/harga_jual_arg_2"
-            android:textColor="@color/orange"
             android:textSize="@dimen/_10ssp"
+            android:text="@string/harga_jual_arg"
+            android:textColor="@color/orange"
             style="@style/MediumTextStyle"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -97,15 +137,13 @@
         android:id="@+id/stok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/namaProduk"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="4dp"
-        android:layout_marginTop="8dp"
         android:text="@string/stok_arg"
         android:textStyle="bold"
         android:textColor="@color/orange"
-        style="@style/SemiboldTextStyle"
-        app:layout_constraintTop_toBottomOf="@id/llLabel"/>
+        style="@style/BoldTextStyle"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

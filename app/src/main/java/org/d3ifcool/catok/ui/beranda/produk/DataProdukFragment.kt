@@ -1,19 +1,21 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
+import android.R.menu
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ActionMode
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,22 +32,20 @@ import org.d3ifcool.catok.ui.beranda.produk.insert.DataProdukDialog
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.d3ifcool.catok.utils.setupSearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+
 @SuppressLint("ClickableViewAccessibility")
 class DataProdukFragment : Fragment() {
 
     private var _binding: FragmentDataProdukBinding? = null
     private val binding get() = _binding!!
+    private var isOnActionMode = false
 
     private val viewModel: DataProdukViewModel by viewModel()
     private lateinit var produkAdapter: DataProdukAdapter
 
     private val dataStorePreferences: DataStorePreferences by lazy {
         DataStorePreferences(requireActivity().dataStore)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -58,6 +58,13 @@ class DataProdukFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if(savedInstanceState!=null){
+            produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager, handler)
+            if(produkAdapter.getSelection().isNotEmpty()){
+                val activity = requireActivity() as MainActivity
+                actionMode = activity.startSupportActionMode(actionModeCallback)
+            }
+        }
         super.onViewCreated(view, savedInstanceState)
         binding.llHeader.tvListProduk.text = getString(R.string.list_produk)
         binding.llHeader.searchView.setupSearchView()
@@ -135,7 +142,6 @@ class DataProdukFragment : Fragment() {
                     return@setOnClickListener
                 }
                 viewModel.mLastClickTime = SystemClock.elapsedRealtime();
-
                 produkAdapter.resetSelection()
                 actionMode?.finish()
                 llHeader.searchView.clearFocus()
@@ -231,7 +237,7 @@ class DataProdukFragment : Fragment() {
         _binding = null
     }
     private var actionMode: ActionMode? = null
-    private val actionModeCallback =object : ActionMode.Callback{
+    private val actionModeCallback = object : ActionMode.Callback{
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             if(item?.itemId == R.id.menu_delete){
                 deleteData()
@@ -252,12 +258,10 @@ class DataProdukFragment : Fragment() {
             }
             return false
         }
-
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode?.menuInflater?.inflate(R.menu.action_menu, menu)
             return true
         }
-
         override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             menu!!.findItem(R.id.menu_edit).isVisible = produkAdapter.getSelection().size == 1
             viewModel.isAllItemSelected.observe(viewLifecycleOwner){

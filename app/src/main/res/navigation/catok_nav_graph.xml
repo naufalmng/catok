@@ -17,10 +17,10 @@
             app:destination="@id/transaksiFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profilFragment"
-        android:name="org.d3ifcool.catok.ui.profil.ProfilFragment"
-        android:label="fragment_profil"
-        tools:layout="@layout/fragment_profil" />
+        android:id="@+id/grafikFragment"
+        android:name="org.d3ifcool.catok.ui.grafik.GrafikFragment"
+        android:label="Grafik Transaksi"
+        tools:layout="@layout/fragment_grafik" />
     <fragment
         android:id="@+id/pengaturanFragment"
         android:name="org.d3ifcool.catok.ui.pengaturan.PengaturanFragment"

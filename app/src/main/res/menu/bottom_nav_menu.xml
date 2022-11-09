@@ -3,9 +3,9 @@
     <item android:id="@+id/berandaFragment"
         android:icon="@drawable/ic_beranda"
         android:title="@string/beranda"/>
-    <item android:id="@+id/profilFragment"
-        android:icon="@drawable/ic_profil"
-        android:title="@string/profil"/>
+    <item android:id="@+id/grafikFragment"
+        android:icon="@drawable/ic_grafik"
+        android:title="@string/grafik"/>
     <item android:id="@+id/pengaturanFragment"
         android:icon="@drawable/ic_pengaturan"
         android:title="@string/pengaturan"/>

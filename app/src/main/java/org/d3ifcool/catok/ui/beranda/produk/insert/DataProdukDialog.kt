@@ -1,6 +1,7 @@
 package org.d3ifcool.catok.ui.beranda.produk.insert
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -37,6 +38,7 @@ class DataProdukDialog : DialogFragment() {
     ): View {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setCanceledOnTouchOutside(false)
         _binding = DialogDataProdukBinding.inflate(inflater, container, false)
         with(binding){
             tvTambahProduk.visibility = if(args.isInsert) View.VISIBLE else View.GONE
