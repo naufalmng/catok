@@ -36,5 +36,7 @@
     <string name="berhasil_menghapus_produk">Berhasil Menghapus Produk !</string>
     <string name="berhasil_menghapus_semua_produk">Berhasil Menghapus Semua Produk !</string>
     <string name="edit_produk">Edit Produk</string>
+    <string name="grafik">Grafik</string>
+    <string name="histori_transaksi">Histori Transaksi</string>
 
 </resources>

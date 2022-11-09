@@ -1,5 +1,6 @@
 package org.d3ifcool.catok.ui
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -17,12 +18,20 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.databinding.ActivityMainBinding
+import org.d3ifcool.catok.ui.beranda.produk.DataProdukViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var config: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var isBackButtonPressedOnce = false
+//    private val dataProdukViewModel: DataProdukViewModel by viewModel()
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Toast.makeText(this, "configuration change", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.berandaFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
                 }
-                R.id.profilFragment -> {
+                R.id.grafikFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.GONE
                 }
@@ -73,8 +82,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.berandaFragment ->{
                         navController.navigate(R.id.berandaFragment,null,options)
                     }
-                    R.id.profilFragment ->{
-                        navController.navigate(R.id.profilFragment,null,options)
+                    R.id.grafikFragment ->{
+                        navController.navigate(R.id.grafikFragment,null,options)
                     }
                     R.id.pengaturanFragment ->{
                         navController.navigate(R.id.pengaturanFragment,null,options)
@@ -87,8 +96,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.berandaFragment ->{
                         navController.navigate(R.id.berandaFragment,null,options)
                     }
-                    R.id.profilFragment ->{
-                        navController.navigate(R.id.profilFragment,null,options)
+                    R.id.grafikFragment ->{
+                        navController.navigate(R.id.grafikFragment,null,options)
                     }
                     R.id.pengaturanFragment ->{
                         navController.navigate(R.id.pengaturanFragment,null,options)
@@ -115,5 +124,6 @@ class MainActivity : AppCompatActivity() {
             isBackButtonPressedOnce = false
         },1000)
     }
+
 
 }
