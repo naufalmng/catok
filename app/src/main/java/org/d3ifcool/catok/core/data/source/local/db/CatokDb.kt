@@ -6,7 +6,7 @@ import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 
 @Database(
     entities = [ProdukEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class CatokDb : RoomDatabase() {

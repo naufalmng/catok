@@ -12,7 +12,7 @@ data class ProdukEntity (
     var barcode: Int? = null,
     var namaProduk: String,
     var deskripsi: String,
-    var hargaBeli: Double,
+    var modal: Double,
     var hargaJual: Double,
     var satuan: Int,
     var stok: Int,

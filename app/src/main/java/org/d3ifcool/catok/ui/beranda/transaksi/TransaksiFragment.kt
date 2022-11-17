@@ -19,7 +19,6 @@ class TransaksiFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransaksiBinding.inflate(inflater, container, false)
-        binding.llHeader.tvListProduk.text = getString(R.string.histori_transaksi)
         return binding.root
     }
 

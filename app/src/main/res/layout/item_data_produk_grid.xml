@@ -18,7 +18,7 @@
         android:textSize="@dimen/_12ssp"
         style="@style/BoldTextStyle"
         android:padding="4dp"
-        android:background="@drawable/nomor_bg"
+        android:background="@drawable/nomor_bg_selector"
         android:textColor="@color/orange"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/nomor"
             app:layout_constraintTop_toTopOf="@id/nomor"
-            android:text="@string/harga_beli_arg_2"
+            android:text="@string/modal_arg_2"
             android:textColor="@color/orange"
             android:textSize="@dimen/_10ssp"
             style="@style/MediumTextStyle"/>

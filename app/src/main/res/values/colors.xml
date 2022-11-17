@@ -2,6 +2,7 @@
 <resources>
     <color name="orange">#FC7F3E</color>
     <color name="abuB">#BBBBBBBB</color>
+    <color name="abu80">#808080</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="orange2">#FC7F3E</color>
     <color name="orangeLight">#40FC7F3E</color>
