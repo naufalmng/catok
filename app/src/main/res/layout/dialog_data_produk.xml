@@ -170,10 +170,12 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilModal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="top"
+
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@drawable/edittext_stroke_selector"
@@ -181,15 +183,17 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etHargaBeli"
+                    <com.cottacush.android.currencyedittext.CurrencyEditText
+                        android:id="@+id/etModal"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_55sdp"
                         android:textColor="@color/orange"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
-                        android:inputType="number"
-                        android:hint="@string/harga_beli"
+                        app:localeTag="id-ID"
+                        app:currencySymbol="Rp․"
+                        app:maxNumberOfDecimalDigits="2"
+                        android:hint="@string/modal"
                         android:gravity="top" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,14 +209,16 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.cottacush.android.currencyedittext.CurrencyEditText
                         android:id="@+id/etHargaJual"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_55sdp"
                         android:textColor="@color/orange"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
-                        android:inputType="number"
+                        app:localeTag="id-ID"
+                        app:currencySymbol="Rp․"
+                        app:maxNumberOfDecimalDigits="2"
                         android:hint="@string/harga_jual"
                         android:gravity="top" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -263,23 +269,6 @@
                     android:hint="@string/stok_awal"
                     android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tanggal"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:textColor="@color/orange"
-                android:clickable="false"
-                style="@style/RegularTextStyle"
-                android:textSize="@dimen/_13ssp"
-                android:background="@drawable/rectangle_4r"
-                android:inputType="number"
-                android:text="Senin, 20 Oktober 2022"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp">
-            </androidx.appcompat.widget.AppCompatTextView>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"

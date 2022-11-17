@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         if(navController.graph.startDestinationId == navController.currentDestination?.id && isBackButtonPressedOnce )  {
-            navigateUp(navController,config)
+            finish()
             return
         }
         this.isBackButtonPressedOnce = true

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
@@ -88,8 +87,8 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             binding.nomor.text = id.toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
-            binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg_2,hargaBeli.toString(),satuan.toString())
-            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual.toString(),satuan.toString())
+            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,hargaBeli,satuan.toString())
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual,satuan.toString())
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
             itemView.setOnClickListener {
                 handler.onClick(position, produk)
@@ -114,8 +113,8 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             binding.nomor.text = id.toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
-            binding.hargaBeli.text = itemView.context.getString(R.string.harga_beli_arg,hargaBeli.toString(),satuan.toString())
-            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg,hargaJual.toString(),satuan.toString())
+            binding.hargaBeli.text = itemView.context.getString(R.string.jumlah_modal_arg,hargaBeli,satuan.toString())
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg,hargaJual,satuan.toString())
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
             itemView.setOnClickListener {
                 handler.onClick(position, produk)

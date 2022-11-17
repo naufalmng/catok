@@ -18,6 +18,7 @@
         android:layout_marginEnd="16dp"
         android:textSize="@dimen/_12ssp"
         android:hint="@string/pencarian"
+        android:textColor="@color/orange"
         android:drawableStart="@drawable/search_icon_selector"
         android:drawablePadding="16dp"
         android:maxLines="1"
@@ -32,26 +33,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="14dp"
+        android:gravity="end"
         android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvListProduk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/orange"
-            android:layout_marginStart="4dp"
-            style="@style/SemiboldTextStyle"
-            android:layout_weight="1"
-            android:text="@string/list_produk"
-            android:layout_marginTop="2dp"
-            android:layout_gravity="center"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnSwitchLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:background="@drawable/ic_linear_layout"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -2,17 +2,20 @@ package org.d3ifcool.catok.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.view.ViewAnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.appcompat.view.ActionMode
+import android.widget.Toast
 import org.d3ifcool.catok.R
-import org.d3ifcool.catok.ui.beranda.produk.DataProdukAdapter
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 
 fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
@@ -29,6 +32,57 @@ fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
     }
     return false
 }
+
+//fun EditText.addCurrencyFormatter() {
+//    // Reference: https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext/29993290#29993290
+//
+//    var setEditText = this.text.toString().trim()
+//    lateinit var value: String
+//    this.addTextChangedListener(object: TextWatcher {
+//
+//        private var current = ""
+//
+//        override fun afterTextChanged(s: Editable?) {
+//        }
+//
+//        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//        }
+//
+//        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//
+//            if (s.toString() != setEditText) {
+//                this@addCurrencyFormatter.removeTextChangedListener(this)
+//                val replace = s.toString().replace("Rp. ".toRegex(), "")
+//                val parsed = if (cleanString.isBlank()) 0.0 else cleanString.toDouble()
+//
+//                if(replace.isNotEmpty()){
+//
+//                }
+//                // format the double into a currency format
+//                val formated = NumberFormat.getCurrencyInstance(Locale("id","ID"))
+//                    .format(parsed / 100)
+//
+//                current = formated
+//                this@addCurrencyFormatter.setText(formated)
+//                this@addCurrencyFormatter.setSelection(formated.length)
+//                this@addCurrencyFormatter.addTextChangedListener(this)
+//                Toast.makeText(context, cleanString, Toast.LENGTH_SHORT).show()
+//
+//            }
+//        }
+//    })
+//
+//    fun formatRupiah(number: Double): String{
+//        val localeId = Locale("IND","ID")
+//        val numberFormat = NumberFormat.getCurrencyInstance(localeId)
+//        val formatRupiah = numberFormat.format(text)
+//        val split = formatRupiah.split(",")
+//        val length = split[0].length
+//        return split[0].substring(0,2)+". "+split[0].substring(2,length)
+//    }
+//
+//}
 
 @SuppressLint("ClickableViewAccessibility")
 fun View.enableOnClickAnimation() {

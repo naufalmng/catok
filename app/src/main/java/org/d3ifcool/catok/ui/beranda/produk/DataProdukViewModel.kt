@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.d3ifcool.catok.core.data.repository.AppRepository
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
-import org.d3ifcool.catok.utils.State
+
 @Suppress("UNCHECKED_CAST")
 class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
     var mLastClickTime = 0L
@@ -21,7 +21,7 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
 
     fun insertData(namaProduk: String, deskripsi: String, hargaBeli: Double, hargaJual: Double,satuan: Int, stok: Int,tanggal: String){
         viewModelScope.launch(Dispatchers.IO) {
-            repo.insertData(ProdukEntity(namaProduk = namaProduk, deskripsi = deskripsi, hargaBeli = hargaBeli, hargaJual = hargaJual,satuan = satuan, stok = stok, tanggal = tanggal))
+            repo.insertData(ProdukEntity(namaProduk = namaProduk, deskripsi = deskripsi, modal = hargaBeli, hargaJual = hargaJual,satuan = satuan, stok = stok, tanggal = tanggal))
         }
     }
 

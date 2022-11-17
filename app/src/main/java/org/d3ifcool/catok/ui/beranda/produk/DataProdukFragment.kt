@@ -66,7 +66,6 @@ class DataProdukFragment : Fragment() {
             }
         }
         super.onViewCreated(view, savedInstanceState)
-        binding.llHeader.tvListProduk.text = getString(R.string.list_produk)
         binding.llHeader.searchView.setupSearchView()
         setupListeners()
         setupObservers()
@@ -79,7 +78,6 @@ class DataProdukFragment : Fragment() {
             isNestedScrollingEnabled = true
             adapter = produkAdapter
             setHasFixedSize(true)
-
         }
     }
 
@@ -254,6 +252,9 @@ class DataProdukFragment : Fragment() {
                 return true
             }
             if(item?.itemId == R.id.menu_edit){
+                produkAdapter.resetSelection()
+                actionMode!!.finish()
+                actionMode = null
                 findNavController().navigate(DataProdukFragmentDirections.actionDataProdukFragmentToDataProdukDialog(false,viewModel.tempProdukEntity.value))
             }
             return false
@@ -312,7 +313,9 @@ class DataProdukFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
-            viewModel.isAllItemSelected.value = produkAdapter.getSelection().size == produkAdapter.produkFilterList.size.minus(1)
+            if(produkAdapter.getSelection().size == produkAdapter.produkFilterList.size.minus(1)){
+                viewModel.isAllItemSelected.value = produkAdapter.getSelection().isNotEmpty()
+            }
             viewModel.tempProdukEntity.value = produk[position]
             if(actionMode != null) return false
             produkAdapter.toggleSelection(produkAdapter.produkList.indexOf(produkAdapter.produkFilterList[position]))
