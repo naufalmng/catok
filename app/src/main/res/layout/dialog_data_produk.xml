@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     android:focusable="true"
     android:fillViewport="true"
-    tools:context=".ui.beranda.produk.insert.DataProdukDialog">
+    tools:context=".ui.beranda.produk.DataProdukDialog">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

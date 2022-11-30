@@ -15,7 +15,7 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
     var isLinearLayoutManager = true
 
     val getDataProduk : LiveData<ArrayList<ProdukEntity>> = repo.getArrayListDataProduk() as LiveData<ArrayList<ProdukEntity>>
-    val isDataProdukEmpty: LiveData<Boolean> = repo.isDataProdukEmpty()
+    val isDataProdukEmpty = MutableLiveData<Boolean>(true)
 
 
 

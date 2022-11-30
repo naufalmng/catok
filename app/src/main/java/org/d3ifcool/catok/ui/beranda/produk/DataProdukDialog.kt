@@ -1,25 +1,19 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import kotlinx.coroutines.launch
-import org.d3ifcool.catok.R
-import org.d3ifcool.catok.core.data.DataStorePreferences
-import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.DialogDataProdukBinding
 import org.d3ifcool.catok.utils.enableOnClickAnimation
-import org.d3ifcool.catok.utils.getCurrentDate2
+import java.text.SimpleDateFormat
+import java.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -29,9 +23,9 @@ class DataProdukDialog : DialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: DataProdukViewModel by viewModel()
     private val args: DataProdukDialogArgs by navArgs()
-    private var satuanPerValue = ""
-    private val dataStorePreferences: DataStorePreferences by lazy {
-        DataStorePreferences(requireActivity().dataStore)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -47,7 +41,6 @@ class DataProdukDialog : DialogFragment() {
             tvTambahProduk.visibility = if (args.isInsert) View.VISIBLE else View.GONE
             tvEditProduk.visibility = if (args.isInsert) View.GONE else View.VISIBLE
         }
-        binding.spinnerSatuanPer.selectItemByIndex(0)
         return binding.root
     }
 
@@ -55,24 +48,64 @@ class DataProdukDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+        setupTextWatcher()
         if (args.produk != null) {
             updateUi()
+        }
+
+
+
+//        val layoutParams1 = LinearLayout.LayoutParams(
+//            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+//        )
+//        layoutParams1.setMargins(20, 60, 20, 120)
+//        val layoutParams2 = LinearLayout.LayoutParams(
+//            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+//        )
+//        layoutParams1.setMargins(20, 60, 20, 30)
+//        if(binding.llBarcode.visibility == View.GONE) binding.llBarcode.layoutParams = layoutParams1
+//        else binding.llBarcode.layoutParams = layoutParams
+    }
+
+    private fun setupTextWatcher() {
+        with(binding) {
+//            etModal.addCurrencyFormatter()
+//            etHargaNJual.addCurrencyFormatter()
+
+//            etModal.addTextChangedListener(object : TextWatcher {
+//                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//                }
+//
+//                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//                }
+//
+//                override fun afterTextChanged(s: Editable?) {
+//                    if (!s.toString().startsWith("Rp. ")) {
+//                        etModal.setText("Rp. ")
+//                        Selection.setSelection(etModal.text, etModal.text.toString().length)
+//                    }
+////                    if(s.toString().startsWith("Rp. ") && !etModal.hasFocus()){
+////                        Toast.makeText(requireContext(), etModal.text.toString(), Toast.LENGTH_SHORT).show()
+////
+//////
+//////                        etModal.setTextColor(ContextCompat.getColor(requireContext(),R.color.abu80)) else
+//////                            etModal.setTextColor(ContextCompat.getColor(requireContext(),R.color.orange))
+////                    }
+//
+//                }
+//            })
+//            etModal.setOnFocusChangeListener { p0, _ ->
+//                if (p0?.hasFocus() == false && etModal.text.toString() == "Rp. ") {
+//                    etModal.setTextColor(ContextCompat.getColor(requireContext(),R.color.abu80))
+//                }else etModal.setTextColor(ContextCompat.getColor(requireContext(),R.color.orange))
+//            }
         }
     }
 
     private fun updateUi() {
         val item = args.produk!!
-        val spinnerValue = when(args.produk!!.satuanPer){
-            resources.getStringArray(R.array.jenis_satuan)[0] -> 0
-            resources.getStringArray(R.array.jenis_satuan)[1] -> 1
-            resources.getStringArray(R.array.jenis_satuan)[2] -> 2
-            resources.getStringArray(R.array.jenis_satuan)[3] -> 3
-            resources.getStringArray(R.array.jenis_satuan)[4] -> 4
-            resources.getStringArray(R.array.jenis_satuan)[5] -> 5
-            resources.getStringArray(R.array.jenis_satuan)[6] -> 6
-            resources.getStringArray(R.array.jenis_satuan)[7] -> 7
-            else -> -1
-        }
         with(binding) {
             etNamaProduk.setText(item.namaProduk)
             etDeskripsi.setText(item.deskripsi)
@@ -80,19 +113,19 @@ class DataProdukDialog : DialogFragment() {
             etHargaJual.setText(item.hargaJual.toInt().toString())
             etSatuan.setText(item.satuan.toString())
             etStokAwal.setText(item.stok.toString())
-            spinnerSatuanPer.selectItemByIndex(spinnerValue)
 
         }
     }
 
     private fun setupProduk() {
-        val item: ProdukEntity? = if (args.produk != null) args.produk!! else null
+        val item: ProdukEntity?
+        if (args.produk != null) item = args.produk!! else item = null
 
         with(binding) {
             if (TextUtils.isEmpty(etNamaProduk.text.toString())) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.produk_tidak_boleh_kosong),
+                    "Nama Produk Tidak Boleh Kosong !",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
@@ -100,7 +133,7 @@ class DataProdukDialog : DialogFragment() {
             if (TextUtils.isEmpty(etDeskripsi.text.toString())) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.deskripsi_tidak_boleh_kosong),
+                    "Deskripsi Tidak Boleh Kosong !",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
@@ -108,7 +141,7 @@ class DataProdukDialog : DialogFragment() {
             if (TextUtils.isEmpty(etModal.text.toString())) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.modal_tidak_boleh_kosong),
+                    "Modal Tidak Boleh Kosong !",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
@@ -116,45 +149,34 @@ class DataProdukDialog : DialogFragment() {
             if (TextUtils.isEmpty(etHargaJual.text.toString())) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.harga_jual_tidak_boleh_kosong),
+                    "Harga Jual Tidak Boleh Kosong !",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
             }
             if (TextUtils.isEmpty(etSatuan.text.toString())) {
-                Toast.makeText(requireContext(), getString(R.string.satuan_warning), Toast.LENGTH_SHORT)
-                    .show()
-                return
-            }
-            if (spinnerSatuanPer.selectedIndex<0 && satuanPerValue=="") {
-                Toast.makeText(requireContext(), getString(R.string.satuan_per_warning), Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Satuan Tidak Boleh Kosong !", Toast.LENGTH_SHORT)
                     .show()
                 return
             }
             if (TextUtils.isEmpty(etStokAwal.text.toString())) {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.stok_warning),
+                    "Stok Awal Tidak Boleh Kosong !",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
             }
 
-            if (args.isInsert){
-                viewModel.insertData(
-                    namaProduk = etNamaProduk.text.toString(),
-                    deskripsi = etDeskripsi.text.toString(),
-                    etModal.getNumericValue(),
-                    hargaJual = etHargaJual.getNumericValue(),
-                    satuan = etSatuan.text.toString().toInt(),
-                    satuanPer =  if(satuanPerValue!="") satuanPerValue else resources.getStringArray(R.array.jenis_satuan)[0],
-                    stok = etStokAwal.text.toString().toInt(),
-                    tanggal = getCurrentDate2()
-                )
-                lifecycleScope.launch {
-                    dataStorePreferences.saveDataUpdateSetting(requireContext(),true)
-                }
-            }
+            if (args.isInsert) viewModel.insertData(
+                namaProduk = etNamaProduk.text.toString(),
+                deskripsi = etDeskripsi.text.toString(),
+                etModal.getNumericValue(),
+                hargaJual = etHargaJual.getNumericValue(),
+                satuan = etSatuan.text.toString().toInt(),
+                stok = etStokAwal.text.toString().toInt(),
+                tanggal = getCurrentDate()
+            )
             else {
                 if (item != null) {
                     viewModel.updateData(
@@ -166,39 +188,57 @@ class DataProdukDialog : DialogFragment() {
                             etModal.getNumericValue(),
                             etHargaJual.getNumericValue(),
                             etSatuan.text.toString().toInt(),
-                            if(satuanPerValue!="") satuanPerValue else resources.getStringArray(R.array.jenis_satuan)[0],
                             etStokAwal.text.toString().toInt(),
-                            getCurrentDate2()
+                            getCurrentDate()
                         )
                     )
                 }
             }
 
             Toast.makeText(
-                requireContext(), if (!args.isInsert) getString(R.string.berhasil_menyunting_produk) else getString(R.string.produk_berhasil_ditambah), Toast.LENGTH_SHORT).show()
+                requireContext(),
+                if (!args.isInsert) "Berhasil menyunting produk !" else "Produk berhasil ditambah !",
+                Toast.LENGTH_SHORT
+            )
+                .show()
             dismiss()
         }
     }
 
     private fun setupListeners() {
         with(binding) {
-            btnBatalSimpan.enableOnClickAnimation()
+            btnBatal.enableOnClickAnimation()
             btnSimpan.enableOnClickAnimation()
+            close.enableOnClickAnimation()
+            close.setOnClickListener {
+                dismiss()
+            }
             btnSimpan.setOnClickListener {
                 setupProduk()
             }
-            btnBatalSimpan.setOnClickListener {
+            btnBatal.setOnClickListener {
                 dismiss()
             }
-            spinnerSatuanPer.setOnSpinnerItemSelectedListener<String>{ oldIndex, oldItem, newIndex, text ->
-                satuanPerValue = text
-            }
         }
+    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+//        params.width = LinearLayoutCompat.LayoutParams.MATCH_PARENT
+//        params.height = LinearLayoutCompat.LayoutParams.MATCH_PARENT
+//        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
+//    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getCurrentDate(): String {
+        val currentDate = Calendar.getInstance().time
+        val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))
+        return sdf.format(currentDate)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        satuanPerValue = ""
     }
 }

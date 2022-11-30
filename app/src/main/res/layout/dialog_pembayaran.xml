@@ -8,8 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarThumbVertical="@null"
     android:scrollbarTrackVertical="@null"
-    tools:context=".ui.beranda.transaksi.PembayaranDialog"
-    tools:ignore="Overdraw">
+    tools:context=".ui.beranda.transaksi.PembayaranDialog">
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -29,109 +28,86 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_data_pembayaran"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilJenisPembayaran"
+                android:id="@+id/tilLayanan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50ssp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_4r"
                 android:minHeight="64dp"
-                android:clickable="false"
-                android:gravity="center"
-                app:expandedHintEnabled="false"
-                android:hint="@string/jenis_pembayaran2"
-                app:boxBackgroundColor="@color/white"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@drawable/edittext_stroke_selector"
-                android:textColorHint="@color/orange"
-                app:hintTextColor="@color/orange">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:textColor="@color/orange"
-                    style="@style/RegularTextStyle"
-                    android:textSize="@dimen/_13ssp"
-                    android:clickable="false"
-                    android:inputType="text"
-                    android:textColorHint="@color/abuB"
-                    android:gravity="top" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.skydoves.powerspinner.PowerSpinnerView
-                android:id="@+id/spinnerJenisPembayaran"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="start|center_vertical"
-                android:hint="@string/jenis_pembayaran"
-                android:textColor="@color/orange"
-                android:includeFontPadding="false"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="10dp"
                 android:textColorHint="@color/abuB"
-                android:textSize="@dimen/_13ssp"
-                app:spinner_arrow_animate="true"
-                app:spinner_arrow_gravity="end"
-                app:spinner_arrow_show="true"
-                app:spinner_arrow_tint="@color/black"
-                app:spinner_divider_color="@android:color/transparent"
-                app:spinner_divider_show="true"
-                app:spinner_divider_size="10dp"
-                app:spinner_item_array="@array/item_jenis_pembayaran"
-                app:spinner_popup_animation="dropdown"
-                app:spinner_popup_background="@drawable/rectangle_4r"
-                app:spinner_popup_elevation="1dp"
-                app:spinner_popup_height="95dp" />
+                android:gravity="center"
+                app:boxBackgroundMode="none"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="true"
+                app:hintTextColor="?android:textColorHint">
 
-        </FrameLayout>
-
-
+                <com.skydoves.powerspinner.PowerSpinnerView
+                    android:id="@+id/spinnerJenisPembayaran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/jenis_pembayaran"
+                    android:textColor="@color/orange"
+                    android:includeFontPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="10dp"
+                    android:textColorHint="@color/abuB"
+                    android:textSize="@dimen/_13ssp"
+                    app:spinner_arrow_animate="true"
+                    app:spinner_arrow_gravity="end"
+                    app:spinner_arrow_show="true"
+                    app:spinner_arrow_tint="@color/black"
+                    app:spinner_divider_color="@android:color/transparent"
+                    app:spinner_divider_show="true"
+                    app:spinner_divider_size="10dp"
+                    app:spinner_item_array="@array/item_jenis_pembayaran"
+                    app:spinner_popup_animation="dropdown"
+                    app:spinner_popup_background="@drawable/rectangle_10r"
+                    app:spinner_popup_elevation="1dp"
+                    app:spinner_popup_height="95dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="top"
+                    android:layout_marginTop="8dp"
                     app:expandedHintEnabled="false"
-                    android:hint="@string/diskon"
+                    app:hintEnabled="false"
+                    app:hintAnimationEnabled="false"
                     app:boxBackgroundColor="@color/white"
-                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundMode="@null"
                     app:boxStrokeColor="@drawable/edittext_stroke_selector"
-                    android:textColorHint="@color/orange"
-                    app:hintTextColor="@color/orange">
+                    app:hintTextColor="@color/abuB">
 
                     <com.cottacush.android.currencyedittext.CurrencyEditText
                         android:id="@+id/etDiskon"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_height="@dimen/_55sdp"
                         android:textColor="@color/orange"
+                        android:background="@drawable/rectangle_4r"
                         app:localeTag="id-ID"
                         app:currencySymbol="Rp․"
                         app:maxNumberOfDecimalDigits="2"
+                        android:focusedByDefault="false"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
                         android:inputType="text"
                         android:textColorHint="@color/abuB"
-                        app:useCurrencySymbolAsHint="true"
+                        android:hint="@string/diskon"
                         android:gravity="top" />
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -143,23 +119,24 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:hint="@string/bayar"
                 app:expandedHintEnabled="false"
+                app:hintEnabled="false"
+                app:hintAnimationEnabled="false"
                 app:boxBackgroundColor="@color/white"
-                app:boxBackgroundMode="outline"
+                app:boxBackgroundMode="@null"
                 app:boxStrokeColor="@drawable/edittext_stroke_selector"
-                android:textColorHint="@color/orange"
-                app:hintTextColor="@color/orange">
+                app:hintTextColor="@color/abuB">
 
                 <com.cottacush.android.currencyedittext.CurrencyEditText
                     android:id="@+id/etBayar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_55sdp"
                     android:textColor="@color/orange"
+                    android:background="@drawable/rectangle_4r"
                     app:localeTag="id-ID"
                     app:currencySymbol="Rp․"
                     app:maxNumberOfDecimalDigits="2"
-                    app:useCurrencySymbolAsHint="true"
+                    android:focusedByDefault="false"
                     style="@style/RegularTextStyle"
                     android:textSize="@dimen/_13ssp"
                     android:inputType="text"
@@ -168,73 +145,54 @@
                     android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:minWidth="@dimen/_150sdp"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:enabled="false"
-            android:hint="@string/kembalian"
-            app:expandedHintEnabled="false"
-            app:boxBackgroundColor="@color/white"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@drawable/edittext_stroke_selector"
-            android:textColorHint="@color/orange"
-            app:hintTextColor="@color/orange">
-
-            <com.cottacush.android.currencyedittext.CurrencyEditText
-                android:id="@+id/etKembalian"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvKembalian"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_height="@dimen/_55sdp"
+                app:expandedHintEnabled="false"
+                app:hintEnabled="false"
+                app:hintAnimationEnabled="false"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/orange"
-                app:localeTag="id-ID"
-                app:currencySymbol="Rp․"
-                app:maxNumberOfDecimalDigits="2"
-                android:enabled="false"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                app:useCurrencySymbolAsHint="true"
+                android:background="@drawable/rectangle_4r"
                 style="@style/RegularTextStyle"
                 android:textSize="@dimen/_13ssp"
                 android:inputType="text"
-                android:textColorHint="@color/orange"
+                android:textColorHint="@color/abuB"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:hint="@string/kembalian"
-                android:gravity="top" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:gravity="start|center" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
+                app:expandedHintEnabled="false"
+                app:hintEnabled="false"
+                app:hintAnimationEnabled="false"
                 app:boxBackgroundColor="@color/white"
-                app:boxBackgroundMode="outline"
+                app:boxBackgroundMode="@null"
                 app:boxStrokeColor="@drawable/edittext_stroke_selector"
-                app:hintTextColor="@color/orange">
+                app:hintTextColor="@color/abuB">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCatatan"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_55sdp"
                     android:textColor="@color/orange"
+                    android:background="@drawable/rectangle_4r"
                     style="@style/RegularTextStyle"
                     android:textSize="@dimen/_13ssp"
                     android:inputType="text"
                     android:textColorHint="@color/abuB"
                     android:hint="@string/catatan"
                     android:gravity="top" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <GridLayout
@@ -245,6 +203,7 @@
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
                 android:columnCount="2">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_columnWeight="1"
                     android:textColor="@color/orange"
@@ -270,22 +229,6 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/jumlahDiskon"
-                    android:layout_columnWeight="1"
-                    android:textColor="@color/orange"
-                    android:textSize="@dimen/_11ssp"
-                    android:gravity="end|center"
-                    style="@style/MediumTextStyle"
-                    android:text="@string/diskon_arg"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_columnWeight="1"
-                    android:textColor="@color/orange"
-                    android:textSize="@dimen/_11ssp"
-                    style="@style/MediumTextStyle"
-                    android:text="@string/total"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/total"
                     android:layout_columnWeight="1"
                     android:textColor="@color/orange"
                     android:textSize="@dimen/_11ssp"

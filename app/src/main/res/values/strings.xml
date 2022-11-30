@@ -5,6 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nama_toko">CaTok (Catatan Toko)</string>
     <string name="data_produk">Data\nProduk</string>
+    <string name="data_produk2">Data Produk</string>
     <string name="tambah_produk">Tambah Produk</string>
     <string name="transaksi_produk">Transaksi\nProduk</string>
     <string name="transaksi_produk2">Transaksi Produk</string>
@@ -38,5 +39,24 @@
     <string name="edit_produk">Edit Produk</string>
     <string name="grafik">Grafik</string>
     <string name="histori_transaksi">Histori Transaksi</string>
+    <string name="search">Search</string>
+    <string name="harga">Rp %1$s / 1 pcs</string>
+    <string name="total_arg"><u>RP %1$.0f</u>></string>
+    <string name="harga_arg">Rp %1$.0f</string>
+    <string name="jenis_pembayaran_arg"><u>%1$s</u></string>
+    <string name="jenis_pembayaran">Pilih jenis pembayaran</string>
+    <string name="diskon">Diskon</string>
+    <string name="bayar">Bayar</string>
+    <string name="kembalian">Kembalian</string>
+    <string name="catatan">Catatan</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="sub_total_arg"><u>Rp %1$.2f</u></string>
+    <string name="diskon_arg"><u>%1$s</u>></string>
+    <string name="selanjutnya">Selanjutnya</string>
+    <string name="total_harga_arg">Rp. %1$s</string>
+    <string name="nomor">No</string>
+    <string name="produk">Produk</string>
+    <string name="qty">Qty</string>
+    <string name="harga2">Harga</string>
 
 </resources>

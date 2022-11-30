@@ -36,7 +36,7 @@ class BerandaFragmentTest {
     }
 
     @Test
-    fun testMenuTransaksiProduk() {
+    fun testMenuTransaksiProduk()   {
         val navController = TestNavHostController(
             ApplicationProvider.getApplicationContext())
 
@@ -49,7 +49,7 @@ class BerandaFragmentTest {
             }
         }}
 
-        // Click button transaksi produk
+        // Click button historiTransaksi produk
         onView(withId(R.id.transaksiProduk))
             .check(matches(isDisplayed()))
             .perform(click())

@@ -4,38 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <include
         android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/ic_header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingTop="0.25dp"
-        android:paddingStart="0.5dp"
-        android:paddingEnd="0dp"
-        app:titleCentered="true"
-        app:titleTextColor="@color/white"
-        app:titleMarginTop="13dp"
-        android:theme="@style/ToolbarTheme"
-        app:popupTheme="@style/Theme.Catok.PopupOverlay">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/toolbarIcon"
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"/>
-
-    </com.google.android.material.appbar.MaterialToolbar>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_47ssp"
         android:background="@drawable/bottom_nav_bg"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@drawable/bottom_nav_icon_color_state"

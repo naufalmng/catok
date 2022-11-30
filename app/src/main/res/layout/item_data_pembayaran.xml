@@ -54,7 +54,7 @@
             android:textSize="@dimen/_12ssp"
             style="@style/SemiboldTextStyle"
             android:textColor="@color/orange"
-            android:text="@string/dummy_tanggal"/>
+            android:text="Sabtu, 29 Oktober 2022"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -73,8 +73,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="@string/no"
-        android:gravity="center"
+        android:text="No"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@id/divider2"
@@ -86,7 +85,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="@string/produk"
+        android:text="Produk"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintTop_toTopOf="@id/nomor"
         app:layout_constraintStart_toEndOf="@id/guideline1"/>
@@ -97,20 +96,20 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="@string/qty"
+        android:text="Qty"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="@id/guideline2"
         app:layout_constraintTop_toTopOf="@id/produk"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/total"
+        android:id="@+id/harga"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         android:gravity="center"
         style="@style/SemiboldTextStyle"
-        android:text="@string/total"
+        android:text="Harga"
         app:layout_constraintEnd_toEndOf="@id/divider2"
         app:layout_constraintStart_toEndOf="@id/guideline3"
         app:layout_constraintTop_toTopOf="@id/qty"/>
@@ -123,6 +122,6 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@id/divider2"
         app:layout_constraintEnd_toEndOf="@id/divider2"
-        app:layout_constraintTop_toBottomOf="@id/total"/>
+        app:layout_constraintTop_toBottomOf="@id/harga"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

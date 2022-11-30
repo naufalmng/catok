@@ -6,30 +6,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/item_selector"
     android:layout_marginTop="8dp"
-    android:layout_marginStart="8dp"
-    android:padding="12dp">
+    android:layout_marginStart="8dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/nomor"
+    <FrameLayout
+        android:id="@+id/nomorLl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:text="1000"
-        android:textSize="@dimen/_12ssp"
-        style="@style/BoldTextStyle"
-        android:padding="4dp"
         android:background="@drawable/nomor_bg_selector"
-        android:textColor="@color/orange"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nomor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="1000"
+            android:textSize="@dimen/_12ssp"
+            style="@style/BoldTextStyle"
+            android:padding="4dp"
+            android:textColor="@color/orange"/>
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/namaProduk"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/nomor"
-        app:layout_constraintTop_toTopOf="@id/nomor"
-        app:layout_constraintBottom_toBottomOf="@id/nomor"
+        app:layout_constraintStart_toEndOf="@id/nomorLl"
+        app:layout_constraintTop_toTopOf="@id/nomorLl"
+        app:layout_constraintBottom_toBottomOf="@id/nomorLl"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Momogi"
@@ -41,7 +47,8 @@
         android:id="@+id/deskripsi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/nomor"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/namaProduk"
         android:layout_marginTop="8dp"
         android:text="Makanan ringan"
@@ -97,7 +104,8 @@
         android:id="@+id/stok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/deskripsi"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="8dp"

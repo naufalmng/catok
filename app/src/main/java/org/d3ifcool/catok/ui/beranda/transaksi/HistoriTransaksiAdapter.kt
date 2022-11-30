@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +13,13 @@ import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.databinding.ItemDataHistoriTransaksiGridBinding
 import org.d3ifcool.catok.databinding.ItemDataHistoriTransaksiLinearBinding
-import org.d3ifcool.catok.utils.addUnderline
-import org.d3ifcool.catok.utils.toRupiahFormat
 import java.util.*
-
+import kotlin.collections.ArrayList
 @SuppressLint("NotifyDataSetChanged")
 @Suppress("UNCHECKED_CAST")
 class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true, private val handler: ClickHandler): ListAdapter<HistoriTransaksiEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
     companion object {
-        val selectionIds = ArrayList<String>()
+        val selectionIds = ArrayList<Int>()
         val diffCallback = object : DiffUtil.ItemCallback<HistoriTransaksiEntity>() {
             override fun areItemsTheSame(oldItem: HistoriTransaksiEntity, newItem: HistoriTransaksiEntity): Boolean {
                 return oldItem.id_histori == newItem.id_histori
@@ -36,14 +33,39 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
 
     var historiTransaksiList = mutableListOf<HistoriTransaksiEntity>()
     var historiHistoriTransaksiFilterList : MutableList<HistoriTransaksiEntity> = ArrayList()
+//    lateinit var onItemClick: ((ProdukEntity) -> Unit)
 
     fun updateData(historiHistoriTransaksi: ArrayList<HistoriTransaksiEntity>){
-        Log.d("HistoriTransaksi", "updateData: $historiHistoriTransaksi")
         historiTransaksiList.clear()
         historiTransaksiList.addAll(historiHistoriTransaksi)
         historiHistoriTransaksiFilterList = historiHistoriTransaksi
         submitList(historiHistoriTransaksi)
+//        notifyItemRangeRemoved(0, produkList.size)
 
+    }
+
+    fun getAllSelection(){
+        selectionIds.clear()
+        for(i in historiHistoriTransaksiFilterList.indices){
+            val id = historiHistoriTransaksiFilterList[i].id_histori
+            selectionIds.add(id.toInt())
+            notifyDataSetChanged()
+        }
+        handler.isAllItemSelected(true)
+
+    }
+
+    fun toggleSelection(position: Int){
+        if(getSelection().size != historiHistoriTransaksiFilterList.size) handler.isAllItemSelected(false)
+        val id = getItem(position).id_histori
+        Log.d("DataProdukAdapter", "toggleSelection: $id")
+        if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
+        else selectionIds.add(id.toInt())
+        notifyDataSetChanged()
+    }
+
+    fun getSelection(): List<Int>{
+        return selectionIds
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -59,16 +81,19 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             }
         }
         fun bind(position: Int, historiTransaksiData: ArrayList<HistoriTransaksiEntity>, handler: ClickHandler){
-            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
-            binding.rootView.isSelected = selectionIds.contains(id_transaksi)
-            itemView.isSelected = selectionIds.contains(id_transaksi)
-            binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
-            binding.tanggal.text = tanggal
-            binding.invoice.text = id_transaksi
-            binding.jenisPembayaran.text = pembayaran.addUnderline()
-            binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
+            val (id_transaksi,total,produkDibeli,invoice,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
+            binding.rootView.isSelected = selectionIds.contains(id_transaksi.toInt())
+            itemView.isSelected = selectionIds.contains(id_transaksi.toInt())
+            binding.total.text = itemView.context.getString(R.string.total_arg,total)
+            binding.tanggal.text = tanggal.toString()
+            binding.invoice.text = invoice
+            binding.jenisPembayaran.text = pembayaran
+            binding.statusBayar.text = statusBayar
             itemView.setOnClickListener {
-                handler.onClick(historiTransaksiData[position])
+                handler.onClick(position, historiTransaksiData)
+            }
+            itemView.setOnLongClickListener {
+                handler.onLongClick(position,historiTransaksiData)
             }
         }
     }
@@ -79,19 +104,21 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             }
         }
         fun bind(position: Int, historiTransaksiData: ArrayList<HistoriTransaksiEntity>, handler: ClickHandler){
-            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
-            val textColorRes = if(statusBayar == itemView.context.getString(R.string.lunas)) ContextCompat.getColor(itemView.context,R.color.green) else ContextCompat.getColor(itemView.context,R.color.yellow)
-            binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
-            binding.tanggal.text = tanggal
-            binding.invoice.text = id_transaksi
-            binding.jenisPembayaran.text = pembayaran.addUnderline()
-            binding.statusBayar.setTextColor(textColorRes)
-            binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
-            itemView.isSelected = selectionIds.contains(id_transaksi)
+            val (id_transaksi,total,produkDibeli,invoice,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
+            binding.rootView.setOnClickListener{
+//                    onItemClick.invoke(data[position])
+            }
+            binding.total.text = itemView.context.getString(R.string.total_arg,total)
+            binding.tanggal.text = tanggal.toString()
+            binding.invoice.text = invoice
+            binding.jenisPembayaran.text = pembayaran
+            binding.statusBayar.text = statusBayar
+            itemView.isSelected = selectionIds.contains(id_transaksi.toInt())
 
             itemView.setOnClickListener {
-                handler.onClick(historiTransaksiData[position])
+                handler.onClick(position, historiTransaksiData)
             }
+            itemView.setOnLongClickListener { handler.onLongClick(position,historiTransaksiData) }
 
         }
     }
@@ -121,20 +148,20 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
         return object : Filter(){
             override fun performFiltering(char: CharSequence?): FilterResults {
                 val charSearch = char.toString()
-                historiHistoriTransaksiFilterList = if(charSearch.isEmpty()) historiTransaksiList
+                if(charSearch.isEmpty()) historiHistoriTransaksiFilterList = historiTransaksiList
                 else{
                     val resultList = ArrayList<HistoriTransaksiEntity>()
                     for(item in historiTransaksiList){
-                        if(item.tanggal.trim().contains(charSearch.lowercase(Locale.ROOT)) ||
-                            item.id_histori.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
+                        if(item.tanggal.toString().trim().contains(charSearch.lowercase(Locale.ROOT)) ||
+                            item.invoice.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.statusBayar.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.pembayaran.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.total.toString().trim().lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))
-                        ){
+                            ){
                             resultList.add(item)
                         }
                     }
-                    resultList
+                    historiHistoriTransaksiFilterList = resultList
                 }
                 return FilterResults().apply { values = historiHistoriTransaksiFilterList }
             }
@@ -142,12 +169,15 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             override fun publishResults(constraint: CharSequence?, result: FilterResults?) {
                 historiHistoriTransaksiFilterList = if(result?.values == null) ArrayList()
                 else result.values as ArrayList<HistoriTransaksiEntity>
+//                notifyItemRangeRemoved(0, produkFilterList.size)
                 notifyDataSetChanged()
 
             }
         }
     }
     interface ClickHandler {
-        fun onClick(transaksi: HistoriTransaksiEntity)
+        fun onClick(position: Int, produk: ArrayList<HistoriTransaksiEntity>)
+        fun onLongClick(position: Int, produk: ArrayList<HistoriTransaksiEntity>): Boolean
+        fun isAllItemSelected(isAllItemSelected: Boolean = false)
     }
 }

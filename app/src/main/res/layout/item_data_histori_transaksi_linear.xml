@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,12 +14,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toStartOf="@id/tvPembayaran"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="-3dp"
-        android:text="@string/dummy_tanggal2"
+        android:text="07 November 2022 15.02"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>
 
@@ -32,15 +30,15 @@
         app:layout_constraintTop_toTopOf="@id/tanggal"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:text="@string/dummy_line"
+        android:layout_marginTop="-3dp"
+        android:text="Pembayaran"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/total"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/jenisPembayaran"
         app:layout_constraintStart_toStartOf="@id/tanggal"
         app:layout_constraintTop_toBottomOf="@id/tanggal"
         android:text="@string/total_arg"
@@ -53,8 +51,7 @@
         android:id="@+id/jenisPembayaran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/total"
-        app:layout_constraintBottom_toBottomOf="@id/total"
+        app:layout_constraintTop_toBottomOf="@id/tvPembayaran"
         app:layout_constraintStart_toStartOf="@id/tvPembayaran"
         app:layout_constraintEnd_toEndOf="@id/tvPembayaran"
         android:text="@string/jenis_pembayaran_arg"
@@ -65,13 +62,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/invoice"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/statusBayar"
         app:layout_constraintTop_toTopOf="@id/statusBayar"
         app:layout_constraintBottom_toBottomOf="@id/statusBayar"
         app:layout_constraintStart_toStartOf="@id/total"
-        android:text="@string/dummy_invoice"
+        android:text="201120221"
         android:textColor="@color/orange"
         android:textSize="@dimen/_10ssp"
         style="@style/MediumTextStyle"/>
@@ -82,12 +78,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/jenisPembayaran"
         app:layout_constraintTop_toBottomOf="@id/total"
-        android:text="@string/dummy_status_bayar"
+        android:text="(LUNAS)"
         app:layout_constraintEnd_toEndOf="@id/jenisPembayaran"
         android:textColor="@color/green"
         android:textStyle="bold"
-        android:textSize="@dimen/_10ssp"
-        android:layout_marginTop="2dp"
+        android:textSize="@dimen/_12ssp"
         style="@style/MediumTextStyle"/>
 
     <!--    -->

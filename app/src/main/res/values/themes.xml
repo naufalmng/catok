@@ -4,7 +4,9 @@
         <!-- Primary brand color. -->
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/ActionModeTheme</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionModeCloseButtonStyle">@style/ActionModeCloseButtonStyle</item>
+        <item name="searchViewStyle">@style/SearchViewTheme</item>
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/orange2</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -20,9 +22,22 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SearchViewTheme" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="android:searchIcon">@null</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="searchHintIcon">@null</item>
+
+    </style>
+
     <style name="ActionModeTheme" parent="@style/Widget.AppCompat.ActionMode">
         <item name="background">@drawable/ic_header</item>
+        <item name="android:actionModeBackground">@color/orange</item>
+        <item name="actionModeBackground">@color/orange</item>
         <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionModeCloseButtonStyle</item>
+
     </style>
 
     <style name="ActionModeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
@@ -42,9 +57,19 @@
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="android:editTextColor">@color/orange</item>
     </style>
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/white</item>
+    </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@color/white</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="android:actionModeBackground">@drawable/ic_header</item>
+        <item name="actionModeBackground">@drawable/ic_header</item>
+        <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
+        <item name="searchViewStyle">@style/SearchViewTheme</item>
+        <item name="actionModeStyle">@style/ActionModeTheme</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionModeCloseButtonStyle</item>
     </style>
 
     <style name="RegularTextStyle" parent="Widget.AppCompat.TextView">
@@ -56,6 +81,16 @@
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/orange</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/abuB</item>
+
+        <item name="android:colorForeground">@color/abuB</item>
+    </style>
+
 
     <style name="SemiboldTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/poppins_semibold</item>
