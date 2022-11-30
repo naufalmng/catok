@@ -1,18 +1,16 @@
-package org.d3ifcool.catok.ui.beranda.produk.insert
+package org.d3ifcool.catok.ui.beranda.produk
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.DialogDataProdukBinding
-import org.d3ifcool.catok.ui.beranda.produk.DataProdukViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -183,7 +181,7 @@ class DataProdukDialog : DialogFragment() {
                 if (item != null) {
                     viewModel.updateData(
                         ProdukEntity(
-                            item.id,
+                            item.id_produk,
                             item.barcode,
                             etNamaProduk.text.toString(),
                             etDeskripsi.text.toString(),

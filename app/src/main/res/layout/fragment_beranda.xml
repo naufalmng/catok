@@ -106,10 +106,12 @@
             android:rowCount="2"
             android:columnCount="2">
 
-            <FrameLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/dataProduk"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/ic_item_beranda_bg"
                 android:layout_marginEnd="16dp">
 
@@ -125,6 +127,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/data_produk"
                     style="@style/MediumTextStyle"
+                    android:layout_marginTop="8dp"
                     android:textAlignment="center"
                     android:textSize="@dimen/_16ssp"
                     android:textColor="@color/white"
@@ -132,11 +135,13 @@
                     android:layout_marginBottom="16dp"/>
 
 
-            </FrameLayout>
-            <FrameLayout
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/transaksiProduk"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:background="@drawable/ic_item_beranda_bg">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -153,11 +158,12 @@
                     style="@style/MediumTextStyle"
                     android:textAlignment="center"
                     android:textSize="@dimen/_16ssp"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/white"
                     android:layout_gravity="center|bottom"
                     android:layout_marginBottom="16dp"/>
 
-            </FrameLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </GridLayout>
 
 

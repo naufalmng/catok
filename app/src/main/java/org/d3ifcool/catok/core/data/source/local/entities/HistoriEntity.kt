@@ -7,6 +7,6 @@ data class HistoriEntity (
     @PrimaryKey(autoGenerate = true)
     val histori_id: Long = 0L,
     @Embedded
-    val transaksi: TransaksiEntity
+    val historiTransaksi: HistoriTransaksiEntity
 
 )

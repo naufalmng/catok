@@ -33,10 +33,13 @@
         <action
             android:id="@+id/action_dataProdukFragment_to_dataProdukDialog"
             app:destination="@id/dataProdukDialog" />
+        <action
+            android:id="@+id/action_dataProdukFragment_to_berandaFragment"
+            app:destination="@id/berandaFragment" />
     </fragment>
     <dialog
         android:id="@+id/dataProdukDialog"
-        android:name="org.d3ifcool.catok.ui.beranda.produk.insert.DataProdukDialog"
+        android:name="org.d3ifcool.catok.ui.beranda.produk.DataProdukDialog"
         android:label="dialog_data_produk"
         tools:layout="@layout/dialog_data_produk" >
         <argument
@@ -53,5 +56,23 @@
         android:id="@+id/transaksiFragment"
         android:name="org.d3ifcool.catok.ui.beranda.transaksi.TransaksiFragment"
         android:label="Transaksi Produk"
-        tools:layout="@layout/fragment_transaksi" />
+        tools:layout="@layout/fragment_transaksi" >
+        <action
+            android:id="@+id/action_transaksiFragment_to_transaksiDialog"
+            app:destination="@id/transaksiDialog" />
+        <action
+            android:id="@+id/action_transaksiFragment_to_berandaFragment"
+            app:destination="@id/berandaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transaksiDialog"
+        android:name="org.d3ifcool.catok.ui.beranda.transaksi.TransaksiDialog"
+        android:label="dialog_transaksi"
+        tools:layout="@layout/dialog_transaksi" >
+        <action
+            android:id="@+id/action_transaksiDialog_to_transaksiFragment"
+            app:destination="@id/transaksiFragment"
+            app:popUpTo="@id/transaksiFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

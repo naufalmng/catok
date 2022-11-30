@@ -1,30 +1,32 @@
-package org.d3ifcool.catok.ui
+package org.d3ifcool.catok.ui.main
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.MenuItem
+import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.d3ifcool.catok.R
+import org.d3ifcool.catok.core.data.source.local.entities.EditQuantityDialog
 import org.d3ifcool.catok.databinding.ActivityMainBinding
-import org.d3ifcool.catok.ui.beranda.produk.DataProdukViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var config: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private val sharedViewModel: SharedViewModel by lazy {
+        ViewModelProvider(this)[SharedViewModel::class.java]
+    }
     private var isBackButtonPressedOnce = false
 //    private val dataProdukViewModel: DataProdukViewModel by viewModel()
 
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener{_,destination,_->
@@ -47,20 +50,20 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.grafikFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
-                    binding.toolbar.visibility = View.GONE
+                    binding.toolbar.toolbar.visibility = View.GONE
                 }
                 R.id.pengaturanFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
-                    binding.toolbar.visibility = View.GONE
+                    binding.toolbar.toolbar.visibility = View.GONE
                 }
                 else -> {
                     binding.bottomNav.visibility = View.GONE
-                    binding.toolbar.visibility = View.VISIBLE
+                    binding.toolbar.toolbar.visibility = View.VISIBLE
                 }
             }
         }
         config = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController,config)
+        binding.toolbar.toolbar.setupWithNavController(navController,config)
 
 
         val options = NavOptions.Builder()
@@ -72,9 +75,11 @@ class MainActivity : AppCompatActivity() {
             .setPopUpTo(navController.graph.startDestinationRoute,false)
             .build()
 
-        binding.toolbar.setNavigationOnClickListener {
+        binding.toolbar.toolbar.setNavigationOnClickListener {
             navigateUp(navController,config)
         }
+        setSupportActionBar(binding.toolbar.toolbar)
+//        binding.toolbar.toolbar.inflateMenu(R.menu.search_menu)
 
         with(binding.bottomNav){
             setOnItemSelectedListener{ item->
@@ -110,9 +115,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        var navController :NavController= Navigation.findNavController(this, R.id.fragmentContainerView)
+        Log.d("MainActivity", "onBackPressed: isBackPressed = ${sharedViewModel.isBackPressed.value}")
+        if(navController.currentDestination?.id == R.id.dataProdukFragment){
+            sharedViewModel.isBackPressed.value = -1
+        }
         if(navController.currentDestination?.id != R.id.berandaFragment){
-            navigateUp(navController,config)
+            if(sharedViewModel.isBackPressed.value==-1) navigateUp(navController,config)
+            Log.d("MainActivity", "onBackPressed: masuk")
+            navController.addOnDestinationChangedListener { controller, destination, arguments ->
+                sharedViewModel._isDialogPembayaran.value = destination.label == "dialog_transaksi"
+            }
             return
+
         }
         if(navController.graph.startDestinationId == navController.currentDestination?.id && isBackButtonPressedOnce )  {
             finish()

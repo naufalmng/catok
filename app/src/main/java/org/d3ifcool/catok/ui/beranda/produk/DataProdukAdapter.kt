@@ -22,7 +22,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         val selectionIds = ArrayList<Int>()
         val diffCallback = object : DiffUtil.ItemCallback<ProdukEntity>() {
             override fun areItemsTheSame(oldItem: ProdukEntity, newItem: ProdukEntity): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.id_produk == newItem.id_produk
             }
 
             override fun areContentsTheSame(oldItem: ProdukEntity, newItem: ProdukEntity): Boolean {
@@ -47,7 +47,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     fun getAllSelection(){
         selectionIds.clear()
         for(i in produkFilterList.indices){
-            val id = produkFilterList[i].id
+            val id = produkFilterList[i].id_produk
             selectionIds.add(id.toInt())
             notifyDataSetChanged()
         }
@@ -57,7 +57,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
 
     fun toggleSelection(position: Int){
         if(getSelection().size != produkFilterList.size) handler.isAllItemSelected(false)
-        val id = getItem(position).id
+        val id = getItem(position).id_produk
         Log.d("DataProdukAdapter", "toggleSelection: $id")
         if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
         else selectionIds.add(id.toInt())
@@ -137,10 +137,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is LinearViewHolder -> {
-                holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
+                holder.bind(holder.absoluteAdapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
             is GridViewHolder -> {
-                holder.bind(holder.adapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
+                holder.bind(holder.absoluteAdapterPosition,produkFilterList as ArrayList<ProdukEntity>, handler)
             }
         }
     }

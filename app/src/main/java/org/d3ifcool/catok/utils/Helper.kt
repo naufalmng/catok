@@ -5,17 +5,28 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.UnderlineSpan
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import org.d3ifcool.catok.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
+
+fun getCurrentDate(): String {
+    val currentDate = Calendar.getInstance().time
+    val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))
+    return sdf.format(currentDate)
+}
 
 
 fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
@@ -73,17 +84,23 @@ fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
 //        }
 //    })
 //
-//    fun formatRupiah(number: Double): String{
-//        val localeId = Locale("IND","ID")
-//        val numberFormat = NumberFormat.getCurrencyInstance(localeId)
-//        val formatRupiah = numberFormat.format(text)
-//        val split = formatRupiah.split(",")
-//        val length = split[0].length
-//        return split[0].substring(0,2)+". "+split[0].substring(2,length)
-//    }
+    fun Double.toRupiahFormat(): String{
+        val localeId = Locale("IND","ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeId)
+        val formatRupiah = numberFormat.format(this)
+        val split = formatRupiah.split(",")
+        val length = split[0].length
+        return split[0].substring(0,2)+". "+split[0].substring(2,length)
+    }
+
+
 //
 //}
-
+ fun TextView.toSpannableString(s: String){
+    val string = SpannableString(s)
+    string.setSpan(UnderlineSpan(), 0,s.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    text = string
+}
 @SuppressLint("ClickableViewAccessibility")
 fun View.enableOnClickAnimation() {
     setOnTouchListener { v, motionEvent ->

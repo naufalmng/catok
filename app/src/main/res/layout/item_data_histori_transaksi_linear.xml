@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/item_selector"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:padding="12dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tanggal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="-3dp"
+        android:text="07 November 2022 15.02"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPembayaran"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="@id/tanggal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="-3dp"
+        android:text="Pembayaran"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tanggal"
+        app:layout_constraintTop_toBottomOf="@id/tanggal"
+        android:text="@string/total_arg"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_14ssp"
+        style="@style/MediumTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/jenisPembayaran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvPembayaran"
+        app:layout_constraintStart_toStartOf="@id/tvPembayaran"
+        app:layout_constraintEnd_toEndOf="@id/tvPembayaran"
+        android:text="@string/jenis_pembayaran_arg"
+        android:textStyle="bold"
+        android:textColor="@color/red"
+        android:textSize="@dimen/_14ssp"
+        style="@style/MediumTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/invoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/statusBayar"
+        app:layout_constraintBottom_toBottomOf="@id/statusBayar"
+        app:layout_constraintStart_toStartOf="@id/total"
+        android:text="201120221"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/_10ssp"
+        style="@style/MediumTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/statusBayar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/jenisPembayaran"
+        app:layout_constraintTop_toBottomOf="@id/total"
+        android:text="(LUNAS)"
+        app:layout_constraintEnd_toEndOf="@id/jenisPembayaran"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        android:textSize="@dimen/_12ssp"
+        style="@style/MediumTextStyle"/>
+
+    <!--    -->
+    <!--    <androidx.appcompat.widget.AppCompatImageView-->
+    <!--        android:id="@+id/gambarProduk"-->
+    <!--        android:layout_width="@dimen/_55sdp"-->
+    <!--        android:layout_height="@dimen/_50sdp"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/stok"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/stok"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        android:src="@mipmap/ic_launcher"/>-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
