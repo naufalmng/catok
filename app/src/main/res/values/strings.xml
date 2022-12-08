@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Catok</string>
     <string name="version">V1.0.0</string>
+    <string name="selamat_datang">Selamat Datang di aplikasi CaTok</string>
+    <string name="text_onboarding">Aplikasi CaTok (Catatan Toko) ini hadir untuk mempermudah pemilik toko dalam mengelola data produk, transaksi, serta monitoring penjualan toko berdasarkan grafik.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nama_toko">CaTok (Catatan Toko)</string>
