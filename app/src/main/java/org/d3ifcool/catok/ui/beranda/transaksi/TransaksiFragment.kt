@@ -2,19 +2,22 @@ package org.d3ifcool.catok.ui.beranda.transaksi
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
+import androidx.core.view.size
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,7 +29,6 @@ import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.databinding.FragmentTransaksiBinding
-import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,83 +48,14 @@ class TransaksiFragment : Fragment() {
         DataStorePreferences(requireActivity().dataStore)
     }
 
-    private var actionMode: ActionMode? = null
-    private val actionModeCallback = object : ActionMode.Callback{
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            if(item?.itemId == R.id.menu_delete){
-                return true
-            }
-            if(item?.itemId == R.id.menu_select_all){
-                if(viewModel.isAllItemSelected.value!=true) historiTransaksiAdapter.getAllSelection()
-                else {
-                    historiTransaksiAdapter.resetSelection()
-                    viewModel.isAllItemSelected.value = false
-                    actionMode!!.finish()
-                    actionMode = null
-                }
-                return true
-            }
-            if(item?.itemId == R.id.menu_edit){
-                historiTransaksiAdapter.resetSelection()
-                actionMode!!.finish()
-                actionMode = null
-//                findNavController().navigate(DataProdukFragmentDirections.actionDataProdukFragmentToDataProdukDialog(false,viewModel.tempProdukEntity.value))
-            }
-            return false
-        }
-        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode?.menuInflater?.inflate(R.menu.action_menu, menu)
-            return true
-        }
-        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            menu!!.findItem(R.id.menu_edit).isVisible = historiTransaksiAdapter.getSelection().size == 1
-            viewModel.isAllItemSelected.observe(viewLifecycleOwner){
-                if(it==true) menu.findItem(R.id.menu_edit).isVisible = false
-                mode?.title = historiTransaksiAdapter.getSelection().size.toString()
-            }
-            return true
-        }
-        override fun onDestroyActionMode(mode: ActionMode?) {
-            actionMode = null
-            historiTransaksiAdapter.resetSelection()
-        }
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     private val handler = object : HistoriTransaksiAdapter.ClickHandler{
-        override fun onClick(position: Int, produk: ArrayList<HistoriTransaksiEntity>) {
-            if (actionMode != null) {
-                viewModel.isAllItemSelected.value = historiTransaksiAdapter.getSelection().size == historiTransaksiAdapter.historiHistoriTransaksiFilterList.size.minus(1)
-                historiTransaksiAdapter.toggleSelection(historiTransaksiAdapter.historiTransaksiList.indexOf(historiTransaksiAdapter.historiHistoriTransaksiFilterList[position]))
-                if (historiTransaksiAdapter.getSelection().isEmpty())
-                    actionMode?.finish()
-                else
-                    actionMode?.invalidate()
-                return
-            }
-            val message = getString(R.string.produk_klik, produk[position].invoice)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-        }
-
-        override fun onLongClick(position: Int, produk: ArrayList<HistoriTransaksiEntity>): Boolean {
-            if(historiTransaksiAdapter.getSelection().size == historiTransaksiAdapter.historiHistoriTransaksiFilterList.size.minus(1)){
-                viewModel.isAllItemSelected.value = historiTransaksiAdapter.getSelection().isNotEmpty()
-            }
-            viewModel.tempProdukEntity.value = produk[position]
-            if(actionMode != null) return false
-            historiTransaksiAdapter.toggleSelection(historiTransaksiAdapter.historiTransaksiList.indexOf(historiTransaksiAdapter.historiHistoriTransaksiFilterList[position]))
-            val activity = requireActivity() as MainActivity
-            actionMode = activity.startSupportActionMode(actionModeCallback)
-            return true
-        }
-
-        override fun isAllItemSelected(isAllItemSelected: Boolean) {
-            if(isAllItemSelected){
-                viewModel.isAllItemSelected.value = isAllItemSelected
-            }
+        override fun onClick(transaksi: HistoriTransaksiEntity) {
+            findNavController().navigate(TransaksiFragmentDirections.actionTransaksiFragmentToDetailHistoriTransaksiDialog(transaksi))
         }
     }
 
@@ -137,10 +70,6 @@ class TransaksiFragment : Fragment() {
         toolbar = inflater.inflate(R.layout.toolbar, container, false) as Toolbar
         toolbar.title = getString(R.string.data_produk)
         toolbar.collapseActionView()
-        setupMenu()
-        setupListeners()
-        setupObservers()
-        setupLayoutPreference()
 
         return binding.root
     }
@@ -148,23 +77,28 @@ class TransaksiFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            viewModel.isNavReady.value = true
+//        },1000)
         sharedViewModel.isBackPressed.value = -1
     }
 
     private fun setupListeners() {
         with(binding) {
 //            setupSearchView()
+            viewModel.isNavReady.observe(viewLifecycleOwner){
+                btnTambah.isClickable = it
+            }
             btnTambah.enableOnClickAnimation()
             btnTambah.setOnClickListener {
-//                if (SystemClock.elapsedRealtime() - viewModel.mLastClickTime < 1000){
-//                    return@setOnClickListener
-//                }
-//                viewModel.mLastClickTime = SystemClock.elapsedRealtime();
-                historiTransaksiAdapter.resetSelection()
-                actionMode?.finish()
-//                llHeader.searchView.clearFocus()
-//                llHeader.searchView.text?.clear()
-                findNavController().navigate(R.id.action_transaksiFragment_to_transaksiDialog)
+                viewModel.getDataProduk.observe(viewLifecycleOwner) {
+                    if (it.size>0) {
+                        historiTransaksiAdapter.resetSelection()
+                        if(findNavController().currentDestination?.id==R.id.transaksiFragment){
+                            findNavController().navigate(R.id.action_transaksiFragment_to_transaksiDialog)
+                        }
+                    }else Toast.makeText(requireContext(), "Data produk masih kosong !", Toast.LENGTH_SHORT).show()
+                }
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 if(TransaksiAdapter.GridViewHolder.produkIdList.size>0 && TransaksiAdapter.LinearViewHolder.produkIdList.size<1){
@@ -189,16 +123,12 @@ class TransaksiFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if(savedInstanceState!=null){
-            historiTransaksiAdapter = HistoriTransaksiAdapter(viewModel.isLinearLayoutManager, handler)
-            if(historiTransaksiAdapter.getSelection().isNotEmpty()){
-                val activity = requireActivity() as MainActivity
-                actionMode = activity.startSupportActionMode(actionModeCallback)
-            }
-        }
-        super.onViewCreated(view, savedInstanceState)
+        historiTransaksiAdapter = HistoriTransaksiAdapter(viewModel.isLinearLayoutManager, handler)
+        setupMenu()
+        setupListeners()
+        setupObservers()
+        setupLayoutPreference()
         sharedViewModel.isBackPressed.value = -1
-
     }
 
     private fun setupLayoutPreference() {
@@ -223,6 +153,7 @@ class TransaksiFragment : Fragment() {
         }
         viewModel.getDataHistoriTransaksi.observe(viewLifecycleOwner) {
             if (it != null) {
+                viewModel.isDataTransaksiEmpty.value = it.size<1
                 setupRecyclerViews()
                 historiTransaksiAdapter.updateData(it)
                 setupLayoutSwitcher()
@@ -246,8 +177,7 @@ class TransaksiFragment : Fragment() {
     }
 
     private fun setupLayoutSwitcher() {
-        if (viewModel.isLinearLayoutManager) binding.recyclerView.layoutManager =
-            LinearLayoutManager(this.requireContext())
+        if (viewModel.isLinearLayoutManager) binding.recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
         else binding.recyclerView.layoutManager = GridLayoutManager(this.requireContext(), 2)
     }
 
@@ -283,9 +213,11 @@ class TransaksiFragment : Fragment() {
                                 binding.dataKosong.visibility = View.GONE
                             }
                         } else {
-                            historiTransaksiAdapter.historiHistoriTransaksiFilterList =
-                                historiTransaksiAdapter.historiTransaksiList
-                            binding.dataKosong.visibility = View.GONE
+                            if(historiTransaksiAdapter.historiTransaksiList.isNullOrEmpty()) binding.dataKosong.visibility = View.VISIBLE
+                            else {
+                                historiTransaksiAdapter.historiHistoriTransaksiFilterList = historiTransaksiAdapter.historiTransaksiList
+                                binding.dataKosong.visibility = View.GONE
+                            }
                         }
 
                         return false

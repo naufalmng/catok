@@ -16,8 +16,10 @@
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2215" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_baseline_empty_24.xml" value="0.1785" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_batal_logo.xml" value="0.199" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_catok.xml" value="0.2075" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_delete.xml" value="0.187" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_edit.xml" value="0.2265" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_edit_photo.xml" value="0.2215" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_grafik.xml" value="0.2" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_header.xml" value="0.1785" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/ic_search.xml" value="0.1685" />
@@ -32,30 +34,39 @@
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/nomor_bg_on_click.xml" value="0.24" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/nomor_bg_selector.xml" value="0.1605" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_10r.xml" value="0.1665" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_4r.xml" value="0.2325" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rectangle_5r.xml" value="0.1605" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/rounded_bg.xml" value="0.2325" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/drawable/text_selector.xml" value="0.1605" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/activity_splashscreen.xml" value="0.12905982905982907" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/base_header.xml" value="0.33" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_data_produk.xml" value="0.176" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_data_produk.xml" value="0.2" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_detail_histori_transaksi.xml" value="0.33" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_edit_nama.xml" value="0.25" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_edit_quantity.xml" value="0.14652777777777778" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_insert_produk.xml" value="0.14703425229741018" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_pembayaran.xml" value="0.12" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_loading.xml" value="0.18" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_pembayaran.xml" value="0.25" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/dialog_transaksi.xml" value="0.15" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_beranda.xml" value="0.2" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_data_produk.xml" value="0.19" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_beranda.xml" value="0.25" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_data_produk.xml" value="0.15" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_grafik.xml" value="0.16" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_pengaturan.xml" value="0.2" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/fragment_transaksi.xml" value="0.16" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_histori_transaksi_grid.xml" value="0.4" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_histori_transaksi_grid.xml" value="0.18" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_histori_transaksi_linear.xml" value="0.33" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_pembayaran.xml" value="0.25" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk_grid.xml" value="0.22" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk_grid.xml" value="0.33" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_produk_linear.xml" value="0.33" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_transaksi_grid.xml" value="0.22" />
-        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_transaksi_linear.xml" value="0.25" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_transaksi_grid.xml" value="0.33" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/item_data_transaksi_linear.xml" value="0.67" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/layout/toolbar.xml" value="0.2" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/menu/action_menu.xml" value="0.33" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2059071729957806" />
         <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/menu/search_menu.xml" value="0.2" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/KULIAH D3/Semester 5/MOBPRO2/catok/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

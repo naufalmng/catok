@@ -11,7 +11,11 @@ import org.koin.dsl.module
 private val roomCallback = object: RoomDatabase.Callback(){
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
-//        db.execSQL("")
+//        db.execSQL(
+//            "CREATE TRIGGER updateStok AFTER INSERT ON transaksiProduk" +
+//                    "BEGIN " +
+//                    "UPDATE produk SET stok = ${CatokApp.}"
+//        )
     }
 }
 
@@ -20,7 +24,7 @@ val appModule = module {
         androidApplication(),
         CatokDb::class.java,
         "catok.db"
-     ).fallbackToDestructiveMigration().addCallback(roomCallback).build()
+     ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
     }
     single<CatokDao> {
         val db = get<CatokDb>()

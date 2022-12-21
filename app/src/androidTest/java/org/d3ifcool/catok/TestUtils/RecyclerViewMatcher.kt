@@ -21,14 +21,14 @@ class RecyclerViewMatcher(private val recyclerViewId: Int) {
             var resources: Resources? = null
             var childView: View? = null
             override fun describeTo(description: Description) {
-                var idDescription = recyclerViewId.toString()
+                var idDescription = Integer.toString(recyclerViewId)
                 if (resources != null) {
                     idDescription = try {
                         resources!!.getResourceName(recyclerViewId)
                     } catch (var4: NotFoundException) {
                         String.format(
                             "%s (resource name not found)",
-                            Integer.valueOf(recyclerViewId)
+                            *arrayOf<Any>(Integer.valueOf(recyclerViewId))
                         )
                     }
                 }

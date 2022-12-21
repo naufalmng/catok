@@ -1,16 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".core.data.source.local.entities.EditQuantityDialog">
+    android:gravity="top|center"
+    android:orientation="vertical"
+    tools:context=".ui.beranda.transaksi.EditQuantityDialog">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/qty"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLength="10"
-        android:inputType="number"
-        android:hint="@string/qty"/>
+        android:layout_gravity="top|center"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@drawable/edittext_stroke_selector"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/qty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            style="@style/RegularTextStyle"
+            android:textSize="@dimen/_13ssp"
+            android:inputType="number"
+            android:hint="@string/qty"
+            android:gravity="top|center" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/negativeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="0dp"
+            android:text="Batal"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/orange"
+            android:background="?android:attr/selectableItemBackground"
+            android:backgroundTint="@android:color/transparent"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positiveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="0dp"
+            android:text="OK"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/orange"
+            android:background="?android:attr/selectableItemBackground"
+            android:backgroundTint="@android:color/transparent"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

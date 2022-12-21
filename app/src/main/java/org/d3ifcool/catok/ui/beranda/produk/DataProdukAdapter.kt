@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,7 @@ import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.ItemDataProdukGridBinding
 import org.d3ifcool.catok.databinding.ItemDataProdukLinearBinding
 import java.util.*
-import kotlin.collections.ArrayList
+
 @SuppressLint("NotifyDataSetChanged")
 @Suppress("UNCHECKED_CAST")
 class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, private val handler: ClickHandler): ListAdapter<ProdukEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
@@ -34,6 +35,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
     var produkList = mutableListOf<ProdukEntity>()
     var produkFilterList : MutableList<ProdukEntity> = ArrayList()
 //    lateinit var onItemClick: ((ProdukEntity) -> Unit)
+
+    override fun getCurrentList(): MutableList<ProdukEntity> {
+        return produkFilterList
+    }
 
     fun updateData(produkEntity: ArrayList<ProdukEntity>){
         produkList.clear()
@@ -166,6 +171,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             override fun publishResults(constraint: CharSequence?, result: FilterResults?) {
                 produkFilterList = if(result?.values == null) ArrayList()
                 else result.values as ArrayList<ProdukEntity>
+
 //                notifyItemRangeRemoved(0, produkFilterList.size)
                 notifyDataSetChanged()
 

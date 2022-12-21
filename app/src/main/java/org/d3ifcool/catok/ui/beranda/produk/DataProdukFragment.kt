@@ -1,9 +1,11 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
 import android.annotation.SuppressLint
+import android.database.DataSetObserver
 import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -13,6 +15,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.asLiveData
@@ -20,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
@@ -57,6 +61,7 @@ class DataProdukFragment : Fragment() {
         toolbar = inflater.inflate(R.layout.toolbar, container, false) as Toolbar
         toolbar.title = getString(R.string.data_produk)
         toolbar.collapseActionView()
+        if(binding.recyclerViewDataProduk.size<1) binding.dataKosong.visibility = View.VISIBLE else  binding.dataKosong.visibility = View.GONE
 
         return binding.root
     }
@@ -65,7 +70,7 @@ class DataProdukFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if(savedInstanceState!=null){
-            produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager, handler)
+            produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
             if(produkAdapter.getSelection().isNotEmpty()){
                 val activity = requireActivity() as MainActivity
                 actionMode = activity.startSupportActionMode(actionModeCallback)
@@ -86,14 +91,16 @@ class DataProdukFragment : Fragment() {
 
             }
 
+            @SuppressLint("RestrictedApi")
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu)
                 val searchItem = menu.findItem(R.id.action_search)
                 val searchView = searchItem?.actionView as SearchView
 
-                searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
-                    .setBackgroundColor(Color.TRANSPARENT)
+                searchView.findViewById<View>(androidx.appcompat.R.id.search_plate).setBackgroundColor(Color.TRANSPARENT)
                 searchView.queryHint = getString(R.string.pencarian)
+                val searchAutoCompleteTextView = searchView.findViewById(resources.getIdentifier("search_src_text", "id",requireActivity().packageName)) as SearchView.SearchAutoComplete
+                searchAutoCompleteTextView.threshold = 1
                 searchView.imeOptions = EditorInfo.IME_ACTION_DONE
                 toolbar.addView(searchView)
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -103,18 +110,25 @@ class DataProdukFragment : Fragment() {
                     }
 
                     override fun onQueryTextChange(text: String?): Boolean {
+                        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
+                        viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
+                        Log.d("DAS", "onQueryTextChange: ${produkAdapter.itemCount}")
                         produkAdapter.filter.filter(text.toString())
-                        if(text?.isNotEmpty() == true){
-                            binding.dataKosong.visibility = View.VISIBLE
-                            if(produkAdapter.produkFilterList.size<=0){
-                                binding.dataKosong.visibility = View.VISIBLE
-                            }else {
-                                binding.dataKosong.visibility = View.GONE
-                            }
-                        }else {
+
+                        viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
+                        if(text?.isEmpty() == true){
                             produkAdapter.produkFilterList = produkAdapter.produkList
-                            binding.dataKosong.visibility = View.GONE
+                            viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
                         }
+
+
+//                        if(produkAdapter.isDataEmpty == true){
+//
+////                            viewModel.isDataProdukEmpty.value = produkAdapter.produkFilterList.size<=0
+//                        }else {
+//                            produkAdapter.produkFilterList = produkAdapter.produkList
+//                            viewModel.isDataProdukEmpty.value = false
+//                        }
 
                         return false
                     }
@@ -134,7 +148,7 @@ class DataProdukFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager, handler)
+        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
         with(binding.recyclerViewDataProduk) {
             isNestedScrollingEnabled = true
             adapter = produkAdapter
@@ -156,14 +170,16 @@ class DataProdukFragment : Fragment() {
         viewModel.isDataProdukEmpty.observe(viewLifecycleOwner) {
             if (it == false) {
                 binding.dataKosong.visibility = View.GONE
-                binding.recyclerViewDataProduk.visibility = View.VISIBLE
+//                binding.recyclerViewDataProduk.visibility = View.VISIBLE
             } else {
                 binding.dataKosong.visibility = View.VISIBLE
-                binding.recyclerViewDataProduk.visibility = View.GONE
+//                binding.recyclerViewDataProduk.visibility = View.GONE
             }
         }
         viewModel.getDataProduk.observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (it.isNullOrEmpty()) {
+                viewModel.isDataProdukEmpty.value = true
+            }else{
                 viewModel.isDataProdukEmpty.value = false
                 setupRecyclerViews()
                 produkAdapter.updateData(it)
@@ -181,12 +197,14 @@ class DataProdukFragment : Fragment() {
                 if (SystemClock.elapsedRealtime() - viewModel.mLastClickTime < 1000){
                     return@setOnClickListener
                 }
-                viewModel.mLastClickTime = SystemClock.elapsedRealtime();
+                viewModel.mLastClickTime = SystemClock.elapsedRealtime()
+                produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
                 produkAdapter.resetSelection()
+                setupObservers()
                 actionMode?.finish()
 //                llHeader.searchView.clearFocus()
 //                llHeader.searchView.text?.clear()
-                findNavController().navigate(R.id.action_dataProdukFragment_to_dataProdukDialog)
+                findNavController().navigate(DataProdukFragmentDirections.actionDataProdukFragmentToDataProdukDialog())
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager
@@ -203,63 +221,12 @@ class DataProdukFragment : Fragment() {
 
             }
             swipeRefreshLayout.setOnRefreshListener {
-                setupObservers()
+                if(recyclerViewDataProduk.size>0){
+                    setupObservers()
+                }else swipeRefreshLayout.isRefreshing = false
             }
         }
     }
-
-//    private fun setupSearchView() {
-//        with(binding.llHeader.searchView){
-//            setOnFocusChangeListener { view, b ->
-//                if(view.hasFocus()){
-//                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon_selector,0,R.drawable.ic_baseline_close_24,0)
-//                    produkAdapter.resetSelection()
-//                    actionMode?.finish()
-//                    actionMode = null
-//                }else {
-//                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon_selector,0,0,0)
-//                    view.clearFocus()
-//                }
-//            }
-//            doOnTextChanged { text, start, before, count ->
-//                if(count>=1){
-//                    produkAdapter.resetSelection()
-//                    actionMode?.finish()
-//                    actionMode = null
-//                }
-//            }
-//            setOnTouchListener(View.OnTouchListener { v, event ->
-//                val imm =
-//                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                var hasConsumed = false
-//                if (event.x >= width - totalPaddingRight) {
-//                    if (event.action == MotionEvent.ACTION_UP) {
-//                        v.clearFocus()
-//                        text?.clear()
-//                        setCompoundDrawablesWithIntrinsicBounds(
-//                            R.drawable.search_icon_selector,
-//                            0,
-//                            0,
-//                            0
-//                        )
-//                        imm.hideSoftInputFromWindow(windowToken, 0)
-//                        produkAdapter.resetSelection()
-//                        actionMode?.finish()
-//                        actionMode = null
-//                        return@OnTouchListener true
-//                    } else setCompoundDrawablesWithIntrinsicBounds(
-//                        R.drawable.search_icon_selector,
-//                        0,
-//                        R.drawable.ic_baseline_close_24,
-//                        0
-//                    )
-//
-//                    hasConsumed = true
-//                }
-//                hasConsumed
-//            })
-//        }
-//    }
 
     private fun setupLayoutSwitcherIcon() {
         if (viewModel.isLinearLayoutManager) binding.llHeader.btnSwitchLayout.setBackgroundResource(R.drawable.ic_linear_layout)
@@ -267,8 +234,7 @@ class DataProdukFragment : Fragment() {
     }
 
     private fun setupLayoutSwitcher() {
-        if (viewModel.isLinearLayoutManager) binding.recyclerViewDataProduk.layoutManager =
-            LinearLayoutManager(this.requireContext())
+        if (viewModel.isLinearLayoutManager) binding.recyclerViewDataProduk.layoutManager = LinearLayoutManager(this.requireContext())
         else binding.recyclerViewDataProduk.layoutManager = GridLayoutManager(this.requireContext(), 2)
     }
 
@@ -333,6 +299,9 @@ class DataProdukFragment : Fragment() {
         setPositiveButton(R.string.hapus) { _, _ ->
             if(resultMsg!=-1 && deleteMsg!=-1){
                 viewModel.deleteData(produkAdapter.getSelection())
+                produkAdapter.produkList.clear()
+                produkAdapter.produkFilterList.clear()
+                produkAdapter.notifyDataSetChanged()
                 Toast.makeText(requireContext(), resultMsg, Toast.LENGTH_SHORT).show()
                 actionMode?.finish()
             }
@@ -355,7 +324,7 @@ class DataProdukFragment : Fragment() {
                 return
             }
             val message = getString(R.string.produk_klik, produk[position].namaProduk)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
             if(produkAdapter.getSelection().isEmpty()) viewModel.isAllItemSelected.value = false

@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "profilEntity")
 data class ProfilEntity (
-    @PrimaryKey
-    var id: Int = 1,
+    @PrimaryKey()
+    var id: Int,
     var namaToko: String,
     var gambar: Bitmap
     )

@@ -1,6 +1,5 @@
 package org.d3ifcool.catok.core.data.source.local.entities
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey

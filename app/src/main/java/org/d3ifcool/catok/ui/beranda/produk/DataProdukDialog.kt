@@ -5,16 +5,23 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.launch
+import org.d3ifcool.catok.core.data.DataStorePreferences
+import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.DialogDataProdukBinding
 import org.d3ifcool.catok.utils.enableOnClickAnimation
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DataProdukDialog : DialogFragment() {
@@ -23,7 +30,9 @@ class DataProdukDialog : DialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: DataProdukViewModel by viewModel()
     private val args: DataProdukDialogArgs by navArgs()
-
+    private val dataStorePreferences: DataStorePreferences by lazy {
+        DataStorePreferences(requireActivity().dataStore)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -168,15 +177,20 @@ class DataProdukDialog : DialogFragment() {
                 return
             }
 
-            if (args.isInsert) viewModel.insertData(
-                namaProduk = etNamaProduk.text.toString(),
-                deskripsi = etDeskripsi.text.toString(),
-                etModal.getNumericValue(),
-                hargaJual = etHargaJual.getNumericValue(),
-                satuan = etSatuan.text.toString().toInt(),
-                stok = etStokAwal.text.toString().toInt(),
-                tanggal = getCurrentDate()
-            )
+            if (args.isInsert){
+                viewModel.insertData(
+                    namaProduk = etNamaProduk.text.toString(),
+                    deskripsi = etDeskripsi.text.toString(),
+                    etModal.getNumericValue(),
+                    hargaJual = etHargaJual.getNumericValue(),
+                    satuan = etSatuan.text.toString().toInt(),
+                    stok = etStokAwal.text.toString().toInt(),
+                    tanggal = getCurrentDate()
+                )
+                lifecycleScope.launch {
+                    dataStorePreferences.saveDataUpdateSetting(requireContext(),true)
+                }
+            }
             else {
                 if (item != null) {
                     viewModel.updateData(
@@ -196,11 +210,7 @@ class DataProdukDialog : DialogFragment() {
             }
 
             Toast.makeText(
-                requireContext(),
-                if (!args.isInsert) "Berhasil menyunting produk !" else "Produk berhasil ditambah !",
-                Toast.LENGTH_SHORT
-            )
-                .show()
+                requireContext(), if (!args.isInsert) "Berhasil menyunting produk !" else "Produk berhasil ditambah !", Toast.LENGTH_SHORT).show()
             dismiss()
         }
     }
@@ -209,10 +219,6 @@ class DataProdukDialog : DialogFragment() {
         with(binding) {
             btnBatal.enableOnClickAnimation()
             btnSimpan.enableOnClickAnimation()
-            close.enableOnClickAnimation()
-            close.setOnClickListener {
-                dismiss()
-            }
             btnSimpan.setOnClickListener {
                 setupProduk()
             }
@@ -230,7 +236,6 @@ class DataProdukDialog : DialogFragment() {
 //        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
 //    }
 
-    @SuppressLint("SimpleDateFormat")
     private fun getCurrentDate(): String {
         val currentDate = Calendar.getInstance().time
         val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))

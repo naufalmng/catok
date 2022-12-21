@@ -5,10 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "grafikEntity")
 data class GrafikEntity(
-    @PrimaryKey
-    var id: String,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
     var totalTransaksi: Double,
-    var tanggal: Long = System.currentTimeMillis(),
-    var tanggal2: String,
-    var bulanDanTahun: String,
+    var bulan: String,
 )

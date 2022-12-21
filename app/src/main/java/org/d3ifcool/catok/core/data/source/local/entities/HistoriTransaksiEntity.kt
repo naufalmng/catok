@@ -1,18 +1,25 @@
 package org.d3ifcool.catok.core.data.source.local.entities
 
-import androidx.room.Embedded
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
+import androidx.versionedparcelable.VersionedParcelize
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "historiTransaksi")
 data class HistoriTransaksiEntity(
     @PrimaryKey(autoGenerate = true)
-    val id_histori : Long = 0L,
+    val id_histori: Long = 0L,
     var total: Double,
+    var diskon: Double,
+    var bayar: Double,
+    var kembalian: Double,
+    var catatan: String,
     var produkDibeli: String,
+    var jumlahProdukDibeli: Int,
     var invoice: String,
     var pembayaran: String,
     var statusBayar: String,
-    var tanggal: Long
-)
+    var tanggal: String
+): Parcelable

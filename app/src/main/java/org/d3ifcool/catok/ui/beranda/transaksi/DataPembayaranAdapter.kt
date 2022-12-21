@@ -1,22 +1,19 @@
 package org.d3ifcool.catok.ui.beranda.transaksi
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.catok.R
-import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.core.data.source.local.model.DataPembayaran
 import org.d3ifcool.catok.databinding.ItemDataPembayaranBinding
 import org.d3ifcool.catok.utils.getCurrentDate
 import org.d3ifcool.catok.utils.toRupiahFormat
-import kotlin.math.abs
 
 class DataPembayaranAdapter() : RecyclerView.Adapter<DataPembayaranAdapter.ViewHolder>() {
 
     private var dataPembayaran : MutableList<DataPembayaran>? = null
-
+    var counter = 0
     fun clearData(){
         dataPembayaran?.clear()
         notifyDataSetChanged()
@@ -48,22 +45,22 @@ class DataPembayaranAdapter() : RecyclerView.Adapter<DataPembayaranAdapter.ViewH
                 with(context){
                     tanggal.text = getCurrentDate()
                     layoutTanggal.visibility = View.VISIBLE
-                    nomor.text = "Id"
+                    nomor.text = getString(R.string.nomor)
                     produk.text = getString(org.d3ifcool.catok.R.string.produk)
                     qty.text = getString(org.d3ifcool.catok.R.string.qty)
-                    harga.text = getString(org.d3ifcool.catok.R.string.harga2)
+                    total.text = getString(R.string.total)
                 }
             }
 
         }else{
             with(holder.binding){
-                divider2.visibility = View.GONE
+                counter++
                 layoutTanggal.visibility = View.GONE
                 endDivider.visibility = View.GONE
-                nomor.text = dataPembayaran?.get(rowPos-1)?.nomor.toString()
+                "$counter.".also { nomor.text = it }
                 produk.text = dataPembayaran?.get(rowPos-1)?.produk
                 qty.text = dataPembayaran?.get(rowPos-1)?.qty.toString()
-                harga.text = dataPembayaran?.get(rowPos-1)?.harga?.toRupiahFormat()
+                total.text = dataPembayaran?.get(rowPos-1)?.harga?.toRupiahFormat()
             }
         }
     }

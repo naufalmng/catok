@@ -8,24 +8,25 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.util.HumanReadables
+import org.d3ifcool.catok.ui.beranda.produk.DataProdukAdapter
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 
 
 object TestUtils {
-    fun actionOnItemViewAtPosition(
+    fun <VH : RecyclerView.ViewHolder?> actionOnItemViewAtPosition(
         position: Int,
         @IdRes viewId: Int,
         viewAction: ViewAction
     ): ViewAction {
-        return ActionOnItemViewAtPositionViewAction(position, viewId, viewAction)
+        return ActionOnItemViewAtPositionViewAction<DataProdukAdapter.LinearViewHolder?>(position, viewId, viewAction)
     }
 
     fun withRecyclerView(recyclerViewId: Int): RecyclerViewMatcher {
         return RecyclerViewMatcher(recyclerViewId)
     }
 
-    private class ActionOnItemViewAtPositionViewAction(
+    private class ActionOnItemViewAtPositionViewAction<VH : RecyclerView.ViewHolder?>(
         private val position: Int,
         @param:IdRes private val viewId: Int,
         private val viewAction: ViewAction

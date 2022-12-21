@@ -1,6 +1,9 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,6 +25,11 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
     fun insertData(namaProduk: String, deskripsi: String, hargaBeli: Double, hargaJual: Double,satuan: Int, stok: Int,tanggal: String){
         viewModelScope.launch(Dispatchers.IO) {
             repo.insertData(ProdukEntity(namaProduk = namaProduk, deskripsi = deskripsi, modal = hargaBeli, hargaJual = hargaJual,satuan = satuan, stok = stok, tanggal = tanggal))
+        }
+    }
+    fun insertRecordProduk(produkEntity: ProdukEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.insertData(produkEntity)
         }
     }
 

@@ -2,6 +2,6 @@
 <resources>
     <string-array name="item_jenis_pembayaran">
         <item>CASH</item>
-        <item>QRIS</item>
+        <item>QRISH</item>
     </string-array>
 </resources>

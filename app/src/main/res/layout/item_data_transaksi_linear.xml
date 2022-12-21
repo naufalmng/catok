@@ -147,7 +147,7 @@
                 android:textAlignment="center"
                 android:inputType="number"
                 android:backgroundTint="@android:color/transparent"
-                android:text="500"
+                android:text="0"
                 android:textSize="@dimen/_12ssp"
                 android:includeFontPadding="false"
                 android:textColor="@color/abuB"/>

@@ -1,14 +1,21 @@
 package org.d3ifcool.catok.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
@@ -16,9 +23,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
-import org.d3ifcool.catok.core.data.source.local.entities.EditQuantityDialog
+import org.d3ifcool.catok.core.data.DataStorePreferences
+import org.d3ifcool.catok.core.data.dataStore
+import org.d3ifcool.catok.core.data.source.local.entities.ProfilEntity
 import org.d3ifcool.catok.databinding.ActivityMainBinding
+import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiAdapter
+import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiViewModel
+import org.d3ifcool.catok.ui.pengaturan.PengaturanViewModel
+import org.d3ifcool.catok.utils.getCurrentMonth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -28,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[SharedViewModel::class.java]
     }
     private var isBackButtonPressedOnce = false
+    private val viewModel: TransaksiViewModel by viewModel()
+    private val pengaturanViewModel: PengaturanViewModel by viewModel()
+    private val dataStorePreferences: DataStorePreferences by lazy {
+        DataStorePreferences(this.dataStore)
+    }
 //    private val dataProdukViewModel: DataProdukViewModel by viewModel()
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -39,14 +59,66 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel.getDataHistoriTransaksi.observe(this){
+            for (i in it){
+                i.produkDibeli.replace("\n",".").replace(" ","")
+                Log.d("MainActivity", "onCreate: ${i.produkDibeli}")
+                Log.d("MainActivity", "onCreate: betul? ${i.produkDibeli.contains("\n")}")
+
+            }
+        }
+       if (pengaturanViewModel.getDataProfil.value==null){
+            pengaturanViewModel.insertProfil(ProfilEntity(id = 1,getString(R.string.nama_toko),ContextCompat.getDrawable(this,R.drawable.ic_catok)!!.toBitmap()))
+        }
+        dataStorePreferences.currentMonthPrefFlow.asLiveData()
+            .observe(this){ month->
+                if(month==null){
+                    lifecycleScope.launch {
+                        dataStorePreferences.saveCurrentMonth(this@MainActivity, getCurrentMonth())
+                    }
+                }else{
+                    if(month != getCurrentMonth()) {
+                        lifecycleScope.launch {
+                            dataStorePreferences.saveCurrentMonth(this@MainActivity, getCurrentMonth())
+                        }
+                        viewModel.clearGraphicData()
+                    }
+                }
+
+            }
+//        viewModel.deleteTransaksi()
+//        viewModel.deleteTransaksiProduk()
+//        viewModel.deleteGrafik()
+//        viewModel.deleteHistoriTransaksi()
+        Log.d("Transaksi", "onCreate: ${viewModel.getDataHistoriTransaksi.value}")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener{_,destination,_->
             when(destination.id){
                 R.id.berandaFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
+                }
+                R.id.detailHistoriTransaksiDialog -> {
+                    binding.toolbar.toolbar.visibility = View.GONE
+                }
+                R.id.transaksiFragment ->{
+                    binding.bottomNav.visibility = View.GONE
+                    binding.toolbar.toolbar.visibility = View.VISIBLE
+                    TransaksiAdapter.LinearViewHolder.produkIdList.clear()
+                    TransaksiAdapter.LinearViewHolder.produkNameList.clear()
+                    TransaksiAdapter.LinearViewHolder.produkQtyList.clear()
+                    TransaksiAdapter.LinearViewHolder.produkPriceList.clear()
+                    TransaksiAdapter.LinearViewHolder.tempProduk.clear()
+                    TransaksiAdapter.LinearViewHolder.tempCounter.clear()
+                    TransaksiAdapter.GridViewHolder.produkIdList.clear()
+                    TransaksiAdapter.GridViewHolder.produkNameList.clear()
+                    TransaksiAdapter.GridViewHolder.produkQtyList.clear()
+                    TransaksiAdapter.GridViewHolder.produkPriceList.clear()
+                    sharedViewModel._tempDataPembayaran.value?.clear()
+                    viewModel.tempDataPembayaran.clear()
+                    viewModel.dataPembayaran.value?.clear()
+                    sharedViewModel.tempDataProduk.value = null
                 }
                 R.id.grafikFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
@@ -55,6 +127,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.pengaturanFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.toolbar.toolbar.visibility = View.GONE
+                }
+                R.id.editNamaDialog -> {
+                    binding.bottomNav.visibility = View.VISIBLE
                 }
                 else -> {
                     binding.bottomNav.visibility = View.GONE
@@ -111,7 +186,11 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+//        requestPermission()
+    }
 
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),PackageManager.PERMISSION_GRANTED)
     }
 
     override fun onBackPressed() {

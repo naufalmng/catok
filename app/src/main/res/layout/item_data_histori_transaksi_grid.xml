@@ -13,10 +13,11 @@
         android:id="@+id/tanggal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="-3dp"
         android:text="07 November 2022 15.02"
         android:textColor="@color/orange"
@@ -24,8 +25,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/total"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/tanggal"
         app:layout_constraintStart_toStartOf="@id/tanggal"
         app:layout_constraintTop_toBottomOf="@id/tanggal"
         android:text="@string/total_arg"
@@ -36,8 +38,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/invoice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/tanggal"
         app:layout_constraintTop_toBottomOf="@id/total"
         app:layout_constraintStart_toStartOf="@id/total"
         android:text="201120221"
@@ -66,7 +69,7 @@
         android:text="(LUNAS)"
         android:textColor="@color/green"
         android:textStyle="bold"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_10ssp"
         style="@style/MediumTextStyle"/>
 
     <!--    -->

@@ -2,13 +2,17 @@ package org.d3ifcool.catok.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.TextWatcher
 import android.text.style.UnderlineSpan
+import android.util.Base64
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
@@ -16,19 +20,72 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.data.Entry
+import com.google.android.material.snackbar.Snackbar
 import org.d3ifcool.catok.R
+import org.d3ifcool.catok.core.data.source.local.entities.GrafikEntity
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.math.BigInteger
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+fun String.addUnderline(): SpannableString {
+    val spannableString = SpannableString(this)
+    spannableString.setSpan(UnderlineSpan(),0,spannableString.length,0)
+    return spannableString
+}
+fun fromBitmapToString(bitmap: Bitmap): String {
+    val outputStream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+    return Base64.encodeToString(outputStream.toByteArray(),Base64.DEFAULT)
+}
+fun fromStringToBitmap(encodedString: String): Bitmap {
+    val decodedByte = Base64.decode(encodedString.substring(encodedString.indexOf(","+1)), Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+}
+fun getEmptyEntry(): List<Entry>{
+    var dataGrafik: MutableList<GrafikEntity> = mutableListOf()
+    dataGrafik.add(GrafikEntity(0,0.0,""))
+    var result = ArrayList<Entry>()
+    var index = 1f
+    result.add(Entry(index,dataGrafik[0].totalTransaksi.toFloat()))
+    return result
+}
+fun isFileExists(file: File): Boolean {
+    return file.exists() && !file.isDirectory
+}
 fun getCurrentDate(): String {
     val currentDate = Calendar.getInstance().time
-    val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))
+    val sdf = SimpleDateFormat("EEEE, d MMMM yyyy HH:mm", Locale("id", "ID"))
+    return sdf.format(currentDate)
+}
+fun getCurrentMonth(): String {
+    val currentDate = Calendar.getInstance().time
+    val sdf = SimpleDateFormat("MMMM", Locale("id", "ID"))
+    return sdf.format(currentDate)
+}
+fun getCurrentMonthWithNumber(): String {
+    val currentDate = Calendar.getInstance().time
+    val sdf = SimpleDateFormat("WW MMMM", Locale("id", "ID"))
+    return sdf.format(currentDate)
+}
+fun getCurrentDay(): String {
+    val currentDate = Calendar.getInstance().time
+    val sdf = SimpleDateFormat("DDDD", Locale("id", "ID"))
     return sdf.format(currentDate)
 }
 
-
+fun generateUuid(): String {
+    val uuid = String.format("%040d", BigInteger(UUID.randomUUID().toString().replace("-", ""), 16))
+    return uuid.substring(uuid.length - 10)
+}
 fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
     val action = motionEvent.action
     if (action == MotionEvent.ACTION_DOWN) {
@@ -92,6 +149,17 @@ fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
         val length = split[0].length
         return split[0].substring(0,2)+". "+split[0].substring(2,length)
     }
+
+fun Double.toRupiahFormatV2(): String {
+    val formatter = NumberFormat.getInstance(Locale("id", "ID"))
+    val decimalFormatSymbols: DecimalFormatSymbols =
+        (formatter as DecimalFormat).decimalFormatSymbols
+    decimalFormatSymbols.currencySymbol = ""
+    val rupiahFormat = formatter.format(this)
+    formatter.decimalFormatSymbols = decimalFormatSymbols
+
+    return rupiahFormat.replace(",", ".")
+}
 
 
 //

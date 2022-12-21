@@ -74,6 +74,7 @@
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
         android:text="No"
+        android:gravity="center"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@id/divider2"
@@ -103,13 +104,13 @@
         app:layout_constraintTop_toTopOf="@id/produk"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/harga"
+        android:id="@+id/total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         android:gravity="center"
         style="@style/SemiboldTextStyle"
-        android:text="Harga"
+        android:text="Total"
         app:layout_constraintEnd_toEndOf="@id/divider2"
         app:layout_constraintStart_toEndOf="@id/guideline3"
         app:layout_constraintTop_toTopOf="@id/qty"/>
@@ -122,6 +123,6 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@id/divider2"
         app:layout_constraintEnd_toEndOf="@id/divider2"
-        app:layout_constraintTop_toBottomOf="@id/harga"/>
+        app:layout_constraintTop_toBottomOf="@id/total"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

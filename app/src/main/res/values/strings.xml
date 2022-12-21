@@ -1,9 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Catok</string>
+<resources>
+    <string name="app_name">Catatan\nToko</string>
     <string name="version">V1.0.0</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nama_toko">CaTok (Catatan Toko)</string>
+    <string name="catok">CaTok</string>
     <string name="data_produk">Data\nProduk</string>
     <string name="data_produk2">Data Produk</string>
     <string name="tambah_produk">Tambah Produk</string>
@@ -41,10 +42,12 @@
     <string name="histori_transaksi">Histori Transaksi</string>
     <string name="search">Search</string>
     <string name="harga">Rp %1$s / 1 pcs</string>
-    <string name="total_arg"><u>RP %1$.0f</u>></string>
+    <string name="total_arg"><u>RP %1$.0f</u></string>
+    <string name="total_arg2">: <u>RP %1$.0f</u></string>
     <string name="harga_arg">Rp %1$.0f</string>
     <string name="jenis_pembayaran_arg"><u>%1$s</u></string>
     <string name="jenis_pembayaran">Pilih jenis pembayaran</string>
+    <string name="jenis_pembayaran2">Jenis Pembayaran</string>
     <string name="diskon">Diskon</string>
     <string name="bayar">Bayar</string>
     <string name="kembalian">Kembalian</string>
@@ -53,10 +56,29 @@
     <string name="sub_total_arg"><u>Rp %1$.2f</u></string>
     <string name="diskon_arg"><u>%1$s</u>></string>
     <string name="selanjutnya">Selanjutnya</string>
-    <string name="total_harga_arg">Rp. %1$s</string>
+    <string name="total_harga_arg">Rp.&#032;%1$s</string>
     <string name="nomor">No</string>
     <string name="produk">Produk</string>
     <string name="qty">Qty</string>
     <string name="harga2">Harga</string>
+    <string name="total_bayar">Total Bayar</string>
+    <string name="total">Total</string>
+    <string name="lunas">LUNAS</string>
+    <string name="belum_ada_data">Transaksi bulan %1$s masih kosong.</string>
+    <string name="status_bayar_args">(%1$s)</string>
+    <string name="backup_data">Backup\nData</string>
+    <string name="restore_data">Restore\nData</string>
+    <string name="edit_nama_toko">Edit Nama Toko</string>
+    <string name="ok">OK</string>
+    <string name="izin_penyimpanan"><b>Backup &amp; Restore Perlu Izin Penyimpanan</b></string>
+    <string name="izinkan"><b>Izinkan</b></string>
+    <string name="detail_transaksi">Detail Transaksi</string>
+    <string name="produk_dibeli_arg">: %1$s</string>
+    <string name="produk_dibeli">Produk Dibeli</string>
+    <string name="pembayaran">Pembayaran</string>
+    <string name="status_bayar">Status Bayar</string>
+    <string name="detail_transaksi_arg">: %1$s</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="invoice">Invoice</string>
 
 </resources>

@@ -24,7 +24,11 @@
     <fragment
         android:id="@+id/pengaturanFragment"
         android:name="org.d3ifcool.catok.ui.pengaturan.PengaturanFragment"
-        android:label="PengaturanFragment" />
+        android:label="PengaturanFragment" >
+        <action
+            android:id="@+id/action_pengaturanFragment_to_editNamaDialog"
+            app:destination="@id/editNamaDialog" />
+    </fragment>
     <fragment
         android:id="@+id/dataProdukFragment"
         android:name="org.d3ifcool.catok.ui.beranda.produk.DataProdukFragment"
@@ -57,12 +61,19 @@
         android:name="org.d3ifcool.catok.ui.beranda.transaksi.TransaksiFragment"
         android:label="Transaksi Produk"
         tools:layout="@layout/fragment_transaksi" >
+
         <action
             android:id="@+id/action_transaksiFragment_to_transaksiDialog"
             app:destination="@id/transaksiDialog" />
         <action
             android:id="@+id/action_transaksiFragment_to_berandaFragment"
             app:destination="@id/berandaFragment" />
+        <action
+            android:id="@+id/action_transaksiFragment_self2"
+            app:destination="@id/transaksiFragment" />
+        <action
+            android:id="@+id/action_transaksiFragment_to_detailHistoriTransaksiDialog"
+            app:destination="@id/detailHistoriTransaksiDialog" />
     </fragment>
     <fragment
         android:id="@+id/transaksiDialog"
@@ -75,4 +86,18 @@
             app:popUpTo="@id/transaksiFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <dialog
+        android:id="@+id/editNamaDialog"
+        android:name="org.d3ifcool.catok.ui.pengaturan.EditNamaDialog"
+        android:label="dialog_edit_nama"
+        tools:layout="@layout/dialog_edit_nama" />
+    <dialog
+        android:id="@+id/detailHistoriTransaksiDialog"
+        android:name="org.d3ifcool.catok.ui.beranda.transaksi.DetailHistoriTransaksiDialog"
+        android:label="dialog_detail_histori_transaksi"
+        tools:layout="@layout/dialog_detail_histori_transaksi" >
+        <argument
+            android:name="transaksi"
+            app:argType="org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity" />
+    </dialog>
 </navigation>

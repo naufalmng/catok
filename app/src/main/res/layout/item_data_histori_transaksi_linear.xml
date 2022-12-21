@@ -14,6 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toStartOf="@id/tvPembayaran"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="16dp"
@@ -30,15 +31,15 @@
         app:layout_constraintTop_toTopOf="@id/tanggal"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="-3dp"
-        android:text="Pembayaran"
+        android:text="------"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/total"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/jenisPembayaran"
         app:layout_constraintStart_toStartOf="@id/tanggal"
         app:layout_constraintTop_toBottomOf="@id/tanggal"
         android:text="@string/total_arg"
@@ -51,7 +52,8 @@
         android:id="@+id/jenisPembayaran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvPembayaran"
+        app:layout_constraintTop_toTopOf="@id/total"
+        app:layout_constraintBottom_toBottomOf="@id/total"
         app:layout_constraintStart_toStartOf="@id/tvPembayaran"
         app:layout_constraintEnd_toEndOf="@id/tvPembayaran"
         android:text="@string/jenis_pembayaran_arg"
@@ -62,8 +64,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/invoice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/statusBayar"
         app:layout_constraintTop_toTopOf="@id/statusBayar"
         app:layout_constraintBottom_toBottomOf="@id/statusBayar"
         app:layout_constraintStart_toStartOf="@id/total"
@@ -82,7 +85,8 @@
         app:layout_constraintEnd_toEndOf="@id/jenisPembayaran"
         android:textColor="@color/green"
         android:textStyle="bold"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginTop="2dp"
         style="@style/MediumTextStyle"/>
 
     <!--    -->

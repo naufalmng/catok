@@ -72,9 +72,9 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="@dimen/_85sdp"
-                android:background="@drawable/ic_baseline_empty_24"
+                android:layout_width="@dimen/_95sdp"
+                android:layout_height="@dimen/_95sdp"
+                android:background="@drawable/ic_empt_data"
                 android:layout_gravity="top|center"/>
 
             <androidx.appcompat.widget.AppCompatTextView

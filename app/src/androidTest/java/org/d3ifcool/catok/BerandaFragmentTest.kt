@@ -1,5 +1,6 @@
 package org.d3ifcool.catok
 
+import android.util.Log
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -7,7 +8,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.d3ifcool.catok.ui.beranda.BerandaFragment
 import org.junit.Test
@@ -16,7 +18,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class BerandaFragmentTest {
     @Test
-    fun testMenuDataProduk() {
+    fun testMenuDataProduk()  {
         val navController = TestNavHostController(
             ApplicationProvider.getApplicationContext())
 
@@ -33,6 +35,8 @@ class BerandaFragmentTest {
         onView(withId(R.id.dataProduk))
             .check(matches(isDisplayed()))
             .perform(click())
+        Log.d("TestButton", "Button Data Produk Dapat diklik")
+
     }
 
     @Test
@@ -53,6 +57,8 @@ class BerandaFragmentTest {
         onView(withId(R.id.transaksiProduk))
             .check(matches(isDisplayed()))
             .perform(click())
+
+        Log.d("TestButton", "Button Transaksi Produk Dapat diklik")
 
 
     }
