@@ -22,9 +22,9 @@ class DataProdukViewModel(private val repo: AppRepository): ViewModel() {
 
 
 
-    fun insertData(namaProduk: String, deskripsi: String, hargaBeli: Double, hargaJual: Double,satuan: Int, stok: Int,tanggal: String){
+    fun insertData(namaProduk: String, deskripsi: String, hargaBeli: Double, hargaJual: Double,satuan: Int,satuanPer: String, stok: Int,tanggal: String){
         viewModelScope.launch(Dispatchers.IO) {
-            repo.insertData(ProdukEntity(namaProduk = namaProduk, deskripsi = deskripsi, modal = hargaBeli, hargaJual = hargaJual,satuan = satuan, stok = stok, tanggal = tanggal))
+            repo.insertData(ProdukEntity(namaProduk = namaProduk, deskripsi = deskripsi, modal = hargaBeli, hargaJual = hargaJual,satuan = satuan,satuanPer = satuanPer, stok = stok, tanggal = tanggal))
         }
     }
     fun insertRecordProduk(produkEntity: ProdukEntity){

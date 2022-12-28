@@ -30,10 +30,16 @@ class TransaksiViewModel(private val repo: AppRepository): ViewModel() {
     fun searchProduk(query: String): LiveData<List<ProdukEntity>> {
         return repo.searchProduk(query).asLiveData()
     }
-
+    fun updateDataGrafik(totalTransaksi: Double,tanggal: String){
+        Log.d("TransaksiViewModel", "updateDataGrafik: Masuk")
+        Log.d("TransaksiViewModel", "updateDataGrafik: ${dataGrafik?.size}")
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.updateDataGrafik(totalTransaksi,tanggal)
+        }
+    }
     fun insertDataGrafik(grafikEntity: GrafikEntity){
         Log.d("TransaksiViewModel", "insertDataGrafik: Masuk")
-        Log.d("TransaksiViewModel", "insertDataGrafik: ${dataGrafik.size}")
+        Log.d("TransaksiViewModel", "insertDataGrafik: ${dataGrafik?.size}")
         viewModelScope.launch(Dispatchers.IO) {
             repo.insertDataGrafik(grafikEntity)
         }

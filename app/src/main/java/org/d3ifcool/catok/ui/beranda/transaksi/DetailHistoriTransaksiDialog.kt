@@ -42,7 +42,7 @@ class DetailHistoriTransaksiDialog : DialogFragment() {
             invoice.text = getString(R.string.detail_transaksi_arg,data.transaksi.invoice)
             subTotal.text = getString(R.string.detail_transaksi_arg,data.transaksi.total.toRupiahFormat().addUnderline())
             total.text = getString(R.string.detail_transaksi_arg,(data.transaksi.total-data.transaksi.diskon).toRupiahFormat().uppercase(Locale("id","ID")).addUnderline())
-            produkDibeli.text = getString(R.string.detail_transaksi_arg,data.transaksi.produkDibeli.replace(".",","))
+            produkDibeli.text = getString(R.string.produk_dibeli_arg,data.transaksi.produkDibeli.replace(".",","))
             diskon.text = getString(R.string.detail_transaksi_arg,data.transaksi.diskon.toRupiahFormat())
             bayar.text = getString(R.string.detail_transaksi_arg,data.transaksi.bayar.toRupiahFormat())
             kembalian.text = getString(R.string.detail_transaksi_arg,data.transaksi.kembalian.toRupiahFormat())

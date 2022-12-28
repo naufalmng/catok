@@ -8,5 +8,5 @@ data class GrafikEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var totalTransaksi: Double,
-    var bulan: String,
+    var tanggal: String,
 )

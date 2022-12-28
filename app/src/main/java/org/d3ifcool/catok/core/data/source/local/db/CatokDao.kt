@@ -66,14 +66,17 @@ interface CatokDao {
     @Query("SELECT * FROM grafikEntity")
     fun getListDataGrafik(): List<GrafikEntity>
 
+    @Query("SELECT * FROM grafikEntity WHERE tanggal=:tanggal")
+    fun getListDataGrafikByDate(tanggal: String): List<GrafikEntity>
+
     @Query("SELECT * FROM grafikEntity")
     fun getDataGrafik(): LiveData<List<GrafikEntity>>
 
     @Query("DELETE FROM grafikEntity")
     suspend fun deleteDataGrafik()
 
-    @Query("UPDATE grafikEntity SET totalTransaksi = totalTransaksi+:totalSekarang WHERE id=:id")
-    suspend fun updateDataGrafik(id: Int, totalSekarang: Double)
+    @Query("UPDATE grafikEntity SET totalTransaksi = :totalTransaksi WHERE tanggal=:tanggal")
+    suspend fun updateDataGrafik(totalTransaksi: Double,tanggal: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProfil(profil: ProfilEntity)
@@ -91,5 +94,6 @@ interface CatokDao {
 
     @Query("SELECT * FROM historiTransaksi")
     fun getDataHistoriTransaksi(): LiveData<List<HistoriTransaksiEntity>>
+
 
 }

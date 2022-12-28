@@ -254,6 +254,7 @@
                     android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/produk_dibeli_arg"/>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="@dimen/_75sdp"
                     android:textColor="@color/orange"
@@ -287,6 +288,14 @@
                     android:text="@string/produk_dibeli_arg"/>
 
             </GridLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPembayaran"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_data_pembayaran"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>

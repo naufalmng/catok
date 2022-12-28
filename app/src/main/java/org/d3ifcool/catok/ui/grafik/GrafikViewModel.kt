@@ -1,5 +1,4 @@
 package org.d3ifcool.catok.ui.grafik
-
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,25 +9,37 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.d3ifcool.catok.core.data.repository.AppRepository
 import org.d3ifcool.catok.core.data.source.local.entities.GrafikEntity
+import kotlin.math.tan
 
 class GrafikViewModel(val repo: AppRepository): ViewModel() {
     val dataGrafik = repo.getListDataGrafik()
-//    var dataHari = MutableLiveData<List<String>>("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu")
+    //    var dataHari = MutableLiveData<List<String>>("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu")
     val entries = MutableLiveData<List<Entry>>()
     val getEntries: LiveData<List<Entry>> = entries
     var monthList = MutableLiveData<ArrayList<String>>(getMonthList())
     var getMonthList: LiveData<ArrayList<String>> = monthList
-//    val getDataBulan: LiveData<String> = dataBulan
+    //    val getDataBulan: LiveData<String> = dataBulan
+    val getDataGrafik = repo.getDataGrafik()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            requestData()
-        }
-    }
+//    init {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            requestData()
+//        }
+//    }
     fun clearGraphicData() {
         viewModelScope.launch {
             repo.deleteDataGrafik()
         }
+
+    }
+    fun getDataGrafikByDate(tanggal: String){
+        try {
+            val listGrafik = repo.getListDataGrafikByDate(tanggal)
+            entries.postValue(getEntry(listGrafik))
+        }catch (e: Exception){
+        Log.d("REQUEST",e.message.toString())
+//            status.postValue(ApiStatus.FAILED)
+     }
     }
     private fun getMonthList(): ArrayList<String>? {
         var listBulan = ArrayList<String>()
@@ -77,3 +88,5 @@ class GrafikViewModel(val repo: AppRepository): ViewModel() {
         return result
     }
 }
+
+

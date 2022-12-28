@@ -8,7 +8,7 @@ import org.d3ifcool.catok.utils.Converters
 
 @Database(
     entities = [ProdukEntity::class,TransaksiEntity::class,HistoriTransaksiEntity::class,TransaksiProdukEntity::class,GrafikEntity::class,ProfilEntity::class],
-    version = 18,
+    version = 19,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

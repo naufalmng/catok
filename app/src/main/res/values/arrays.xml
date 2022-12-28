@@ -4,4 +4,14 @@
         <item>CASH</item>
         <item>QRISH</item>
     </string-array>
+    <string-array name="jenis_satuan">
+        <item>Pcs</item>
+        <item>Kg</item>
+        <item>Ton</item>
+        <item>Ons</item>
+        <item>Dus</item>
+        <item>Bungkus</item>
+        <item>Butir</item>
+        <item>Liter</item>
+    </string-array>
 </resources>

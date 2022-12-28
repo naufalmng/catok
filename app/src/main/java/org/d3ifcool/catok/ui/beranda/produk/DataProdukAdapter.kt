@@ -14,6 +14,7 @@ import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.databinding.ItemDataProdukGridBinding
 import org.d3ifcool.catok.databinding.ItemDataProdukLinearBinding
+import org.d3ifcool.catok.utils.toRupiahFormat
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
@@ -86,14 +87,14 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             }
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
-            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
+            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,satuanPer,stok) = produk[position]
             binding.rootView.isSelected = selectionIds.contains(id.toInt())
             itemView.isSelected = selectionIds.contains(id.toInt())
             binding.nomor.text = id.toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
-            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,hargaBeli,satuan.toString())
-            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual,satuan.toString())
+            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,hargaBeli.toRupiahFormat(),satuan.toString(),satuanPer)
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual.toRupiahFormat(),satuan.toString(),satuanPer)
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
             itemView.setOnClickListener {
                 handler.onClick(position, produk)
@@ -110,7 +111,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             }
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
-            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,stok) = produk[position]
+            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,satuanPer,stok) = produk[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
             }

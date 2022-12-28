@@ -15,6 +15,7 @@ data class ProdukEntity (
     var modal: Double,
     var hargaJual: Double,
     var satuan: Int,
+    var satuanPer: String,
     var stok: Int,
     var tanggal: String
 ): Serializable

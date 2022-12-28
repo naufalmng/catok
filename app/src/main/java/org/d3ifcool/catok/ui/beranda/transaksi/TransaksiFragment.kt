@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
+import org.d3ifcool.catok.core.data.source.local.entities.GrafikEntity
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.databinding.FragmentTransaksiBinding
 import org.d3ifcool.catok.ui.main.SharedViewModel
@@ -47,6 +48,9 @@ class TransaksiFragment : Fragment() {
     private val dataStorePreferences: DataStorePreferences by lazy {
         DataStorePreferences(requireActivity().dataStore)
     }
+
+    private var totalTransaksi = 0.0 // 6000
+    private var tanggal = ""
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -158,7 +162,24 @@ class TransaksiFragment : Fragment() {
                 historiTransaksiAdapter.updateData(it)
                 setupLayoutSwitcher()
                 binding.swipeRefreshLayout.isRefreshing = false
+                for (i in it){
+                    totalTransaksi+= i.total
+                }
             }
+        }
+        viewModel.getDataGrafik.observe(viewLifecycleOwner){
+            if(totalTransaksi!=0.0){
+                if(it==null){
+                    viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
+                }else{
+                    for (i in it){
+                        if(i.tanggal!= tanggal) viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
+                        else viewModel.updateDataGrafik(totalTransaksi,tanggal)
+                    }
+                }
+            }
+
+
         }
     }
 

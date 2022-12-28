@@ -285,10 +285,13 @@ class TransaksiDialog : Fragment() {
             }
             btnSimpan.setOnClickListener {
                 produkDibeli = ""
-                sharedViewModel.tempDataProduk.value?.produkNameList?.forEach {
-                    Log.d(TAG, "setupListeners: $it")
-                    produkDibeli += "$it."
+                for (i in sharedViewModel.tempDataProduk.value?.produkNameList!!.indices){
+                    produkDibeli += "${sharedViewModel.tempDataProduk.value?.produkNameList!![i]} / ${sharedViewModel.tempDataProduk.value?.produkQtyList!![i]}."
                 }
+//                sharedViewModel.tempDataProduk.value?.produkNameList?.forEach {
+//                    Log.d(TAG, "setupListeners: $it")
+//                    produkDibeli += "$it."
+//                }
                 jumlahProdukDibeli = sharedViewModel.tempDataProduk.value?.produkIdList?.size!!
                 val totalAkhir = if(sharedViewModel.totalDenganDiskon.value!=0.0) sharedViewModel.totalDenganDiskon.value!! else sharedViewModel._subTotal.value!!
 
@@ -323,7 +326,7 @@ class TransaksiDialog : Fragment() {
                 viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
                 viewModel.getListIdTransaksi()
                 viewModel.insertTransaksiProduk()
-                viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalAkhir, bulan = getCurrentMonth()))
+//                viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalAkhir, bulan = getCurrentMonth()))
                 if(produkDibeli!=""){
                     Log.d(TAG, "setupListeners: masuk")
                     Log.d(TAG, "setupListeners: ${sharedViewModel.jenisPembayaran.value!!}")

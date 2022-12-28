@@ -33,6 +33,8 @@ class GrafikFragment : Fragment() {
     private val dataStorePreferences: DataStorePreferences by lazy {
         DataStorePreferences(requireActivity().dataStore)
     }
+    private var currentMonth = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,10 +46,32 @@ class GrafikFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupChart()
+        dataStorePreferences.currentMonthPrefFlow.asLiveData()
+            .observe(viewLifecycleOwner){month->
+                if (month != null) {
+                    currentMonth = month
+                }
+            }
+
+        viewModel.getDataGrafik.observe(viewLifecycleOwner){
+            if(it!=null){
+                viewModel.getDataGrafikByDate(currentMonth)
+
+//                for(i in it){
+//                    if(i.tanggal == currentMonth){
+//                    }else{
+//
+//                    }
+//                }
+            }
+        }
+
         viewModel.getEntries.observe(viewLifecycleOwner) {
             Log.d("GrafikFragment", "onViewCreated: ${it.size}")
-            if (it.isNotEmpty()) {
-                updateChart(it)
+            if(currentMonth!=""){
+                if (it.isNotEmpty()) {
+                    updateChart(it)
+                }
             }
         }
     }
@@ -76,53 +100,48 @@ class GrafikFragment : Fragment() {
     }
 
     private fun updateChart(listEntry: List<Entry>) {
-        var currentMonth = ""
         Log.d("GrafikFragment", "setLineChartData: ${listEntry}")
-        dataStorePreferences.currentMonthPrefFlow.asLiveData()
-            .observe(viewLifecycleOwner){month->
-                if(month!=null){
-                    currentMonth = month
-                }
-            }
-        val lineDataSet = LineDataSet(listEntry, "Transaksi Bulan ${currentMonth}")
-        lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
+        if(currentMonth!=""){
+            val lineDataSet = LineDataSet(listEntry, "Transaksi Bulan ${currentMonth}")
+            lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
 //        lineDataSet.circleRadius = 0f
-        lineDataSet.setDrawFilled(true)
+            lineDataSet.setDrawFilled(true)
 //        lineDataSet.setDrawCircles(true)
-        lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.orange)
-        lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.orange)
+            lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.orange)
+            lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.orange)
 //        lineDataSet.fillAlpha = 30
-        var data = LineData(lineDataSet)
-//        Log.d("Grafik Fragment", "setLineChartData: ${data}")
-
-
-        with(binding.lineChart) {
-            this.data = data
-            viewModel.getMonthList.observe(viewLifecycleOwner){
-                if(it.isNotEmpty()){
-                    xAxis.valueFormatter = object : ValueFormatter() {
-                        override fun getFormattedValue(value: Float): String {
-                            val pos = value.toInt() - 1
-                            lateinit var currentMonth : String
-                            val isValidPosition = pos >= 0
-                            for (i in it.indices){
-                                currentMonth = it[i]
+            var data = LineData(lineDataSet)
+            //        Log.d("Grafik Fragment", "setLineChartData: ${data}")
+            with(binding.lineChart) {
+                this.data = data
+                viewModel.getMonthList.observe(viewLifecycleOwner){
+                    if(it.isNotEmpty()){
+                        xAxis.valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val pos = value.toInt() - 1
+                                lateinit var currentMonth : String
+                                val isValidPosition = pos >= 0
+                                for (i in it.indices){
+                                    currentMonth = it[i]
+                                }
+                                return ""
                             }
-                            return ""
                         }
+                        xAxis.setDrawGridLines(false)
                     }
-                    xAxis.setDrawGridLines(false)
                 }
-            }
-            legend.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
-            xAxis.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
+                legend.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
+                xAxis.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
 
-            axisRight.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
-            axisLeft.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
+                axisRight.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
+                axisLeft.textColor = ContextCompat.getColor(requireContext(),R.color.orange)
 //            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-            animateXY(500, 500)
-            invalidate()
+                animateXY(500, 500)
+                invalidate()
+            }
+
         }
+
     }
 
     override fun onDestroyView() {

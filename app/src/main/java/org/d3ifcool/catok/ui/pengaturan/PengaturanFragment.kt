@@ -125,9 +125,10 @@ class PengaturanFragment : Fragment() {
                             val modal = nextLine[temp++]
                             val hargaJual = nextLine[temp++]
                             val satuan = nextLine[temp++]
+                            val satuanPer = nextLine[temp++]
                             val stok = nextLine[temp++]
                             val tanggalProdukEntity = nextLine[temp++]
-                            val produk = ProdukEntity(idProduk.toInt(),barcode.toInt(),namaProdukEntity,deskripsi,modal.toDouble(),hargaJual.toDouble(),satuan.toInt(),stok.toInt(),tanggalProdukEntity.replace(".",","))
+                            val produk = ProdukEntity(idProduk.toInt(),barcode.toInt(),namaProdukEntity,deskripsi,modal.toDouble(),hargaJual.toDouble(),satuan.toInt(),satuanPer,stok.toInt(),tanggalProdukEntity.replace(".",","))
                             Log.d(TAG, "importCsv: produkData = $produk")
                             temp++
                             viewModel.tempProduk.value?.add(produk)
@@ -247,8 +248,8 @@ class PengaturanFragment : Fragment() {
                         for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
                             val idGrafik = nextLine[temp++]
                             val totalGrafikEntity = nextLine[temp++]
-                            val bulan = nextLine[temp++]
-                            val grafik = GrafikEntity(idGrafik.toInt(),totalGrafikEntity.toDouble(),bulan)
+                            val tanggal = nextLine[temp++]
+                            val grafik = GrafikEntity(idGrafik.toInt(),totalGrafikEntity.toDouble(),tanggal)
                             temp++
                             transaksiViewModel.insertDataGrafik(grafik)
                         }
@@ -405,6 +406,8 @@ class PengaturanFragment : Fragment() {
                         fw.append(",")
                         fw.append(""+produkRecord!![i].satuan)
                         fw.append(",")
+                        fw.append(""+produkRecord!![i].satuanPer)
+                        fw.append(",")
                         fw.append(""+produkRecord!![i].stok)
                         fw.append(",")
                         fw.append(""+produkRecord!![i].tanggal.replace(",","."))
@@ -468,7 +471,7 @@ class PengaturanFragment : Fragment() {
                         fw.append(",")
                         fw.append(""+grafikRecord!![i].totalTransaksi)
                         fw.append(",")
-                        fw.append(""+grafikRecord!![i].bulan)
+                        fw.append(""+grafikRecord!![i].tanggal)
                     }
                 }
 

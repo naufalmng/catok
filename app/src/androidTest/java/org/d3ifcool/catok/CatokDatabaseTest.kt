@@ -30,6 +30,7 @@ class CatokDatabaseTest {
     fun setup(){
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context,CatokDb::class.java).allowMainThreadQueries().build()
+//        db = Room.databaseBuilder(context,CatokDb::class.java,"CatokDb").allowMainThreadQueries().build()
         dao = db.getRunDao()
     }
 
@@ -41,12 +42,12 @@ class CatokDatabaseTest {
     // Testing tambah,search,update,delete produk
     @Test
     fun testTambahUpdateDeleteProduk() = runTest{
-        val dataProduk1 = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate())
-        val dataProduk2 = ProdukEntity(id_produk = 2,barcode = null, namaProduk = "Bala-Bala", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate())
-        val dataProduk3 = ProdukEntity(id_produk = 3,barcode = null, namaProduk = "Cireng", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate())
-        val updatedProduk1 = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate())
-        val updatedProduk2 = ProdukEntity(id_produk = 2,barcode = null, namaProduk = "Bala-Bala", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate())
-        val updatedProduk3 = ProdukEntity(id_produk = 3,barcode = null, namaProduk = "Cireng", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate())
+        val dataProduk1 = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate(), satuanPer = "Pcs")
+        val dataProduk2 = ProdukEntity(id_produk = 2,barcode = null, namaProduk = "Bala-Bala", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate(), satuanPer = "Pcs")
+        val dataProduk3 = ProdukEntity(id_produk = 3,barcode = null, namaProduk = "Cireng", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate(), satuanPer = "Pcs")
+        val updatedProduk1 = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate(), satuanPer = "Pcs")
+        val updatedProduk2 = ProdukEntity(id_produk = 2,barcode = null, namaProduk = "Bala-Bala", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate(), satuanPer = "Pcs")
+        val updatedProduk3 = ProdukEntity(id_produk = 3,barcode = null, namaProduk = "Cireng", deskripsi = "Gorengan", modal = 1000.0, hargaJual = 1500.0, satuan = 1, stok = 100, tanggal = getCurrentDate(), satuanPer = "Pcs")
         dao.insertData(dataProduk1)
         dao.insertData(dataProduk2)
         dao.insertData(dataProduk3)
@@ -84,7 +85,7 @@ class CatokDatabaseTest {
     // Testing fungsionalitas utama aplikasi, tambah data produk, transaksi produk, tambah grafik
     @Test
     fun writeAndReadCatokDatabase() = runTest{
-        val dataProduk = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate())
+        val dataProduk = ProdukEntity(id_produk = 1,barcode = null, namaProduk = "Tahu Isi", deskripsi = "Gorengan", modal = 500.0, hargaJual = 1000.0, satuan = 1, stok = 1, tanggal = getCurrentDate(), satuanPer = "Pcs")
         dao.insertData(dataProduk)
         val transaksi = TransaksiEntity(id_transaksi = 1, getCurrentDate())
         dao.insertTransaksi(transaksi)

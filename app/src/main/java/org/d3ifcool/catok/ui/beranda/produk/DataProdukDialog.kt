@@ -30,6 +30,7 @@ class DataProdukDialog : DialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: DataProdukViewModel by viewModel()
     private val args: DataProdukDialogArgs by navArgs()
+    private var satuanPerValue = ""
     private val dataStorePreferences: DataStorePreferences by lazy {
         DataStorePreferences(requireActivity().dataStore)
     }
@@ -115,6 +116,17 @@ class DataProdukDialog : DialogFragment() {
 
     private fun updateUi() {
         val item = args.produk!!
+        val spinnerValue = when(args.produk!!.satuanPer){
+            "Pcs" -> 0
+            "Kg" -> 1
+            "Ton" -> 2
+            "Ons" -> 3
+            "Dus" -> 4
+            "Bungkus" -> 5
+            "Butir" -> 6
+            "Liter" -> 7
+            else -> -1
+        }
         with(binding) {
             etNamaProduk.setText(item.namaProduk)
             etDeskripsi.setText(item.deskripsi)
@@ -122,6 +134,7 @@ class DataProdukDialog : DialogFragment() {
             etHargaJual.setText(item.hargaJual.toInt().toString())
             etSatuan.setText(item.satuan.toString())
             etStokAwal.setText(item.stok.toString())
+            spinnerSatuanPer.selectItemByIndex(spinnerValue)
 
         }
     }
@@ -168,6 +181,11 @@ class DataProdukDialog : DialogFragment() {
                     .show()
                 return
             }
+            if (spinnerSatuanPer.selectedIndex<0 && satuanPerValue=="") {
+                Toast.makeText(requireContext(), "Satuan Per Tidak Boleh Kosong !", Toast.LENGTH_SHORT)
+                    .show()
+                return
+            }
             if (TextUtils.isEmpty(etStokAwal.text.toString())) {
                 Toast.makeText(
                     requireContext(),
@@ -184,6 +202,7 @@ class DataProdukDialog : DialogFragment() {
                     etModal.getNumericValue(),
                     hargaJual = etHargaJual.getNumericValue(),
                     satuan = etSatuan.text.toString().toInt(),
+                    satuanPer = satuanPerValue,
                     stok = etStokAwal.text.toString().toInt(),
                     tanggal = getCurrentDate()
                 )
@@ -202,6 +221,7 @@ class DataProdukDialog : DialogFragment() {
                             etModal.getNumericValue(),
                             etHargaJual.getNumericValue(),
                             etSatuan.text.toString().toInt(),
+                            satuanPerValue,
                             etStokAwal.text.toString().toInt(),
                             getCurrentDate()
                         )
@@ -225,6 +245,9 @@ class DataProdukDialog : DialogFragment() {
             btnBatal.setOnClickListener {
                 dismiss()
             }
+            spinnerSatuanPer.setOnSpinnerItemSelectedListener<String>{ oldIndex, oldItem, newIndex, text ->
+                satuanPerValue = text
+            }
         }
     }
 
@@ -245,5 +268,6 @@ class DataProdukDialog : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        satuanPerValue = ""
     }
 }

@@ -22,6 +22,7 @@ import org.d3ifcool.catok.core.data.source.local.model.Produk
 import org.d3ifcool.catok.databinding.DialogEditQuantityBinding
 import org.d3ifcool.catok.databinding.ItemDataTransaksiGridBinding
 import org.d3ifcool.catok.databinding.ItemDataTransaksiLinearBinding
+import org.d3ifcool.catok.utils.toRupiahFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.log
@@ -128,6 +129,7 @@ class TransaksiAdapter(
             var produkIdList = mutableListOf<Int?>()
             var produkQtyList = mutableListOf<Int?>()
             var produkNameList = mutableListOf<String?>()
+            var produkSatuanPerList = mutableListOf<String?>()
             var produkPriceList = mutableListOf<Double?>()
             fun from(parent: ViewGroup): LinearViewHolder {
                 return LinearViewHolder(
@@ -180,7 +182,7 @@ class TransaksiAdapter(
                         binding.rootView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rectangle_10r)
                         binding.counterCardView.strokeColor = ContextCompat.getColor(itemView.context, R.color.abuB)
                     }
-                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan, stok, tanggal) = produkFilterList[position]
+                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan,satuanPer, stok, tanggal) = produkFilterList[position]
 
                     Log.d(
                         TAG,
@@ -206,6 +208,11 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkIdList.indexOf(
                                     id
                                 ), namaProduk
+                            )
+                            LinearViewHolder.produkSatuanPerList.add(
+                                LinearViewHolder.produkIdList.indexOf(
+                                    id
+                                ), satuanPer
                             )
                             LinearViewHolder.produkPriceList.add(
                                 LinearViewHolder.produkIdList.indexOf(
@@ -502,11 +509,7 @@ class TransaksiAdapter(
 
                     binding.namaProduk.text = namaProduk
                     binding.deskripsi.text = deskripsi
-                    binding.harga.text = itemView.context.getString(
-                        R.string.harga_jual_arg_2,
-                        hargaJual,
-                        satuan.toString()
-                    )
+                    binding.harga.text = itemView.context.getString(R.string.harga_jual_arg_2, hargaJual.toRupiahFormat(), satuan.toString(),satuanPer)
                     binding.stok.text =
                         itemView.context.getString(R.string.stok_arg, stok.toString())
 
@@ -797,7 +800,7 @@ class TransaksiAdapter(
                         binding.rootView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rectangle_10r)
                         binding.counterCardView.strokeColor = ContextCompat.getColor(itemView.context, R.color.abuB)
                     }
-                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan, stok, tanggal) = produkFilterList[position]
+                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan,satuanPer, stok, tanggal) = produkFilterList[position]
 
                     Log.d(
                         TAG,
@@ -1119,11 +1122,7 @@ class TransaksiAdapter(
 
                     binding.namaProduk.text = namaProduk
                     binding.deskripsi.text = deskripsi
-                    binding.harga.text = itemView.context.getString(
-                        R.string.harga_jual_arg_2,
-                        hargaJual,
-                        satuan.toString()
-                    )
+                    binding.harga.text = itemView.context.getString(R.string.harga_jual_arg_2, hargaJual.toRupiahFormat(), satuan.toString(),satuanPer)
                     binding.stok.text =
                         itemView.context.getString(R.string.stok_arg, stok.toString())
 
