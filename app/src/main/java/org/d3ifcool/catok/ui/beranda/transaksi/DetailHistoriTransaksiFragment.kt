@@ -2,20 +2,21 @@ package org.d3ifcool.catok.ui.beranda.transaksi
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import org.d3ifcool.catok.R
+import org.d3ifcool.catok.core.data.source.local.model.Produk
 import org.d3ifcool.catok.databinding.FragmentDetailHistoriTransaksiBinding
+import org.d3ifcool.catok.ui.grafik.GrafikViewModel
 import org.d3ifcool.catok.utils.addUnderline
+import org.d3ifcool.catok.utils.toRupiahFormat
 import org.d3ifcool.catok.utils.toRupiahFormatV2
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 import java.util.*
 
 
@@ -24,6 +25,7 @@ class DetailHistoriTransaksiFragment : Fragment() {
     private var _binding: FragmentDetailHistoriTransaksiBinding? = null
     private val binding get() = _binding!!
     private val transaksiViewModel: TransaksiViewModel by viewModel()
+    private val grafikViewModel: GrafikViewModel by viewModel()
     val data: DetailHistoriTransaksiFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -36,13 +38,13 @@ class DetailHistoriTransaksiFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         updateUi()
     }
 
     private fun updateUi() {
         val i = data.transaksi
         with(binding){
-            binding.btnRetur.isVisible = i.statusBayar != getString(R.string.diretur)
             tanggal.text = getString(R.string.detail_transaksi_arg,data.transaksi.tanggal)
             invoice.text = getString(R.string.invoice_arg,data.transaksi.id_histori)
             subTotal.text = getString(R.string.detail_transaksi_arg,data.transaksi.total.toRupiahFormatV2().addUnderline())
@@ -94,7 +96,7 @@ class DetailHistoriTransaksiFragment : Fragment() {
                     return@observe
                 }
                 finally {
-                    if(isMatch){
+                    if(isMatch==true){
                         try {
                             for (i in listIdProduk.indices){
                                 transaksiViewModel.returTransaksi(listIdProduk[i],listQtyProduk[i])
@@ -102,15 +104,15 @@ class DetailHistoriTransaksiFragment : Fragment() {
                         }catch (e: Exception){}
                         finally {
                             if(idTransaksi!=""){
-                                transaksiViewModel.updateHistoriTransaksiByInvoice(data.transaksi.id_histori)
+                                transaksiViewModel.deleteHistoriTransaksiByInvoice(data.transaksi.id_histori)
                                 transaksiViewModel.deleteTransaksiById(idTransaksi)
                                 transaksiViewModel.deleteTransaksiProdukById(data.transaksi.id_histori)
                                 transaksiViewModel.deleteGrafikDataById(data.transaksi.id_histori)
-                                Toast.makeText(requireContext(), getString(R.string.retur_berhasil), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Transaksi berhasil diretur", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }else{
-                        Toast.makeText(requireContext(), getString(R.string.retur_gagal), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Transaksi ini tidak dapat diretur !", Toast.LENGTH_SHORT).show()
                     }
                 }
 

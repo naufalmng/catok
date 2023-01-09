@@ -4,17 +4,11 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.net.Uri
 import android.os.*
-import android.provider.DocumentsContract
-import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +34,7 @@ import org.d3ifcool.catok.core.data.source.local.entities.*
 import org.d3ifcool.catok.databinding.FragmentPengaturanBinding
 import org.d3ifcool.catok.ui.beranda.produk.DataProdukViewModel
 import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiViewModel
+import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,23 +46,6 @@ class PengaturanFragment : Fragment() {
     companion object{
         private const val STORAGE_PERMISSION_CODE = 100
         private val TAG = PengaturanFragment().javaClass.name
-    }
-    private val storageActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-//            val filePathAndName = "${Environment.getExternalStorageDirectory()}/BackupCatok/${getString(R.string.nama_toko).replace("\\s".toRegex(), "")}_Backup.csv"
-//            val csvFile = File(filePathAndName)
-//
-//            if(csvFile.exists()){
-////                importCsv()
-////                exportCsv()
-//            }else Toast.makeText(
-//                requireContext(),
-//                "File belum dibuat, coba lagi..",
-//                Toast.LENGTH_SHORT
-//            ).show()
-        }else{
-            Toast.makeText(requireContext(), "Android tidak support !", Toast.LENGTH_SHORT).show()
-        }
     }
     private fun checkPermission(): Boolean{
         return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
@@ -120,53 +98,43 @@ class PengaturanFragment : Fragment() {
                         for (i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
                             val idProduk = nextLine[temp++]
                             val barcode = nextLine[temp++]
-                            val namaProdukEntity = nextLine[temp++]
+                            val namaProduk = nextLine[temp++]
                             val deskripsi = nextLine[temp++]
                             val modal = nextLine[temp++]
                             val hargaJual = nextLine[temp++]
                             val satuan = nextLine[temp++]
                             val satuanPer = nextLine[temp++]
                             val stok = nextLine[temp++]
-                            val tanggalProdukEntity = nextLine[temp++]
-                            val produk = ProdukEntity(idProduk.toInt(),barcode.toInt(),namaProdukEntity,deskripsi,modal.toDouble(),hargaJual.toDouble(),satuan.toInt(),satuanPer,stok.toInt(),tanggalProdukEntity.replace(".",","))
+                            val tanggalProduk = nextLine[temp++]
+                            val produk = ProdukEntity(idProduk.toInt(),barcode.toInt(),namaProduk,deskripsi,modal.toDouble(),hargaJual.toDouble(),satuan.toInt(),satuanPer,stok.toInt(),tanggalProduk.replace(".",","))
                             Log.d(TAG, "importCsv: produkData = $produk")
                             temp++
                             viewModel.tempProduk.value?.add(produk)
                             dataProdukviewModel.insertRecordProduk(produk)
                         }
-                        Log.d(TAG, "importCsv: nextLine = ${nextLine[temp]}")
                         temp--
+                        Log.d(TAG, "importCsv: nextLine = ${nextLine[temp]}")
                     }
 
-//                    if(nextLine[0].isNotEmpty()){
-//                        temp = 1
-//                        for (i in 1..nextLine[0].toInt()){
-//                            val idProduk = nextLine[temp++]
-//                            val barcode = nextLine[temp++]
-//                            val namaProdukEntity = nextLine[temp++]
-//                            val deskripsi = nextLine[temp++]
-//                            val modal = nextLine[temp++]
-//                            val hargaJual = nextLine[temp++]
-//                            val satuan = nextLine[temp++]
-//                            val stok = nextLine[temp++]
-//                            val tanggalProdukEntity = nextLine[temp++]
-//                            val produk = ProdukEntity(idProduk.toInt(),barcode.toInt(),namaProdukEntity,deskripsi,modal.toDouble(),hargaJual.toDouble(),satuan.toInt(),stok.toInt(),tanggalProdukEntity.replace(".",","))
-//                            dataProdukviewModel.insertRecordProduk(produk)
-//                        }
-//                    }
-
                     if(nextLine[temp].isNotEmpty()){
-//                        Log.d(TAG, "importCsv: masuk ${nextLine[temp+1].toInt()}")
+//                        Log.d(TAG, "importCsv: next = ${nextLine[temp+1].toString()}")
+//                        Log.d(TAG, "importCsv: next = ${nextLine[temp+2].toString()}")
+//                        Log.d(TAG, "importCsv: test ${nextLine[temp+1].toString()}")
+//                        Log.d(TAG, "importCsv: test ${nextLine[temp.minus(1)].toString()}")
+
                         temp+=1
-//                        Log.d(TAG, "importCsv: counter: ${nextLine[temp-1].toInt()}")
-//                        Log.d(TAG, "importCsv: counterOri ${nextLine[temp].toInt()}")
+//                        Log.d(TAG, "importCsv: test ")
+
+//                        Log.d(TAG, "importCsv: nextLine = ${nextLine[temp].toInt()}")
+
                         for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
-//                            Log.d(TAG, "importCsv: tes masuk")
+                            Log.d(TAG, "importCsv: transaksi tes masuk")
+                            temp++
                             val idTransaksi = nextLine[temp++]
                             val tanggalTransaksi = nextLine[temp++]
-                            val transaksi = TransaksiEntity(idTransaksi.toInt(),tanggalTransaksi.replace(".",","))
+                            val transaksi = TransaksiEntity(idTransaksi,tanggalTransaksi.replace(".",","))
+                            Log.d(TAG, "importCsv: transaksi = ${transaksi}")
                             temp++
-                            Log.d(TAG, "importCsv: transaksi = ${idTransaksi}\n${tanggalTransaksi}\n")
 
                             transaksiViewModel.insertTransaksi(transaksi)
                         }
@@ -174,34 +142,17 @@ class PengaturanFragment : Fragment() {
                     }
 
 
-//                    if(nextLine[temp+1].isNotEmpty()){
-////                        Log.d(TAG, "importCsv: masuk ${nextLine[temp+1].toInt()}")
-//                        temp+=1
-////                        Log.d(TAG, "importCsv: counter: ${nextLine[temp-1].toInt()}")
-////                        Log.d(TAG, "importCsv: counterOri ${nextLine[temp].toInt()}")
-//                        for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
-////                            Log.d(TAG, "importCsv: tes masuk")
-//                            val idTransaksi = nextLine[temp++]
-//                            val tanggalTransaksi = nextLine[temp++]
-//                            val transaksi = TransaksiEntity(idTransaksi.toInt(),tanggalTransaksi.replace(".",","))
-//                            temp++
-//                            Log.d(TAG, "importCsv: transaksi = ${idTransaksi}\n${tanggalTransaksi}\n")
-//
-//                            transaksiViewModel.insertTransaksi(transaksi)
-//                        }
-//                        temp--
-//                    }
-
                     if(nextLine[temp].isNotEmpty()){
 //                        Log.d(TAG, "importCsv: masuk ${nextLine[temp].toInt()}")
                         temp +=1
 //                        Log.d(TAG, "importCsv: counter: ${nextLine[temp-1].toInt()}")
 //                        Log.d(TAG, "importCsv: counterOri ${nextLine[temp].toInt()}")
                         for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
+                            temp++
                             val idProdukTransaksiProdukEntity = nextLine[temp++]
                             val idTransaksiTransaksiProdukEntity= nextLine[temp++]
                             val qtyTransaksiProdukEntity= nextLine[temp++]
-                            val transaksiProduk = TransaksiProdukEntity(idProdukTransaksiProdukEntity.toInt(),idTransaksiTransaksiProdukEntity.toInt(),qtyTransaksiProdukEntity.toInt())
+                            val transaksiProduk = TransaksiProdukEntity(idProdukTransaksiProdukEntity.toInt(),idTransaksiTransaksiProdukEntity,qtyTransaksiProdukEntity.toInt())
                             Log.d(TAG, "importCsv: transaksiProduk = \n${idProdukTransaksiProdukEntity}\n${idTransaksiTransaksiProdukEntity}\n${qtyTransaksiProdukEntity}\n")
                             temp++
                             transaksiViewModel.insertTransaksiProdukRecord(transaksiProduk)
@@ -214,7 +165,9 @@ class PengaturanFragment : Fragment() {
                         temp +=1
                         Log.d(TAG, "importCsv: counter: ${nextLine[temp].toInt()}")
                         Log.d(TAG, "importCsv: counter: ${nextLine[temp-1].toInt()}")
+
                         for (i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
+                            temp++
                             val idHistori = nextLine[temp++]
                             Log.d(TAG, "importCsv idhistori: $idHistori")
                             val total = nextLine[temp++]
@@ -224,18 +177,15 @@ class PengaturanFragment : Fragment() {
                             val kembalian = nextLine[temp++]
                             val catatan = nextLine[temp++]
                             val produkDibeli = nextLine[temp++]
-                            Log.d(TAG, "importCsv produkDibeli: $produkDibeli")
                             val jumlahProdukDibeli= nextLine[temp++]
                             Log.d(TAG, "importCsv jumlahProdukDibeli: $jumlahProdukDibeli")
-                            val invoice = nextLine[temp++]
-                            Log.d(TAG, "importCsv invoice: $invoice")
                             val pembayaran = nextLine[temp++]
                             Log.d(TAG, "importCsv pembayaran: $pembayaran")
                             val statusBayar = nextLine[temp++]
                             Log.d(TAG, "importCsv statusBayar: $statusBayar")
                             val tanggal = nextLine[temp++]
                             Log.d(TAG, "importCsv tanggal: $tanggal")
-                            val historiTransaksi = HistoriTransaksiEntity(idHistori.toLong(),total.toDouble(),diskon.toDouble(),bayar.toDouble(),kembalian.toDouble(),catatan,produkDibeli.replace(".",","),jumlahProdukDibeli.toInt(),invoice,pembayaran,statusBayar,tanggal.replace(".",","))
+                            val historiTransaksi = HistoriTransaksiEntity(idHistori,total.toDouble(),diskon.toDouble(),bayar.toDouble(),kembalian.toDouble(),catatan,produkDibeli.replace("*","\n").replace(".",":"),jumlahProdukDibeli.toInt(),pembayaran,statusBayar,tanggal.replace(".",","))
                             temp++
                             viewModel.tempTransaksi.value?.add(historiTransaksi)
                             transaksiViewModel.insertHistoriTransaksi(historiTransaksi)
@@ -246,12 +196,25 @@ class PengaturanFragment : Fragment() {
                     if(nextLine[temp].isNotEmpty()){
                         temp += 1
                         for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
+                            temp++
                             val idGrafik = nextLine[temp++]
                             val totalGrafikEntity = nextLine[temp++]
                             val tanggal = nextLine[temp++]
-                            val grafik = GrafikEntity(idGrafik.toInt(),totalGrafikEntity.toDouble(),tanggal)
+                            val grafik = GrafikEntity(idGrafik,totalGrafikEntity.toDouble(),tanggal.replace(".",","))
                             temp++
                             transaksiViewModel.insertDataGrafik(grafik)
+                        }
+                        temp--
+                    }
+                    if(nextLine[temp].isNotEmpty()){
+                        temp += 1
+                        for(i in nextLine[temp].toInt()..nextLine[temp-1].toInt()){
+                            temp++
+                            val idFilterGrafik = nextLine[temp++]
+                            val date = nextLine[temp++]
+                            val filterGrafik = FilterGrafikEntity(idFilterGrafik.toInt(),date.replace(".",","))
+                            temp++
+                            transaksiViewModel.insertFilterGrafik(filterGrafik)
                         }
                     }
 
@@ -292,16 +255,19 @@ class PengaturanFragment : Fragment() {
 //        val br = BufferedReader(FileReader(file))
             if(!folder.exists()){
                 Toast.makeText(requireContext(), "Klik 1x lagi untuk backup data..", Toast.LENGTH_SHORT).show()
+                folder.delete()
                 folder.mkdir()
             }else{
-                if(imageFile.exists()) imageFile.delete()
+//                if(imageFile.exists()) imageFile.delete()
                 folder.delete()
                 if(file.exists()) {
                     file.delete()
+                }else{
+                    Toast.makeText(requireContext(), "Klik 1x lagi untuk backup data..", Toast.LENGTH_SHORT).show()
                 }
                 folder.mkdir()
             }
-            if(imageFile.exists()) imageFile.delete()
+//            if(imageFile.exists()) imageFile.delete()
 //        if(contents.isNotEmpty()) folder.delete()
 //        if (contents != null) {
 //            if(contents.isNotEmpty()){
@@ -316,12 +282,14 @@ class PengaturanFragment : Fragment() {
             var transaksiProdukRecord : ArrayList<TransaksiProdukEntity>? = null
             var historiTransaksiRecord : ArrayList<HistoriTransaksiEntity>? = null
             var grafikRecord : ArrayList<GrafikEntity>? = null
+            var filterGrafikRecord : ArrayList<FilterGrafikEntity>? = null
             profilRecord.clear()
             produkRecord?.clear()
             transaksiRecord?.clear()
             transaksiProdukRecord?.clear()
             historiTransaksiRecord?.clear()
             grafikRecord?.clear()
+            filterGrafikRecord?.clear()
             viewModel.getDataProfil.observe(viewLifecycleOwner){
                 if(it!=null){
                     profilRecord.add(it)
@@ -357,134 +325,169 @@ class PengaturanFragment : Fragment() {
                     grafikRecord = it
                 }
             }
+            transaksiViewModel.getFilterGrafik.observe(viewLifecycleOwner){
+                if(it!=null){
+                    filterGrafikRecord = it
+                }
+            }
             try {
                 lateinit var outputStream : OutputStream
                 val dirTarget = File("${Environment.getExternalStorageDirectory()}/BackupCatok/")
 
                 loadingDialog.start()
                 val fw = FileWriter(fileNameAndPath)
+                fun writeCsvFile(){
+                    for (i in profilRecord.indices){
+                        val imageFile = File(dirTarget,"Logo Toko.png")
+//                        if(imageFile.exists()){
+//                            imageFile.delete()
+//                        }
+                        try {
+                            outputStream = FileOutputStream(imageFile)
+                        }
+                        catch (e: FileNotFoundException) {e.printStackTrace()}
+                        finally {
+                            (sharedViewModel.getFotoToko.value?:profilRecord[i].gambar).compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                        }
 
-                for (i in profilRecord.indices){
-                    val imageFile = File(dirTarget,"Logo Toko.png")
-                    if(imageFile.exists()){
-                        imageFile.delete()
+                        Log.d(TAG, "Image berhasil disave ")
+                        try {
+                            outputStream.flush()
+                        }catch (e: IOException){e.printStackTrace()}
+                        try {
+                            outputStream.close()
+                        }catch (e: IOException){e.printStackTrace()}
+                        fw.append(""+profilRecord[i].id)
+                        fw.append(",")
+                        fw.append(""+profilRecord[i].namaToko)
+                        fw.append(",")
+                        fw.append(""+ "null")
                     }
-                    try {
-                        outputStream = FileOutputStream(imageFile)
+                    if (produkRecord!=null){
+                        for(i in produkRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${produkRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].id_produk)
+                            fw.append(",")
+                            fw.append(""+"-1")
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].namaProduk)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].deskripsi)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].modal)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].hargaJual)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].satuan)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].satuanPer)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].stok)
+                            fw.append(",")
+                            fw.append(""+produkRecord!![i].tanggal.replace(",","."))
+                        }
+
                     }
-                    catch (e: FileNotFoundException) {e.printStackTrace()}
-                    (bitmap2?:profilRecord[i].gambar).compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                    Log.d(TAG, "Image berhasil disave ")
-                    try {
-                        outputStream.flush()
-                    }catch (e: IOException){e.printStackTrace()}
-                    try {
-                        outputStream.close()
-                    }catch (e: IOException){e.printStackTrace()}
-                    fw.append(""+profilRecord[i].id)
-                    fw.append(",")
-                    fw.append(""+profilRecord[i].namaToko)
-                    fw.append(",")
-                    fw.append(""+ "null")
+                    if(transaksiRecord!=null){
+                        for(i in transaksiRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${transaksiRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+i.plus(1))
+                            fw.append(",")
+                            fw.append(""+transaksiRecord!![i].id_transaksi)
+                            fw.append(",")
+                            fw.append(""+transaksiRecord!![i].tanggal.replace(",","."))
+                        }
+                        for(i in transaksiProdukRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${transaksiProdukRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+i.plus(1))
+                            fw.append(",")
+                            fw.append(""+transaksiProdukRecord!![i].id_produk)
+                            fw.append(",")
+                            fw.append(""+transaksiProdukRecord!![i].id_transaksi)
+                            fw.append(",")
+                            fw.append(""+transaksiProdukRecord!![i].qty)
+                        }
+                        for(i in historiTransaksiRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${historiTransaksiRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+i.plus(1))
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].id_histori)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].total)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].diskon)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].bayar)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].kembalian)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].catatan)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].produkDibeli.replace("\n","*").replace(":","."))
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].jumlahProdukDibeli)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].pembayaran)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].statusBayar)
+                            fw.append(",")
+                            fw.append(""+historiTransaksiRecord!![i].tanggal.replace(",","."))
+                        }
+
+                        for(i in grafikRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${grafikRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+i.plus(1))
+                            fw.append(",")
+                            fw.append(""+grafikRecord!![i].id)
+                            fw.append(",")
+                            fw.append(""+grafikRecord!![i].totalTransaksi)
+                            fw.append(",")
+                            fw.append(""+grafikRecord!![i].tanggal.replace(",","."))
+                        }
+                        for(i in filterGrafikRecord!!.indices){
+                            fw.append(",")
+                            fw.append("${filterGrafikRecord!!.size}")
+                            fw.append(",")
+                            fw.append(""+i.plus(1))
+                            fw.append(",")
+                            fw.append(""+filterGrafikRecord!![i].id)
+                            fw.append(",")
+                            fw.append(""+filterGrafikRecord!![i].date.replace(",","."))
+                        }
+                    }
                 }
-                if (produkRecord!=null){
-                    for(i in produkRecord!!.indices){
-                        fw.append(",")
-                        fw.append("${produkRecord!!.size}")
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].id_produk)
-                        fw.append(",")
-                        fw.append(""+"-1")
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].namaProduk)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].deskripsi)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].modal)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].hargaJual)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].satuan)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].satuanPer)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].stok)
-                        fw.append(",")
-                        fw.append(""+produkRecord!![i].tanggal.replace(",","."))
-                    }
-
-                }
-                if(transaksiRecord!=null){
-                    for(i in transaksiRecord!!.indices){
-                        fw.append(",")
-                        fw.append("${transaksiRecord!!.size}")
-                        fw.append(",")
-                        fw.append(""+transaksiRecord!![i].id_transaksi)
-                        fw.append(",")
-                        fw.append(""+transaksiRecord!![i].tanggal.replace(",","."))
-                    }
-                    for(i in transaksiProdukRecord!!.indices){
-                        fw.append(",")
-                        fw.append("${transaksiProdukRecord!!.size}")
-                        fw.append(",")
-                        fw.append(""+transaksiProdukRecord!![i].id_produk)
-                        fw.append(",")
-                        fw.append(""+transaksiProdukRecord!![i].id_transaksi)
-                        fw.append(",")
-                        fw.append(""+transaksiProdukRecord!![i].qty)
-                    }
-                    for(i in historiTransaksiRecord!!.indices){
-                        fw.append(",")
-                        fw.append("${historiTransaksiRecord!!.size}")
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].id_histori)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].total)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].diskon)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].bayar)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].kembalian)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].catatan)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].produkDibeli.replace(",","."))
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].jumlahProdukDibeli)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].invoice)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].pembayaran)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].statusBayar)
-                        fw.append(",")
-                        fw.append(""+historiTransaksiRecord!![i].tanggal.replace(",","."))
-
-                    }
-
-                    for(i in grafikRecord!!.indices){
-                        fw.append(",")
-                        fw.append("${grafikRecord!!.size}")
-                        fw.append(",")
-                        fw.append(""+grafikRecord!![i].id)
-                        fw.append(",")
-                        fw.append(""+grafikRecord!![i].totalTransaksi)
-                        fw.append(",")
-                        fw.append(""+grafikRecord!![i].tanggal)
-                    }
-                }
-
+                writeCsvFile()
                 fw.flush()
                 fw.close()
+
                 loadingDialog.dismiss()
-                if (contents != null) {
-                    if(contents.isEmpty() || file.length()== 0L || file.length()<20L) Toast.makeText(requireContext(), "Klik 1x lagi untuk backup data..", Toast.LENGTH_SHORT).show()
-                    else showSnackbar(binding.backupData,"Backup Telah diexport ke $fileNameAndPath")
-                }
+
             }catch (e: Exception){
                 Toast.makeText(requireContext(), "Izin ditolak...", Toast.LENGTH_SHORT).show()
                 loadingDialog.dismiss()
+            }
+            finally {
+                if (contents != null) {
+                    if(contents.isEmpty() || file.length() == 0L || file.length()<=27L || !file.exists()) Toast.makeText(requireContext(), "Klik 1x lagi untuk backup data..", Toast.LENGTH_SHORT).show()
+                    else {
+                        showSnackbar(binding.backupData,"Backup Telah diexport ke $fileNameAndPath")
+                        binding.backupData.isClickable = false
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.backupData.isClickable = true
+                            requireActivity().startActivity(Intent(requireContext(), MainActivity::class.java))
+                        },1500)
+                    }
+                }
             }
         }
     }
@@ -517,23 +520,21 @@ class PengaturanFragment : Fragment() {
     private val transaksiViewModel: TransaksiViewModel by viewModel()
     private val viewModel: PengaturanViewModel by viewModel()
     private lateinit var loadingDialog: LoadingDialog
-    private val pickAndSaveImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == RESULT_OK){
-            val uriImage = result.data?.data
-            try {
-                val dirTarget = File("${Environment.getExternalStorageDirectory()}/BackupCatok/")
-                if(!dirTarget.exists()){
-                    dirTarget.mkdir()
-                }
-                val inputStream = requireContext().contentResolver.openInputStream(uriImage!!)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                bitmap2 = bitmap
-                sharedViewModel.fotoToko.value = bitmap
-                binding.circleImage.load(bitmap)
-                viewModel.insertProfil(ProfilEntity(id= 1, namaToko = binding.namaToko.text.toString()?:viewModel.getDataProfil.value!!.namaToko, gambar = bitmap?:binding.circleImage.drawable.toBitmap()))
-            } catch (e:FileNotFoundException){
-                e.printStackTrace()
+    private val pickAndSaveImage = registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+        val uriImage = result
+        try {
+            val dirTarget = File("${Environment.getExternalStorageDirectory()}/BackupCatok/")
+            if(!dirTarget.exists()){
+                dirTarget.mkdir()
             }
+            val inputStream = requireContext().contentResolver.openInputStream(uriImage!!)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            bitmap2 = bitmap
+            sharedViewModel.fotoToko.value = bitmap
+            binding.circleImage.load(bitmap)
+            viewModel.updateProfil(nama = binding.namaToko.text.toString()?:viewModel.getDataProfil.value!!.namaToko, gambar = sharedViewModel.fotoToko.value?:bitmap?:binding.circleImage.drawable.toBitmap())
+        } catch (e:FileNotFoundException){
+            e.printStackTrace()
         }
     }
 
@@ -566,13 +567,12 @@ class PengaturanFragment : Fragment() {
             Log.d("PengaturanFragment", "getNamaToko: ${it}")
             if(it!=null){
                 binding.namaToko.text = it
-                viewModel.insertProfil(ProfilEntity(id= 1, namaToko = it, gambar = binding.circleImage.drawable.toBitmap()?:viewModel.dataProfil.value!!.gambar))
+                viewModel.updateProfil(nama = it, gambar = sharedViewModel.getFotoToko.value?:binding.circleImage.drawable.toBitmap()?:ContextCompat.getDrawable(requireContext(),R.drawable.ic_catok)!!.toBitmap())
                 Log.d(TAG, "insertProfil: ${viewModel.dataProfil.value?.namaToko.toString()}")
                 observeDataProfil()
-
             }
         }
-        sharedViewModel.namaToko.value = null
+
         observeDataProfil()
     }
 
@@ -580,7 +580,7 @@ class PengaturanFragment : Fragment() {
         viewModel.getDataProfil.observe(viewLifecycleOwner){
             Log.d("PengaturanFragment", "getDataProfil: ${it}")
             if(it!=null){
-                binding.circleImage.load(it.gambar?:sharedViewModel.getFotoToko.value)
+                binding.circleImage.load(sharedViewModel.getFotoToko.value?:it.gambar)
                 binding.namaToko.text = sharedViewModel.getNamaToko.value?:it.namaToko
             }
             else{
@@ -639,9 +639,7 @@ class PengaturanFragment : Fragment() {
                 }
             }
             editPhoto.setOnClickListener {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "image/*"
-                pickAndSaveImage.launch(intent)
+                pickAndSaveImage.launch("image/*")
             }
             editNama.setOnClickListener {
                 showDialogEditNama()

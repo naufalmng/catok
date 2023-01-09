@@ -1,5 +1,6 @@
 package org.d3ifcool.catok.ui.pengaturan
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,6 +24,11 @@ class PengaturanViewModel(private val repo: AppRepository): ViewModel() {
     fun insertProfil(profil: ProfilEntity){
         viewModelScope.launch(Dispatchers.IO){
             repo.insertProfil(profil)
+        }
+    }
+    fun updateProfil(nama: String, gambar: Bitmap){
+        viewModelScope.launch(Dispatchers.IO){
+            repo.updateProfil(nama,gambar)
         }
     }
 

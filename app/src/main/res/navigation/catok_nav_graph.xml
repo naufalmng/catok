@@ -73,7 +73,7 @@
             app:destination="@id/transaksiFragment" />
         <action
             android:id="@+id/action_transaksiFragment_to_detailHistoriTransaksiDialog"
-            app:destination="@id/detailHistoriTransaksiDialog" />
+            app:destination="@id/detailHistoriTransaksiFragment" />
     </fragment>
     <fragment
         android:id="@+id/transaksiDialog"
@@ -91,13 +91,13 @@
         android:name="org.d3ifcool.catok.ui.pengaturan.EditNamaDialog"
         android:label="dialog_edit_nama"
         tools:layout="@layout/dialog_edit_nama" />
-    <dialog
-        android:id="@+id/detailHistoriTransaksiDialog"
-        android:name="org.d3ifcool.catok.ui.beranda.transaksi.DetailHistoriTransaksiDialog"
+    <fragment
+        android:id="@+id/detailHistoriTransaksiFragment"
+        android:name="org.d3ifcool.catok.ui.beranda.transaksi.DetailHistoriTransaksiFragment"
         android:label="dialog_detail_histori_transaksi"
-        tools:layout="@layout/dialog_detail_histori_transaksi" >
+        tools:layout="@layout/fragment_detail_histori_transaksi" >
         <argument
             android:name="transaksi"
             app:argType="org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity" />
-    </dialog>
+    </fragment>
 </navigation>

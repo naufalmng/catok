@@ -106,6 +106,7 @@ class TransaksiAdapter(
             var tempCounter = mutableListOf<Int>()
             var produkIdList = mutableListOf<Int?>()
             var produkQtyList = mutableListOf<Int?>()
+            var produkSatuanPerList = mutableListOf<String?>()
             var produkNameList = mutableListOf<String?>()
             var produkPriceList = mutableListOf<Double?>()
             fun from(parent: ViewGroup): GridViewHolder {
@@ -242,6 +243,7 @@ class TransaksiAdapter(
                                     LinearViewHolder.produkIdList,
                                     LinearViewHolder.produkNameList,
                                     LinearViewHolder.produkQtyList,
+                                    LinearViewHolder.produkSatuanPerList,
                                     LinearViewHolder.produkPriceList
                                 )
                                 Log.d(TAG, "bind>0: produkIdList = ${LinearViewHolder.produkIdList}")
@@ -284,6 +286,7 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkQtyList[LinearViewHolder.produkIdList.indexOf(
                                     id
                                 )] = counter
+                                LinearViewHolder.produkSatuanPerList[LinearViewHolder.produkIdList.indexOf(id)] = produkList[position].satuanPer
                                 LinearViewHolder.produkPriceList[LinearViewHolder.produkIdList.indexOf(
                                     id
                                 )] = produkList[position].hargaJual * counter
@@ -291,6 +294,7 @@ class TransaksiAdapter(
                                     LinearViewHolder.produkIdList,
                                     LinearViewHolder.produkNameList,
                                     LinearViewHolder.produkQtyList,
+                                    LinearViewHolder.produkSatuanPerList,
                                     LinearViewHolder.produkPriceList
                                 )
                                 Log.d(TAG, "bind>1: produkIdList = ${LinearViewHolder.produkIdList}")
@@ -333,6 +337,7 @@ class TransaksiAdapter(
                         }
                     }
                     binding.counter.removeTextChangedListener(textWatcher)
+                    binding.satuanPer.text = satuanPer
 
                     Log.d(TAG, "onBindViewHolder: ${produkFilterList[absoluteAdapterPosition]==LinearViewHolder.tempFirstPos}")
                     fun observeItem(tempProduk: List<ProdukEntity>, tempCounter: List<Int>) {
@@ -403,13 +408,14 @@ class TransaksiAdapter(
                             LinearViewHolder.produkNameList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                             LinearViewHolder.produkPriceList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                             LinearViewHolder.produkQtyList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
+                            LinearViewHolder.produkSatuanPerList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                             LinearViewHolder.produkIdList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
-
                         }
                         val produk = Produk(
                             LinearViewHolder.produkIdList,
                             LinearViewHolder.produkNameList,
                             LinearViewHolder.produkQtyList,
+                            LinearViewHolder.produkSatuanPerList,
                             LinearViewHolder.produkPriceList
                         )
                         Log.d(TAG, "removeBtn: $produk")
@@ -510,8 +516,7 @@ class TransaksiAdapter(
                     binding.namaProduk.text = namaProduk
                     binding.deskripsi.text = deskripsi
                     binding.harga.text = itemView.context.getString(R.string.harga_jual_arg_2, hargaJual.toRupiahFormat(), satuan.toString(),satuanPer)
-                    binding.stok.text =
-                        itemView.context.getString(R.string.stok_arg, stok.toString())
+                    binding.stok.text = itemView.context.getString(R.string.stok_arg, stok.toString())
 
                     fun addDataProduk() {
                         if(!LinearViewHolder.tempProduk.contains(produkFilterList[position]) && counter > 0){
@@ -526,6 +531,9 @@ class TransaksiAdapter(
                         LinearViewHolder.produkNameList.add(
                             LinearViewHolder.produkIdList.indexOf(id),
                             namaProduk
+                        )
+                        LinearViewHolder.produkSatuanPerList.add(
+                            LinearViewHolder.produkIdList.indexOf(id), satuanPer
                         )
                         LinearViewHolder.produkPriceList.add(
                             LinearViewHolder.produkIdList.indexOf(
@@ -565,6 +573,7 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkIdList,
                                 LinearViewHolder.produkNameList,
                                 LinearViewHolder.produkQtyList,
+                                LinearViewHolder.produkSatuanPerList,
                                 LinearViewHolder.produkPriceList
                             )
                             Log.d(TAG, "bind: tempProduk = ${LinearViewHolder.tempProduk}, tempCounter = ${LinearViewHolder.tempCounter}")
@@ -595,6 +604,7 @@ class TransaksiAdapter(
                             LinearViewHolder.produkNameList[LinearViewHolder.produkIdList.indexOf(id)] = produkList[position].namaProduk
                             LinearViewHolder.produkQtyList[LinearViewHolder.produkIdList.indexOf(id)] =
                                 counter
+                            LinearViewHolder.produkSatuanPerList[LinearViewHolder.produkIdList.indexOf(id)] = satuanPer
                             LinearViewHolder.produkPriceList[LinearViewHolder.produkIdList.indexOf(
                                 id
                             )] = produkList[position].hargaJual * counter
@@ -602,6 +612,7 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkIdList,
                                 LinearViewHolder.produkNameList,
                                 LinearViewHolder.produkQtyList,
+                                LinearViewHolder.produkSatuanPerList,
                                 LinearViewHolder.produkPriceList
                             )
                             Log.d(TAG, "bind: produkIdList = ${LinearViewHolder.produkIdList}")
@@ -645,6 +656,7 @@ class TransaksiAdapter(
                                     LinearViewHolder.produkNameList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                     LinearViewHolder.produkPriceList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                     LinearViewHolder.produkQtyList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
+                                    LinearViewHolder.produkSatuanPerList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                     LinearViewHolder.produkIdList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                 }
                             }
@@ -659,6 +671,7 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkQtyList[LinearViewHolder.produkIdList.indexOf(
                                     id
                                 )] = counter
+                                LinearViewHolder.produkSatuanPerList[LinearViewHolder.produkIdList.indexOf(id)] = satuanPer
                                 LinearViewHolder.produkPriceList[LinearViewHolder.produkIdList.indexOf(
                                     id
                                 )] = produkList[position].hargaJual * counter
@@ -669,6 +682,7 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkIdList,
                                 LinearViewHolder.produkNameList,
                                 LinearViewHolder.produkQtyList,
+                                LinearViewHolder.produkSatuanPerList,
                                 LinearViewHolder.produkPriceList
                             )
                             handler.onMinButtonClick(position, produkList, counter, produk)
@@ -717,12 +731,14 @@ class TransaksiAdapter(
                                 LinearViewHolder.produkNameList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                 LinearViewHolder.produkPriceList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                 LinearViewHolder.produkQtyList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
+                                LinearViewHolder.produkSatuanPerList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                                 LinearViewHolder.produkIdList.removeAt(LinearViewHolder.produkIdList.indexOf(id))
                             }
                             val produk = Produk(
                                 LinearViewHolder.produkIdList,
                                 LinearViewHolder.produkNameList,
                                 LinearViewHolder.produkQtyList,
+                                LinearViewHolder.produkSatuanPerList,
                                 LinearViewHolder.produkPriceList
                             )
                             binding.min2.backgroundTintList =
@@ -800,7 +816,7 @@ class TransaksiAdapter(
                         binding.rootView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rectangle_10r)
                         binding.counterCardView.strokeColor = ContextCompat.getColor(itemView.context, R.color.abuB)
                     }
-                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan,satuanPer, stok, tanggal) = produkFilterList[position]
+                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan,satuanPer, stok, tanggal,) = produkFilterList[position]
 
                     Log.d(
                         TAG,
@@ -826,6 +842,11 @@ class TransaksiAdapter(
                                 GridViewHolder.produkIdList.indexOf(
                                     id
                                 ), namaProduk
+                            )
+                            GridViewHolder.produkSatuanPerList.add(
+                                GridViewHolder.produkIdList.indexOf(
+                                    id
+                                ), satuanPer
                             )
                             GridViewHolder.produkPriceList.add(
                                 GridViewHolder.produkIdList.indexOf(
@@ -855,6 +876,7 @@ class TransaksiAdapter(
                                     GridViewHolder.produkIdList,
                                     GridViewHolder.produkNameList,
                                     GridViewHolder.produkQtyList,
+                                    GridViewHolder.produkSatuanPerList,
                                     GridViewHolder.produkPriceList
                                 )
                                 Log.d(TAG, "bind>0: produkIdList = ${GridViewHolder.produkIdList}")
@@ -897,6 +919,7 @@ class TransaksiAdapter(
                                 GridViewHolder.produkQtyList[GridViewHolder.produkIdList.indexOf(
                                     id
                                 )] = counter
+                                GridViewHolder.produkSatuanPerList[GridViewHolder.produkIdList.indexOf(id)] = produkList[position].satuanPer
                                 GridViewHolder.produkPriceList[GridViewHolder.produkIdList.indexOf(
                                     id
                                 )] = produkList[position].hargaJual * counter
@@ -904,6 +927,7 @@ class TransaksiAdapter(
                                     GridViewHolder.produkIdList,
                                     GridViewHolder.produkNameList,
                                     GridViewHolder.produkQtyList,
+                                    GridViewHolder.produkSatuanPerList,
                                     GridViewHolder.produkPriceList
                                 )
                                 Log.d(TAG, "bind>1: produkIdList = ${GridViewHolder.produkIdList}")
@@ -946,6 +970,7 @@ class TransaksiAdapter(
                         }
                     }
                     binding.counter.removeTextChangedListener(textWatcher)
+                    binding.satuanPer.text = satuanPer
 
                     Log.d(TAG, "onBindViewHolder: ${produkFilterList[absoluteAdapterPosition]==GridViewHolder.tempFirstPos}")
                     fun observeItem(tempProduk: List<ProdukEntity>, tempCounter: List<Int>) {
@@ -1016,13 +1041,14 @@ class TransaksiAdapter(
                             GridViewHolder.produkNameList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                             GridViewHolder.produkPriceList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                             GridViewHolder.produkQtyList.removeAt(GridViewHolder.produkIdList.indexOf(id))
+                            GridViewHolder.produkSatuanPerList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                             GridViewHolder.produkIdList.removeAt(GridViewHolder.produkIdList.indexOf(id))
-
                         }
                         val produk = Produk(
                             GridViewHolder.produkIdList,
                             GridViewHolder.produkNameList,
                             GridViewHolder.produkQtyList,
+                            GridViewHolder.produkSatuanPerList,
                             GridViewHolder.produkPriceList
                         )
                         Log.d(TAG, "removeBtn: $produk")
@@ -1123,8 +1149,7 @@ class TransaksiAdapter(
                     binding.namaProduk.text = namaProduk
                     binding.deskripsi.text = deskripsi
                     binding.harga.text = itemView.context.getString(R.string.harga_jual_arg_2, hargaJual.toRupiahFormat(), satuan.toString(),satuanPer)
-                    binding.stok.text =
-                        itemView.context.getString(R.string.stok_arg, stok.toString())
+                    binding.stok.text = itemView.context.getString(R.string.stok_arg, stok.toString())
 
                     fun addDataProduk() {
                         if(!GridViewHolder.tempProduk.contains(produkFilterList[position]) && counter > 0){
@@ -1139,6 +1164,9 @@ class TransaksiAdapter(
                         GridViewHolder.produkNameList.add(
                             GridViewHolder.produkIdList.indexOf(id),
                             namaProduk
+                        )
+                        GridViewHolder.produkSatuanPerList.add(
+                            GridViewHolder.produkIdList.indexOf(id), satuanPer
                         )
                         GridViewHolder.produkPriceList.add(
                             GridViewHolder.produkIdList.indexOf(
@@ -1178,6 +1206,7 @@ class TransaksiAdapter(
                                 GridViewHolder.produkIdList,
                                 GridViewHolder.produkNameList,
                                 GridViewHolder.produkQtyList,
+                                GridViewHolder.produkSatuanPerList,
                                 GridViewHolder.produkPriceList
                             )
                             Log.d(TAG, "bind: tempProduk = ${GridViewHolder.tempProduk}, tempCounter = ${GridViewHolder.tempCounter}")
@@ -1208,6 +1237,7 @@ class TransaksiAdapter(
                             GridViewHolder.produkNameList[GridViewHolder.produkIdList.indexOf(id)] = produkList[position].namaProduk
                             GridViewHolder.produkQtyList[GridViewHolder.produkIdList.indexOf(id)] =
                                 counter
+                            GridViewHolder.produkSatuanPerList[GridViewHolder.produkIdList.indexOf(id)] = satuanPer
                             GridViewHolder.produkPriceList[GridViewHolder.produkIdList.indexOf(
                                 id
                             )] = produkList[position].hargaJual * counter
@@ -1215,6 +1245,7 @@ class TransaksiAdapter(
                                 GridViewHolder.produkIdList,
                                 GridViewHolder.produkNameList,
                                 GridViewHolder.produkQtyList,
+                                GridViewHolder.produkSatuanPerList,
                                 GridViewHolder.produkPriceList
                             )
                             Log.d(TAG, "bind: produkIdList = ${GridViewHolder.produkIdList}")
@@ -1258,6 +1289,7 @@ class TransaksiAdapter(
                                     GridViewHolder.produkNameList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                     GridViewHolder.produkPriceList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                     GridViewHolder.produkQtyList.removeAt(GridViewHolder.produkIdList.indexOf(id))
+                                    GridViewHolder.produkSatuanPerList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                     GridViewHolder.produkIdList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                 }
                             }
@@ -1272,6 +1304,7 @@ class TransaksiAdapter(
                                 GridViewHolder.produkQtyList[GridViewHolder.produkIdList.indexOf(
                                     id
                                 )] = counter
+                                GridViewHolder.produkSatuanPerList[GridViewHolder.produkIdList.indexOf(id)] = satuanPer
                                 GridViewHolder.produkPriceList[GridViewHolder.produkIdList.indexOf(
                                     id
                                 )] = produkList[position].hargaJual * counter
@@ -1282,6 +1315,7 @@ class TransaksiAdapter(
                                 GridViewHolder.produkIdList,
                                 GridViewHolder.produkNameList,
                                 GridViewHolder.produkQtyList,
+                                GridViewHolder.produkSatuanPerList,
                                 GridViewHolder.produkPriceList
                             )
                             handler.onMinButtonClick(position, produkList, counter, produk)
@@ -1330,12 +1364,14 @@ class TransaksiAdapter(
                                 GridViewHolder.produkNameList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                 GridViewHolder.produkPriceList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                 GridViewHolder.produkQtyList.removeAt(GridViewHolder.produkIdList.indexOf(id))
+                                GridViewHolder.produkSatuanPerList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                                 GridViewHolder.produkIdList.removeAt(GridViewHolder.produkIdList.indexOf(id))
                             }
                             val produk = Produk(
                                 GridViewHolder.produkIdList,
                                 GridViewHolder.produkNameList,
                                 GridViewHolder.produkQtyList,
+                                GridViewHolder.produkSatuanPerList,
                                 GridViewHolder.produkPriceList
                             )
                             binding.min2.backgroundTintList =

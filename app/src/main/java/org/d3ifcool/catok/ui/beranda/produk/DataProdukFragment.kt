@@ -33,6 +33,7 @@ import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 
 @SuppressLint("ClickableViewAccessibility")
@@ -70,14 +71,12 @@ class DataProdukFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if(savedInstanceState!=null){
-            produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
             if(produkAdapter.getSelection().isNotEmpty()){
                 val activity = requireActivity() as MainActivity
                 actionMode = activity.startSupportActionMode(actionModeCallback)
             }
         }
         super.onViewCreated(view, savedInstanceState)
-
         setupMenu()
 //        binding.llHeader.searchView.setupSearchView()
         setupListeners()
@@ -96,7 +95,6 @@ class DataProdukFragment : Fragment() {
                 menuInflater.inflate(R.menu.search_menu, menu)
                 val searchItem = menu.findItem(R.id.action_search)
                 val searchView = searchItem?.actionView as SearchView
-
                 searchView.findViewById<View>(androidx.appcompat.R.id.search_plate).setBackgroundColor(Color.TRANSPARENT)
                 searchView.queryHint = getString(R.string.pencarian)
                 val searchAutoCompleteTextView = searchView.findViewById(resources.getIdentifier("search_src_text", "id",requireActivity().packageName)) as SearchView.SearchAutoComplete
@@ -110,26 +108,18 @@ class DataProdukFragment : Fragment() {
                     }
 
                     override fun onQueryTextChange(text: String?): Boolean {
-                        produkAdapter = DataProdukAdapter(viewModel.isLinearLayoutManager,handler)
-                        viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
-                        Log.d("DAS", "onQueryTextChange: ${produkAdapter.itemCount}")
-                        produkAdapter.filter.filter(text.toString())
+                        try {
+                            produkAdapter.filter.filter(text.toString())
+                        }catch (e: Exception){}
+                        finally {
+                            viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
 
-                        viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
+                        }
+
                         if(text?.isEmpty() == true){
                             produkAdapter.produkFilterList = produkAdapter.produkList
                             viewModel.isDataProdukEmpty.value = produkAdapter.currentList.isNullOrEmpty()
                         }
-
-
-//                        if(produkAdapter.isDataEmpty == true){
-//
-////                            viewModel.isDataProdukEmpty.value = produkAdapter.produkFilterList.size<=0
-//                        }else {
-//                            produkAdapter.produkFilterList = produkAdapter.produkList
-//                            viewModel.isDataProdukEmpty.value = false
-//                        }
-
                         return false
                     }
                 })
@@ -179,6 +169,9 @@ class DataProdukFragment : Fragment() {
         viewModel.getDataProduk.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 viewModel.isDataProdukEmpty.value = true
+                setupRecyclerViews()
+                produkAdapter.updateData(it)
+
             }else{
                 viewModel.isDataProdukEmpty.value = false
                 setupRecyclerViews()

@@ -1,15 +1,14 @@
 package org.d3ifcool.catok
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -18,8 +17,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.runner.AndroidJUnit4
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiSelector
@@ -29,7 +28,7 @@ import org.d3ifcool.catok.ui.beranda.produk.DataProdukDialog
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.utils.CatokApp
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -85,7 +84,6 @@ class DataProdukFragmentTest {
         onView(withRecyclerView(R.id.recyclerViewDataProduk).atPositionOnView(0,R.id.namaProduk)).check(matches(withText("Bala-Bala")))
     }
 
-    @Ignore
     @Test
     fun testTambahProduk() {
         val args = Bundle()
@@ -137,6 +135,12 @@ class DataProdukFragmentTest {
             .check(matches(isDisplayed()))
             .perform(replaceText("1"))
             .check(matches(withText("1")))
+
+        onView(withId(R.id.spinnerSatuanPer)).perform(click())
+        onView(withText(R.array.jenis_satuan)).perform(click())
+//        onData(anything()).atPosition(1).perform(click())
+//        onView(withId(R.id.spinnerSatuanPer)).check(matches(withSpinnerText(containsString("Pcs"))))
+
 
         // set stok awal produk
         onView(withId(R.id.etStokAwal))

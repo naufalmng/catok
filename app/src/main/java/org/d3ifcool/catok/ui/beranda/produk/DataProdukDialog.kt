@@ -51,6 +51,7 @@ class DataProdukDialog : DialogFragment() {
             tvTambahProduk.visibility = if (args.isInsert) View.VISIBLE else View.GONE
             tvEditProduk.visibility = if (args.isInsert) View.GONE else View.VISIBLE
         }
+        binding.spinnerSatuanPer.selectItemByIndex(0)
         return binding.root
     }
 
@@ -202,7 +203,7 @@ class DataProdukDialog : DialogFragment() {
                     etModal.getNumericValue(),
                     hargaJual = etHargaJual.getNumericValue(),
                     satuan = etSatuan.text.toString().toInt(),
-                    satuanPer = satuanPerValue,
+                    satuanPer =  if(satuanPerValue!="") satuanPerValue else "Pcs",
                     stok = etStokAwal.text.toString().toInt(),
                     tanggal = getCurrentDate()
                 )
@@ -221,7 +222,7 @@ class DataProdukDialog : DialogFragment() {
                             etModal.getNumericValue(),
                             etHargaJual.getNumericValue(),
                             etSatuan.text.toString().toInt(),
-                            satuanPerValue,
+                            if(satuanPerValue!="") satuanPerValue else "Pcs",
                             etStokAwal.text.toString().toInt(),
                             getCurrentDate()
                         )
@@ -237,12 +238,12 @@ class DataProdukDialog : DialogFragment() {
 
     private fun setupListeners() {
         with(binding) {
-            btnBatal.enableOnClickAnimation()
+            btnBatalSimpan.enableOnClickAnimation()
             btnSimpan.enableOnClickAnimation()
             btnSimpan.setOnClickListener {
                 setupProduk()
             }
-            btnBatal.setOnClickListener {
+            btnBatalSimpan.setOnClickListener {
                 dismiss()
             }
             spinnerSatuanPer.setOnSpinnerItemSelectedListener<String>{ oldIndex, oldItem, newIndex, text ->

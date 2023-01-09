@@ -1,5 +1,6 @@
 package org.d3ifcool.catok.core.data.repository
 
+import android.graphics.Bitmap
 import org.d3ifcool.catok.core.data.source.local.db.CatokDao
 import org.d3ifcool.catok.core.data.source.local.entities.*
 
@@ -27,11 +28,23 @@ class AppRepository(private val catokDao: CatokDao) {
     fun getDataGrafik() = catokDao.getDataGrafik()
     suspend fun deleteDataGrafik() = catokDao.deleteDataGrafik()
     suspend fun insertProfil(profil: ProfilEntity) = catokDao.insertProfil(profil)
+    suspend fun updateProfil(nama: String,gambar: Bitmap) = catokDao.updateProfil(nama,gambar)
     fun getProfil() = catokDao.getProfil()
     fun searchProduk(query: String) = catokDao.searchProduk(query)
     fun getListDataTransaksiProduk() = catokDao.getListDataTransaksiProduk()
     fun getDataTransaksi() = catokDao.getDataTransaksi()
     fun getArrayListDataHistoriTransaksi() = catokDao.getDataHistoriTransaksi()
+    fun getArrayListDataHistoriTransaksiByDate(date: String) = catokDao.getDataHistoriTransaksiByDate(date)
+    fun getFilterGrafik() = catokDao.getFilterGrafik()
+    fun clearFilterGrafik() = catokDao.clearFilterGrafik()
+    suspend fun insertFilterGrafik(filterGrafik: FilterGrafikEntity) = catokDao.insertFilterGrafik(filterGrafik)
+    suspend fun returTransaksi(id: Int,qty: Int) = catokDao.returTransaksi(id,qty)
+    suspend fun insertReturData(returEntity: ReturEntity) = catokDao.insertReturData(returEntity)
+    fun getReturEntity() = catokDao.getReturEntity()
+    suspend fun deleteHistoriTransaksiByInvoice(invoice: String) = catokDao.deleteHistoriTransaksiByInvoice(invoice)
+    suspend fun deleteGrafikDataById(invoice: String) = catokDao.deleteDataGrafikById(invoice)
+    suspend fun deleteTransaksiById(idTransaksi: String) = catokDao.deleteTransaksiById(idTransaksi)
+    suspend fun deleteTransaksiProdukById(idHistori: String) = catokDao.deleteTransaksiProdukById(idHistori)
 
 
 }

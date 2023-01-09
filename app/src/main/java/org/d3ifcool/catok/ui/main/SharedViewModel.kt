@@ -15,6 +15,7 @@ class SharedViewModel: ViewModel() {
     val getFotoToko : LiveData<Bitmap> = fotoToko
     var namaToko = MutableLiveData<String?>()
     val getNamaToko : LiveData<String?> = namaToko
+    var totalTransaksi = MutableLiveData(0.0)
 
     var jenisPembayaran = MutableLiveData<String>("")
     var totalDenganDiskon = MutableLiveData<Double>(0.0)
@@ -28,6 +29,7 @@ class SharedViewModel: ViewModel() {
     var jumlahBayar = MutableLiveData(0.0)
     val hasilDiskon = MutableLiveData<BigDecimal>()
     var tempDataProduk = MutableLiveData<Produk?>()
+
     var tempQty = MutableLiveData<Int>(0)
     var isSearchViewVisible = MutableLiveData<Boolean>(true)
 
@@ -37,4 +39,41 @@ class SharedViewModel: ViewModel() {
     val _isDialogPembayaran = MutableLiveData<Boolean>(false)
     val isDialogPembayaran: LiveData<Boolean> = _isDialogPembayaran
     val isBackPressed = MutableLiveData<Int>(0)
+
+    fun getProdukIdList(): List<Int>{
+        lateinit var produkIdList: ArrayList<Int>
+        for (i in tempDataProduk.value!!.produkIdList!!.indices){
+            produkIdList.add(tempDataProduk.value!!.produkIdList?.get(i)!!)
+        }
+        return produkIdList
+    }
+    fun getProdukNameList(): List<String>{
+        lateinit var list: ArrayList<String>
+        for (i in tempDataProduk.value!!.produkIdList!!.indices){
+            list.add(tempDataProduk.value!!.produkNameList?.get(i)!!)
+        }
+        return list
+    }
+    fun getProdukQtyList(): List<Int>{
+        lateinit var list: ArrayList<Int>
+        for (i in tempDataProduk.value!!.produkIdList!!.indices){
+            list.add(tempDataProduk.value!!.produkQtyList?.get(i)!!)
+        }
+        return list
+    }
+    fun getProdukSatuanPerList(): List<String>{
+        lateinit var list: ArrayList<String>
+        for (i in tempDataProduk.value!!.produkIdList!!.indices){
+            list.add(tempDataProduk.value!!.produkSatuanPerList?.get(i)!!)
+        }
+        return list
+    }
+    fun getProdukPriceList(): List<Double>{
+        lateinit var list: ArrayList<Double>
+        for (i in tempDataProduk.value!!.produkIdList!!.indices){
+            list.add(tempDataProduk.value!!.hargaProdukList?.get(i)!!)
+        }
+        return list
+    }
+
 }

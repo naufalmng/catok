@@ -1,22 +1,32 @@
-@file:Suppress("RedundantNullableReturnType", "unused")
-
 package org.d3ifcool.catok
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Toast
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.skydoves.powerspinner.DefaultSpinnerAdapter
+import kotlinx.coroutines.delay
+import okhttp3.internal.wait
 import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiAdapter
 import org.d3ifcool.catok.ui.main.MainActivity
+import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -26,9 +36,9 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DatabaseTest {
-    private var context: Context? = null
+    var context: Context? = null
     @get:Rule
-    val activityScenario = ActivityScenarioRule(MainActivity::class.java)
+    val activityScenario = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
 
     @Before
     fun init() {
@@ -45,19 +55,13 @@ class DatabaseTest {
             .check(matches(isDisplayed()))
             .perform(click())
 
-        insertDataProduk("Tempe Goreng","Gorengan","500","1000","1","100")
+        insertDataProduk("Terigu","Bahan-Bahan","15000","20000","1","100")
         insertDataProduk("Gehu Pedas","Gorengan","500","1000","1","100")
         insertDataProduk("Cireng","Gorengan","500","1000","1","100")
         insertDataProduk("Bala-Bala","Gorengan","500","1000","1","100")
-        insertDataProduk("Pisang Goreng","Gorengan","500","1000","1","100")
-        insertDataProduk("Molen","Gorengan","500","1000","1","100")
-        insertDataProduk("Ubi Goreng","Gorengan","500","1000","1","100")
-        insertDataProduk("Tahu Isi","Gorengan","500","1000","1","100")
-        insertDataProduk("Singkong Goreng","Gorengan","500","1000","1","100")
-        insertDataProduk("Combro","Gorengan","500","1000","1","100")
-        insertDataProduk("Misro","Gorengan","500","1000","1","100")
+        insertDataProduk("Tempe","Gorengan","500","1000","1","100")
     }
-    private fun insertDataProduk(namaProduk: String, deskripsi: String, modal: String, hargaJual: String, satuan: String, stokAwal: String){
+    fun insertDataProduk(namaProduk: String,deskripsi: String,modal: String,hargaJual: String,satuan: String,stokAwal: String){
         // set nama produk
         onView(withId(R.id.btnTambah))
             .check(matches(isDisplayed()))
@@ -113,7 +117,7 @@ class DatabaseTest {
         insertWrongDataProduk("Tempe","Gorengan","500","1000","","")
     }
 
-    private fun insertWrongDataProduk(namaProduk: String, deskripsi: String, modal: String, hargaJual: String, satuan: String, stokAwal: String){
+    fun insertWrongDataProduk(namaProduk: String,deskripsi: String,modal: String,hargaJual: String,satuan: String,stokAwal: String){
         // set nama produk
         onView(withId(R.id.btnTambah))
             .check(matches(isDisplayed()))
@@ -169,36 +173,44 @@ class DatabaseTest {
 
     }
 
-    @SuppressLint("IgnoreWithoutReason")
+    private fun waitFor(delay: Long): ViewAction? {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> = isRoot()
+            override fun getDescription(): String = "wait for $delay milliseconds"
+            override fun perform(uiController: UiController, v: View?) {
+                uiController.loopMainThreadForAtLeast(delay)
+            }
+        }
+    }
     @Ignore
     @Test
     fun testTransaksi(){
         onView(withId(R.id.transaksiProduk))
-            .check(matches(isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(click())
 
         onView(withId(R.id.btnTambah))
-            .check(matches(isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(click())
 
         onView(withId(R.id.recyclerViewDataTransaksi)).perform(RecyclerViewActions.actionOnItemAtPosition<TransaksiAdapter.LinearViewHolder>(0,clickChildViewWithId(R.id.plus)))
 
         onView(withId(R.id.btnSelanjutnya))
-            .check(matches(isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(click())
 
         onView(withId(R.id.etBayar))
             .perform(typeText("2000"))
-            .perform(closeSoftKeyboard())
+            .perform(ViewActions.closeSoftKeyboard())
             .perform(click())
 
         onView(withId(R.id.btnSimpan))
-            .check(matches(isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(click())
 
     }
 
-    private fun clickChildViewWithId(id: Int): ViewAction {
+    fun clickChildViewWithId(id: Int): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View>? {
                 return null
@@ -215,8 +227,8 @@ class DatabaseTest {
         }
     }
 
-    class ClickOnButtonView : ViewAction {
-        private var click = longClick()
+    class ClickOnButtonView(private val id: Int) : ViewAction {
+        private var click = ViewActions.longClick()
 
         override fun getConstraints(): Matcher<View> {
             return click.constraints

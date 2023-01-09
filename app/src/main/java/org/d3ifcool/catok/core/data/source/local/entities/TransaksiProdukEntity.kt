@@ -5,6 +5,6 @@ import androidx.room.Entity
 @Entity(tableName ="transaksiProduk", primaryKeys = ["id_produk","id_transaksi"])
 data class TransaksiProdukEntity (
     val id_produk: Int,
-    val id_transaksi: Int,
+    val id_transaksi: String,
     val qty: Int,
 )

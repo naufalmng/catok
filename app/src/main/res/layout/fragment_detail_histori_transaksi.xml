@@ -2,6 +2,7 @@
 <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="16dp"
@@ -24,13 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/nama_toko"
             style="@style/MediumTextStyle"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/abu80" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -48,13 +50,14 @@
                     android:layout_marginStart="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etBar"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_55sdp"
                         android:textColor="@color/orange"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
                         android:inputType="number"
-                        android:hint="@string/barcode"
+                        android:hint="Barcode"
                         android:gravity="top"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -87,7 +90,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
             style="@style/RegularTextStyle"
-            android:text="@string/dummy_invoice"
+            android:text="Invoice: CTK4208324829"
             android:textColor="@color/abu80" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -105,7 +108,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             style="@style/SemiboldTextStyle"
-            android:text="@string/dummy_produk"
+            android:text="Bala-Bala (50 Pcs) :   50.000\nGehu Pedas (5 Pcs) :   75.000\nIkan Hiu (100 Pcs) :   1.000.000"
             android:gravity="start"
             app:layout_constraintEnd_toEndOf="@id/guideline1"
             app:layout_constraintTop_toTopOf="parent"
@@ -126,7 +129,7 @@
                 android:columnCount="3">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="@dimen/_80sdp"
+                    android:layout_width="@dimen/_75sdp"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
                     style="@style/MediumTextStyle"
@@ -136,19 +139,20 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/subTotal"
                     android:layout_columnWeight="1"
-                    android:layout_marginTop="2dp"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/total_arg2"/>
+
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="@dimen/_75sdp"
@@ -161,17 +165,16 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/diskon"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/produk_dibeli_arg"/>
 
@@ -186,17 +189,16 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/total"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/total_arg2"/>
 
@@ -211,17 +213,16 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/bayar"
                     android:layout_columnWeight="1"
-                    android:layout_marginTop="2dp"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/total_arg2"/>
 
@@ -236,17 +237,16 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/kembalian"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
-                    android:layout_marginTop="2dp"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/total_arg2"/>
 
@@ -261,24 +261,22 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/catatan"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/total_arg2"/>
 
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="@dimen/_80sdp"
-                    android:maxLines="1"
+                    android:layout_width="@dimen/_75sdp"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
                     style="@style/MediumTextStyle"
@@ -288,22 +286,21 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/pembayaran"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/produk_dibeli_arg"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="@dimen/_85sdp"
+                    android:layout_width="@dimen/_75sdp"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
                     style="@style/MediumTextStyle"
@@ -313,17 +310,16 @@
                     android:layout_width="wrap_content"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     style="@style/MediumTextStyle"
-                    android:text="@string/bagi"/>
+                    android:text=":"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status"
                     android:layout_columnWeight="1"
                     android:textColor="@color/abu80"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end|bottom"
+                    android:gravity="end|center_vertical"
                     style="@style/MediumTextStyle"
                     android:text="@string/produk_dibeli_arg"/>
 
@@ -352,7 +348,7 @@
                 android:layout_marginEnd="3dp"
                 android:layout_gravity="center"
                 style="@style/RegularTextStyle"
-                android:text="@string/dummy_tanggal"
+                android:text="Senin, 18 Desember 2022 11:20"
                 android:textColor="@color/abu80" />
 
             <androidx.appcompat.widget.AppCompatImageView

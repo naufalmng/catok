@@ -31,8 +31,11 @@ import org.d3ifcool.catok.core.data.source.local.entities.ProfilEntity
 import org.d3ifcool.catok.databinding.ActivityMainBinding
 import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiAdapter
 import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiViewModel
+import org.d3ifcool.catok.ui.grafik.GrafikViewModel
 import org.d3ifcool.catok.ui.pengaturan.PengaturanViewModel
+import org.d3ifcool.catok.utils.getCurrentDate2
 import org.d3ifcool.catok.utils.getCurrentMonth
+import org.d3ifcool.catok.utils.getListDateOfMonth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
     private var isBackButtonPressedOnce = false
     private val viewModel: TransaksiViewModel by viewModel()
+    private val grafikViewModel: GrafikViewModel by viewModel()
     private val pengaturanViewModel: PengaturanViewModel by viewModel()
     private val dataStorePreferences: DataStorePreferences by lazy {
         DataStorePreferences(this.dataStore)
@@ -59,32 +63,63 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        viewModel.clearGraphicData()
+//        viewModel.deleteHistoriTransaksi()
+
         viewModel.getDataHistoriTransaksi.observe(this){
             for (i in it){
-                i.produkDibeli.replace("\n",".").replace(" ","")
-                Log.d("MainActivity", "onCreate: ${i.produkDibeli}")
-                Log.d("MainActivity", "onCreate: betul? ${i.produkDibeli.contains("\n")}")
+//                i.produkNameList produk.replace("\n",".").replace(" ","")
+//                Log.d("MainActivity", "onCreate: ${i.produk}")
+//                Log.d("MainActivity", "onCreate: betul? ${i.produk.contains("\n")}")
 
             }
         }
        if (pengaturanViewModel.getDataProfil.value==null){
-            pengaturanViewModel.insertProfil(ProfilEntity(id = 1,getString(R.string.nama_toko),ContextCompat.getDrawable(this,R.drawable.ic_catok)!!.toBitmap()))
+            pengaturanViewModel.insertProfil(ProfilEntity(id = 1, namaToko = getString(R.string.nama_toko), gambar = ContextCompat.getDrawable(this,R.drawable.ic_catok)!!.toBitmap()))
         }
+        dataStorePreferences.currentDatePrefFlow.asLiveData()
+            .observe(this){ date->
+                if(date==null){
+                    lifecycleScope.launch {
+                        dataStorePreferences.saveCurrentDate(this@MainActivity, getCurrentDate2())
+                    }
+//                    viewModel.clearFilterGrafik()
+                    for (i in getListDateOfMonth().indices){
+                        viewModel.insertFilterGrafik(getListDateOfMonth()[i])
+                    }
+                }else{
+                    if(date != getCurrentDate2()) {
+                        sharedViewModel.totalTransaksi.value = 0.0
+                        lifecycleScope.launch {
+                            dataStorePreferences.saveCurrentDate(this@MainActivity, getCurrentDate2())
+                        }
+//                        for (i in getListDateOfMonth().indices){
+//                            viewModel.insertFilterGrafik(getListDateOfMonth()[i])
+//                        }
+                    }
+                }
+
+
+            }
         dataStorePreferences.currentMonthPrefFlow.asLiveData()
-            .observe(this){ month->
+            .observe(this){month->
                 if(month==null){
                     lifecycleScope.launch {
                         dataStorePreferences.saveCurrentMonth(this@MainActivity, getCurrentMonth())
                     }
-                }else{
+                    for (i in getListDateOfMonth().indices){
+                        viewModel.insertFilterGrafik(getListDateOfMonth()[i])
+                    }
+                } else{
                     if(month != getCurrentMonth()) {
                         lifecycleScope.launch {
                             dataStorePreferences.saveCurrentMonth(this@MainActivity, getCurrentMonth())
                         }
-                        viewModel.clearGraphicData()
+                        for (i in getListDateOfMonth().indices){
+                            viewModel.insertFilterGrafik(getListDateOfMonth()[i])
+                        }
                     }
                 }
-
             }
 //        viewModel.deleteTransaksi()
 //        viewModel.deleteTransaksiProduk()
@@ -99,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.berandaFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
                 }
-                R.id.detailHistoriTransaksiDialog -> {
+                R.id.detailHistoriTransaksiFragment-> {
                     binding.toolbar.toolbar.visibility = View.GONE
                 }
                 R.id.transaksiFragment ->{
@@ -153,41 +188,43 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.toolbar.setNavigationOnClickListener {
             navigateUp(navController,config)
         }
+        binding.bottomNav.setupWithNavController(navController)
         setSupportActionBar(binding.toolbar.toolbar)
 //        binding.toolbar.toolbar.inflateMenu(R.menu.search_menu)
 
-        with(binding.bottomNav){
-            setOnItemSelectedListener{ item->
-                when(item.itemId){
-                    R.id.berandaFragment ->{
-                        navController.navigate(R.id.berandaFragment,null,options)
-                    }
-                    R.id.grafikFragment ->{
-                        navController.navigate(R.id.grafikFragment,null,options)
-                    }
-                    R.id.pengaturanFragment ->{
-                        navController.navigate(R.id.pengaturanFragment,null,options)
-                    }
-                }
-            true
-            }
-            setOnItemReselectedListener{ item->
-                when(item.itemId){
-                    R.id.berandaFragment ->{
-                        navController.navigate(R.id.berandaFragment,null,options)
-                    }
-                    R.id.grafikFragment ->{
-                        navController.navigate(R.id.grafikFragment,null,options)
-                    }
-                    R.id.pengaturanFragment ->{
-                        navController.navigate(R.id.pengaturanFragment,null,options)
-                    }
-                }
-
-            }
-        }
+//        with(binding.bottomNav){
+//            setOnItemSelectedListener{ item->
+//                when(item.itemId){
+//                    R.id.berandaFragment ->{
+//                        navController.navigate(R.id.berandaFragment,null,options)
+//                    }
+//                    R.id.grafikFragment ->{
+//                        navController.navigate(R.id.grafikFragment,null,options)
+//                    }
+//                    R.id.pengaturanFragment ->{
+//                        navController.navigate(R.id.pengaturanFragment,null,options)
+//                    }
+//                }
+//            true
+//            }
+////            setOnItemReselectedListener{ item->
+////                when(item.itemId){
+////                    R.id.berandaFragment ->{
+////                        navController.navigate(R.id.berandaFragment,null,options)
+////                    }
+////                    R.id.grafikFragment ->{
+////                        navController.navigate(R.id.grafikFragment,null,options)
+////                    }
+////                    R.id.pengaturanFragment ->{
+////                        navController.navigate(R.id.pengaturanFragment,null,options)
+////                    }
+////                }
+////
+////            }
+//        }
 //        requestPermission()
     }
+
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),PackageManager.PERMISSION_GRANTED)
@@ -196,6 +233,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         var navController :NavController= Navigation.findNavController(this, R.id.fragmentContainerView)
         Log.d("MainActivity", "onBackPressed: isBackPressed = ${sharedViewModel.isBackPressed.value}")
+
         if(navController.currentDestination?.id == R.id.dataProdukFragment){
             sharedViewModel.isBackPressed.value = -1
         }
@@ -217,6 +255,12 @@ class MainActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             isBackButtonPressedOnce = false
         },1000)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedViewModel.namaToko.value = null
+        sharedViewModel.fotoToko.value = null
     }
 
 

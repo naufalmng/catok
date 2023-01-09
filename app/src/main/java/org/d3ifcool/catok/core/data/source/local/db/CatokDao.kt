@@ -1,9 +1,11 @@
 package org.d3ifcool.catok.core.data.source.local.db
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.d3ifcool.catok.core.data.source.local.entities.*
+import java.util.logging.Filter
 
 @Dao
 interface CatokDao {
@@ -80,9 +82,14 @@ interface CatokDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProfil(profil: ProfilEntity)
+    @Query("UPDATE profilEntity SET namaToko = :nama,gambar = :gambar WHERE id = 1 ")
+    fun updateProfil(nama: String, gambar: Bitmap)
 
     @Query("SELECT * FROM profilEntity")
     fun getProfil(): ProfilEntity
+
+    @Query("UPDATE produk SET stok = stok+:qty WHERE id_produk=:id")
+    suspend fun returTransaksi(id:Int,qty: Int)
 
     @Query("SELECT * FROM profilEntity")
     fun getDataProfil(): LiveData<List<ProfilEntity>>
@@ -95,5 +102,31 @@ interface CatokDao {
     @Query("SELECT * FROM historiTransaksi")
     fun getDataHistoriTransaksi(): LiveData<List<HistoriTransaksiEntity>>
 
+    @Query("SELECT * FROM historiTransaksi WHERE tanggal = :date")
+    fun getDataHistoriTransaksiByDate(date: String): LiveData<List<HistoriTransaksiEntity>>
+
+    @Query("SELECT * FROM filterGrafik ORDER BY id ASC")
+    fun getFilterGrafik(): LiveData<List<FilterGrafikEntity>>
+
+    @Query("DELETE FROM filterGrafik")
+    fun clearFilterGrafik()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFilterGrafik(filterGrafik: FilterGrafikEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReturData(returEntity: ReturEntity)
+
+    @Query("SELECT * FROM returEntity")
+    fun getReturEntity(): LiveData<List<ReturEntity>>
+
+    @Query("DELETE FROM historiTransaksi WHERE id_histori = :invoice")
+    suspend fun deleteHistoriTransaksiByInvoice(invoice: String)
+    @Query("DELETE FROM grafikEntity WHERE id=:invoice")
+    suspend fun deleteDataGrafikById(invoice: String)
+    @Query("DELETE FROM transaksiEntity WHERE id_transaksi = :idTransaksi")
+    suspend fun deleteTransaksiById(idTransaksi: String)
+    @Query("DELETE FROM transaksiProduk WHERE id_transaksi =:idHistori")
+    suspend fun deleteTransaksiProdukById(idHistori: String)
 
 }

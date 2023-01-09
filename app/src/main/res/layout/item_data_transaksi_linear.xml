@@ -70,12 +70,25 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/stok"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/namaProduk"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@id/satuanPer"
+        android:layout_marginEnd="4dp"
         android:text="@string/stok_arg"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/satuanPer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/stok"
+        app:layout_constraintBottom_toBottomOf="@id/stok"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:text="Kg"
         android:textStyle="bold"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>
@@ -110,9 +123,7 @@
         android:elevation="0dp"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="@id/stok"
-        app:layout_constraintStart_toStartOf="@id/stok"
+        app:layout_constraintEnd_toEndOf="@id/satuanPer"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat

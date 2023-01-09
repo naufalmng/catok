@@ -21,7 +21,7 @@ import java.util.*
 @Suppress("UNCHECKED_CAST")
 class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true, private val handler: ClickHandler): ListAdapter<HistoriTransaksiEntity,RecyclerView.ViewHolder>(diffCallback),Filterable {
     companion object {
-        val selectionIds = ArrayList<Int>()
+        val selectionIds = ArrayList<String>()
         val diffCallback = object : DiffUtil.ItemCallback<HistoriTransaksiEntity>() {
             override fun areItemsTheSame(oldItem: HistoriTransaksiEntity, newItem: HistoriTransaksiEntity): Boolean {
                 return oldItem.id_histori == newItem.id_histori
@@ -51,7 +51,7 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
         selectionIds.clear()
         for(i in historiHistoriTransaksiFilterList.indices){
             val id = historiHistoriTransaksiFilterList[i].id_histori
-            selectionIds.add(id.toInt())
+            selectionIds.add(id)
             notifyDataSetChanged()
         }
 
@@ -60,12 +60,12 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
     fun toggleSelection(position: Int){
         val id = getItem(position).id_histori
         Log.d("DataProdukAdapter", "toggleSelection: $id")
-        if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
-        else selectionIds.add(id.toInt())
+        if(selectionIds.contains(id)) selectionIds.remove(id)
+        else selectionIds.add(id)
         notifyDataSetChanged()
     }
 
-    fun getSelection(): List<Int>{
+    fun getSelection(): List<String>{
         return selectionIds
     }
 
@@ -82,12 +82,12 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             }
         }
         fun bind(position: Int, historiTransaksiData: ArrayList<HistoriTransaksiEntity>, handler: ClickHandler){
-            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,invoice,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
-            binding.rootView.isSelected = selectionIds.contains(id_transaksi.toInt())
-            itemView.isSelected = selectionIds.contains(id_transaksi.toInt())
+            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
+            binding.rootView.isSelected = selectionIds.contains(id_transaksi)
+            itemView.isSelected = selectionIds.contains(id_transaksi)
             binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
             binding.tanggal.text = tanggal.toString()
-            binding.invoice.text = invoice
+            binding.invoice.text = id_transaksi
             binding.jenisPembayaran.text = pembayaran.addUnderline()
             binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
             itemView.setOnClickListener {
@@ -102,16 +102,16 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             }
         }
         fun bind(position: Int, historiTransaksiData: ArrayList<HistoriTransaksiEntity>, handler: ClickHandler){
-            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,invoice,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
+            val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
             }
             binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
             binding.tanggal.text = tanggal.toString()
-            binding.invoice.text = invoice
+            binding.invoice.text = id_transaksi
             binding.jenisPembayaran.text = pembayaran.addUnderline()
             binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
-            itemView.isSelected = selectionIds.contains(id_transaksi.toInt())
+            itemView.isSelected = selectionIds.contains(id_transaksi)
 
             itemView.setOnClickListener {
                 handler.onClick(historiTransaksiData[position])
@@ -150,7 +150,7 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
                     val resultList = ArrayList<HistoriTransaksiEntity>()
                     for(item in historiTransaksiList){
                         if(item.tanggal.toString().trim().contains(charSearch.lowercase(Locale.ROOT)) ||
-                            item.invoice.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
+                            item.id_histori.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.statusBayar.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.pembayaran.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.total.toString().trim().lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))

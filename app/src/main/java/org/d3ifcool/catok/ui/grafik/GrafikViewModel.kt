@@ -14,8 +14,10 @@ import kotlin.math.tan
 class GrafikViewModel(val repo: AppRepository): ViewModel() {
     val dataGrafik = repo.getListDataGrafik()
     //    var dataHari = MutableLiveData<List<String>>("Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu")
-    val entries = MutableLiveData<List<Entry>>()
-    val getEntries: LiveData<List<Entry>> = entries
+    val entries = MutableLiveData<List<Entry>?>()
+    val getEntries: LiveData<List<Entry>?> = entries
+    val listTanggal = MutableLiveData<ArrayList<String>>()
+    val getListTanggal: LiveData<ArrayList<String>> = listTanggal
     var monthList = MutableLiveData<ArrayList<String>>(getMonthList())
     var getMonthList: LiveData<ArrayList<String>> = monthList
     //    val getDataBulan: LiveData<String> = dataBulan
@@ -32,14 +34,22 @@ class GrafikViewModel(val repo: AppRepository): ViewModel() {
         }
 
     }
-    fun getDataGrafikByDate(tanggal: String){
+    fun getDataGrafikByDate(tanggal: String): List<GrafikEntity> {
         try {
             val listGrafik = repo.getListDataGrafikByDate(tanggal)
-            entries.postValue(getEntry(listGrafik))
+            var tanggalList = arrayListOf<String>()
+            for (i in listGrafik){
+               tanggalList.add(i.tanggal)
+            }
+            listTanggal.postValue(tanggalList)
+            if(listGrafik.isNullOrEmpty()) entries.postValue(null)
+             else entries.postValue(getEntry(listGrafik))
+            Log.d("GrafikViewModel", "getDataGrafikByDate: $listGrafik")
         }catch (e: Exception){
         Log.d("REQUEST",e.message.toString())
 //            status.postValue(ApiStatus.FAILED)
      }
+        return repo.getListDataGrafikByDate(tanggal)
     }
     private fun getMonthList(): ArrayList<String>? {
         var listBulan = ArrayList<String>()

@@ -87,15 +87,16 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             }
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
-            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,satuanPer,stok) = produk[position]
+            val (id,barcode,namaProduk,deskripsi,modal,hargaJual,satuan,satuanPer,stok,tanggal) = produk[position]
             binding.rootView.isSelected = selectionIds.contains(id.toInt())
             itemView.isSelected = selectionIds.contains(id.toInt())
             binding.nomor.text = id.toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
-            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,hargaBeli.toRupiahFormat(),satuan.toString(),satuanPer)
+            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,modal.toRupiahFormat(),satuan.toString(),satuanPer)
             binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_2,hargaJual.toRupiahFormat(),satuan.toString(),satuanPer)
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+            binding.satuanPer.text = satuanPer
             itemView.setOnClickListener {
                 handler.onClick(position, produk)
             }
@@ -111,7 +112,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             }
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
-            val (id,barcode,namaProduk,deskripsi,hargaBeli,hargaJual,satuan,satuanPer,stok) = produk[position]
+            val (id,barcode,namaProduk,deskripsi,modal,hargaJual,satuan,satuanPer,stok,tanggal) = produk[position]
             binding.rootView.setOnClickListener{
 //                    onItemClick.invoke(data[position])
             }
@@ -119,9 +120,10 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             binding.nomor.text = id.toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
-            binding.hargaBeli.text = itemView.context.getString(R.string.jumlah_modal_arg,hargaBeli,satuan.toString())
-            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg,hargaJual,satuan.toString())
+            binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_linear,modal.toRupiahFormat(),satuan.toString(),satuanPer)
+            binding.hargaJual.text = itemView.context.getString(R.string.harga_jual_arg_linear,hargaJual.toRupiahFormat(),satuan.toString(),satuanPer)
             binding.stok.text = itemView.context.getString(R.string.stok_arg,stok.toString())
+            binding.satuanPer.text = satuanPer
             itemView.setOnClickListener {
                 handler.onClick(position, produk)
             }

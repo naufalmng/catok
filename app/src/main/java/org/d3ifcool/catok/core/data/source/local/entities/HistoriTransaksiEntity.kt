@@ -5,12 +5,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.versionedparcelable.VersionedParcelize
 import kotlinx.parcelize.Parcelize
+import org.d3ifcool.catok.core.data.source.local.model.Produk
 
 @Parcelize
 @Entity(tableName = "historiTransaksi")
 data class HistoriTransaksiEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id_histori: Long = 0L,
+    @PrimaryKey()
+    val id_histori: String,
     var total: Double,
     var diskon: Double,
     var bayar: Double,
@@ -18,8 +19,7 @@ data class HistoriTransaksiEntity(
     var catatan: String,
     var produkDibeli: String,
     var jumlahProdukDibeli: Int,
-    var invoice: String,
     var pembayaran: String,
     var statusBayar: String,
-    var tanggal: String
+    var tanggal: String,
 ): Parcelable

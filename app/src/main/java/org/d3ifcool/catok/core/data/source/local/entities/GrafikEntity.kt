@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "grafikEntity")
 data class GrafikEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    @PrimaryKey()
+    var id: String,
     var totalTransaksi: Double,
     var tanggal: String,
 )

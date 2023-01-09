@@ -64,48 +64,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/deskripsi"
         app:layout_constraintStart_toStartOf="@id/deskripsi">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/nomor"
-            app:layout_constraintTop_toTopOf="@id/nomor"
-            android:text="@string/modal"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/_10ssp"
-            style="@style/MediumTextStyle"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/nomor"
-            app:layout_constraintTop_toTopOf="@id/nomor"
-            android:textSize="@dimen/_10ssp"
-            android:text="@string/harga_jual"
-            android:textColor="@color/orange"
-            android:layout_marginBottom="12dp"
-            style="@style/MediumTextStyle"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="145dp" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/llValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="@id/llLabel"
-        app:layout_constraintStart_toStartOf="@id/guideline">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/hargaBeli"
@@ -147,9 +111,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/namaProduk"
+        app:layout_constraintEnd_toStartOf="@id/satuanPer"
+        android:layout_marginEnd="4dp"
+        android:text="@string/stok_arg"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        style="@style/BoldTextStyle"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/satuanPer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/stok"
+        app:layout_constraintBottom_toBottomOf="@id/stok"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:text="@string/stok_arg"
+        android:text="Kg"
         android:textStyle="bold"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "transaksiEntity")
 data class TransaksiEntity (
-    @PrimaryKey(autoGenerate = true)
-    var id_transaksi: Int = 0,
+    @PrimaryKey()
+    var id_transaksi: String,
     var tanggal: String
 )

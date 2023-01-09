@@ -2,13 +2,8 @@ package org.d3ifcool.catok.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.UnderlineSpan
@@ -19,12 +14,12 @@ import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.github.mikephil.charting.data.Entry
-import com.google.android.material.snackbar.Snackbar
 import org.d3ifcool.catok.R
+import org.d3ifcool.catok.core.data.source.local.entities.FilterGrafikEntity
 import org.d3ifcool.catok.core.data.source.local.entities.GrafikEntity
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -50,20 +45,61 @@ fun fromStringToBitmap(encodedString: String): Bitmap {
     val decodedByte = Base64.decode(encodedString.substring(encodedString.indexOf(","+1)), Base64.DEFAULT)
     return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
 }
-fun getEmptyEntry(): List<Entry>{
-    var dataGrafik: MutableList<GrafikEntity> = mutableListOf()
-    dataGrafik.add(GrafikEntity(0,0.0,""))
-    var result = ArrayList<Entry>()
-    var index = 1f
-    result.add(Entry(index,dataGrafik[0].totalTransaksi.toFloat()))
-    return result
-}
+//fun getEmptyEntry(): List<Entry>{
+//    var dataGrafik: MutableList<GrafikEntity> = mutableListOf()
+//    dataGrafik.add(GrafikEntity(0,0.0,""))
+//    var result = ArrayList<Entry>()
+//    var index = 1f
+//    result.add(Entry(index,dataGrafik[0].totalTransaksi.toFloat()))
+//    return result
+//}
 fun isFileExists(file: File): Boolean {
     return file.exists() && !file.isDirectory
+}
+fun <T> LiveData<T>.observeOnceAfterInit(owner: LifecycleOwner, observer: (T) -> Unit) {
+    var firstObservation = true
+
+    observe(owner, object: Observer<T>
+    {
+        override fun onChanged(value: T) {
+            if(firstObservation)
+            {
+                firstObservation = false
+            }
+            else
+            {
+                removeObserver(this)
+                observer(value)
+            }
+        }
+    })
+}
+
+
+fun getListDateOfMonth(): List<FilterGrafikEntity> {
+    val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))
+    val cal = Calendar.getInstance()
+    val date = Date()
+    cal.time = date
+    cal[Calendar.DAY_OF_MONTH] = 1
+
+    val myMonth = cal[Calendar.MONTH]
+    val result = mutableListOf<FilterGrafikEntity>()
+
+    while (myMonth == cal[Calendar.MONTH]) {
+        result.add(FilterGrafikEntity(date = sdf.format(cal.time)))
+        cal.add(Calendar.DAY_OF_MONTH, 1)
+    }
+    return result
 }
 fun getCurrentDate(): String {
     val currentDate = Calendar.getInstance().time
     val sdf = SimpleDateFormat("EEEE, d MMMM yyyy HH:mm", Locale("id", "ID"))
+    return sdf.format(currentDate)
+}
+fun getCurrentDate2(): String {
+    val currentDate = Calendar.getInstance().time
+    val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("id", "ID"))
     return sdf.format(currentDate)
 }
 fun getCurrentMonth(): String {
@@ -84,7 +120,7 @@ fun getCurrentDay(): String {
 
 fun generateUuid(): String {
     val uuid = String.format("%040d", BigInteger(UUID.randomUUID().toString().replace("-", ""), 16))
-    return uuid.substring(uuid.length - 10)
+    return uuid.substring(uuid.length - 5)
 }
 fun onTouch(v: View, motionEvent: MotionEvent): Boolean {
     val action = motionEvent.action

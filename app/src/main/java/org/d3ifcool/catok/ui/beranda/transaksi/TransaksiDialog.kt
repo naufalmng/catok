@@ -3,13 +3,9 @@ package org.d3ifcool.catok.ui.beranda.transaksi
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -28,7 +24,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
@@ -43,12 +38,12 @@ import org.d3ifcool.catok.databinding.DialogTransaksiBinding
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class TransaksiDialog : Fragment() {
 
+    private var currentDate: String = ""
     private lateinit var searchItem: MenuItem
 
     //    var list = listOf<String>("Momogi", "Dylan", "Cepmek")
@@ -85,7 +80,7 @@ class TransaksiDialog : Fragment() {
             sharedViewModel.tempDataProduk.value = produkData
             var dataPembayaran : MutableList<DataPembayaran> = mutableListOf()
             for(i in produkData.produkIdList!!.indices){
-                dataPembayaran.add(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!))
+                dataPembayaran.add(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.produkSatuanPerList!![i]!!, produkData.hargaProdukList!![i]!!))
             }
             sharedViewModel._tempDataPembayaran.value = dataPembayaran
             viewModel.tempDataPembayaran = dataPembayaran
@@ -134,7 +129,7 @@ class TransaksiDialog : Fragment() {
 
             if(counter==0){
                 for(i in produkData.produkIdList!!.indices){
-                    dataPembayaran.add(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!))
+                    dataPembayaran.add(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!,produkData.produkSatuanPerList!![i]!!, produkData.hargaProdukList!![i]!!))
                 }
                 sharedViewModel._tempDataPembayaran.value = dataPembayaran
                 viewModel.tempDataPembayaran = dataPembayaran
@@ -156,6 +151,7 @@ class TransaksiDialog : Fragment() {
                         sharedViewModel.tempDataProduk.value?.produkIdList?.clear()
                         sharedViewModel.tempDataProduk.value?.produkNameList?.clear()
                         sharedViewModel.tempDataProduk.value?.produkQtyList?.clear()
+                        sharedViewModel.tempDataProduk.value?.produkSatuanPerList?.clear()
                         sharedViewModel.tempDataProduk.value?.hargaProdukList?.clear()
                     }else{
                         Log.d(TAG, "onMinButtonClick: masuk else")
@@ -183,8 +179,8 @@ class TransaksiDialog : Fragment() {
                 Log.d(TAG, "onMinButtonClick: Masuk debug")
                 for(i in produkData.produkIdList!!.indices){
                     if(i == produkData.produkIdList!!.indexOf(produk[position].id_produk) && counter>0){
-                         sharedViewModel._tempDataPembayaran.value!![i] = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
-                        viewModel.tempDataPembayaran[i] = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
+                         sharedViewModel._tempDataPembayaran.value!![i] = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!,produkData.produkSatuanPerList!![i]!!, produkData.hargaProdukList!![i]!!)
+                        viewModel.tempDataPembayaran[i] = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!,produkData.produkSatuanPerList!![i]!!, produkData.hargaProdukList!![i]!!)
 
                         if(binding.llHeader.btnSwitchLayout.background.equals(R.drawable.ic_linear_layout)){
                             Log.d(TAG, "onMinButtonClick: masuk")
@@ -215,6 +211,12 @@ class TransaksiDialog : Fragment() {
         toolbar = inflater.inflate(R.layout.toolbar, container, false) as Toolbar
         toolbar.title = getString(R.string.transaksi_produk)
         toolbar.collapseActionView()
+        dataStorePreferences.currentDatePrefFlow.asLiveData()
+            .observe(viewLifecycleOwner){ date->
+                if (date != null) {
+                    currentDate = date
+                }
+            }
         return binding.root
     }
 
@@ -281,12 +283,12 @@ class TransaksiDialog : Fragment() {
             btnBatal.enableOnClickAnimation()
             btnSimpan.enableOnClickAnimation()
             if(viewModel.listTransaksi.value?.isNullOrEmpty() == null) {
-                viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
+                viewModel.insertTransaksi(TransaksiEntity(invoice,tanggal = getCurrentDate()))
             }
             btnSimpan.setOnClickListener {
                 produkDibeli = ""
                 for (i in sharedViewModel.tempDataProduk.value?.produkNameList!!.indices){
-                    produkDibeli += "${sharedViewModel.tempDataProduk.value?.produkNameList!![i]} / ${sharedViewModel.tempDataProduk.value?.produkQtyList!![i]}."
+                    produkDibeli += "${sharedViewModel.tempDataProduk.value?.produkNameList!![i]} (${sharedViewModel.tempDataProduk.value?.produkQtyList!![i]} ${sharedViewModel.tempDataProduk.value?.produkSatuanPerList!![i]}) :   ${sharedViewModel.tempDataProduk.value?.hargaProdukList!![i]!!.toRupiahFormatV2()}*"
                 }
 //                sharedViewModel.tempDataProduk.value?.produkNameList?.forEach {
 //                    Log.d(TAG, "setupListeners: $it")
@@ -323,7 +325,7 @@ class TransaksiDialog : Fragment() {
 //                        viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
 //                    }
 //                }else viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
-                viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
+                viewModel.insertTransaksi(TransaksiEntity(id_transaksi = invoice, tanggal = getCurrentDate()))
                 viewModel.getListIdTransaksi()
                 viewModel.insertTransaksiProduk()
 //                viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalAkhir, bulan = getCurrentMonth()))
@@ -331,10 +333,13 @@ class TransaksiDialog : Fragment() {
                     Log.d(TAG, "setupListeners: masuk")
                     Log.d(TAG, "setupListeners: ${sharedViewModel.jenisPembayaran.value!!}")
                     if(jumlahProdukDibeli!=-1){
-                        viewModel.insertHistoriTransaksi(HistoriTransaksiEntity(total = sharedViewModel._subTotal.value!!, diskon = sharedViewModel._jumlahDiskon.value!!, bayar = sharedViewModel.jumlahBayar.value!!, kembalian = sharedViewModel.jumlahKembalian.value!!,catatan = sharedViewModel.catatan.value!!, jumlahProdukDibeli = jumlahProdukDibeli, produkDibeli = produkDibeli, invoice = invoice, pembayaran = sharedViewModel.jenisPembayaran.value!!, statusBayar = getString(R.string.lunas), tanggal = getCurrentDate()))
+                        viewModel.insertHistoriTransaksi(HistoriTransaksiEntity(id_histori = invoice,
+                            total = sharedViewModel._subTotal.value!!, diskon = sharedViewModel._jumlahDiskon.value!!, bayar = sharedViewModel.jumlahBayar.value!!, kembalian = sharedViewModel.jumlahKembalian.value!!,
+                            catatan = sharedViewModel.catatan.value!!, produkDibeli = produkDibeli, jumlahProdukDibeli = jumlahProdukDibeli, pembayaran = sharedViewModel.jenisPembayaran.value!!, statusBayar = getString(R.string.lunas),tanggal = getCurrentDate()))
                         lifecycleScope.launch {
                             dataStorePreferences.saveDataUpdateSetting(requireContext(),true)
                         }
+                        viewModel.insertDataGrafik(GrafikEntity(id = invoice, totalTransaksi = sharedViewModel._subTotal.value!!, tanggal = currentDate))
                     }
                 }
                 Toast.makeText(requireContext(), "Transaksi Berhasil !", Toast.LENGTH_SHORT).show()
@@ -501,12 +506,14 @@ class TransaksiDialog : Fragment() {
                 TransaksiAdapter.LinearViewHolder.produkIdList = mutableListOf()
                 TransaksiAdapter.LinearViewHolder.produkNameList = mutableListOf()
                 TransaksiAdapter.LinearViewHolder.produkQtyList = mutableListOf()
+                TransaksiAdapter.LinearViewHolder.produkSatuanPerList = mutableListOf()
                 TransaksiAdapter.LinearViewHolder.produkPriceList = mutableListOf()
                 TransaksiAdapter.LinearViewHolder.tempProduk = mutableListOf()
                 TransaksiAdapter.LinearViewHolder.tempCounter = mutableListOf()
                 TransaksiAdapter.GridViewHolder.produkIdList = mutableListOf()
                 TransaksiAdapter.GridViewHolder.produkNameList = mutableListOf()
                 TransaksiAdapter.GridViewHolder.produkQtyList = mutableListOf()
+                TransaksiAdapter.GridViewHolder.produkSatuanPerList = mutableListOf()
                 TransaksiAdapter.GridViewHolder.produkPriceList = mutableListOf()
                 TransaksiAdapter.GridViewHolder.tempProduk = mutableListOf()
                 TransaksiAdapter.GridViewHolder.tempCounter = mutableListOf()
@@ -659,12 +666,14 @@ class TransaksiDialog : Fragment() {
                             TransaksiAdapter.LinearViewHolder.produkIdList = mutableListOf()
                             TransaksiAdapter.LinearViewHolder.produkNameList = mutableListOf()
                             TransaksiAdapter.LinearViewHolder.produkQtyList = mutableListOf()
+                            TransaksiAdapter.LinearViewHolder.produkSatuanPerList = mutableListOf()
                             TransaksiAdapter.LinearViewHolder.produkPriceList = mutableListOf()
                             TransaksiAdapter.LinearViewHolder.tempProduk = mutableListOf()
                             TransaksiAdapter.LinearViewHolder.tempCounter = mutableListOf()
                             TransaksiAdapter.GridViewHolder.produkIdList = mutableListOf()
                             TransaksiAdapter.GridViewHolder.produkNameList = mutableListOf()
                             TransaksiAdapter.GridViewHolder.produkQtyList = mutableListOf()
+                            TransaksiAdapter.GridViewHolder.produkSatuanPerList = mutableListOf()
                             TransaksiAdapter.GridViewHolder.produkPriceList = mutableListOf()
                             TransaksiAdapter.GridViewHolder.tempProduk = mutableListOf()
                             TransaksiAdapter.GridViewHolder.tempCounter = mutableListOf()

@@ -7,8 +7,8 @@ import org.d3ifcool.catok.core.data.source.local.entities.*
 import org.d3ifcool.catok.utils.Converters
 
 @Database(
-    entities = [ProdukEntity::class,TransaksiEntity::class,HistoriTransaksiEntity::class,TransaksiProdukEntity::class,GrafikEntity::class,ProfilEntity::class],
-    version = 19,
+    entities = [ProdukEntity::class,TransaksiEntity::class,HistoriTransaksiEntity::class,TransaksiProdukEntity::class,ReturEntity::class,GrafikEntity::class,FilterGrafikEntity::class,ProfilEntity::class],
+    version = 27,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

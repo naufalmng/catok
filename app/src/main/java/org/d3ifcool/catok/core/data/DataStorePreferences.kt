@@ -17,6 +17,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DAT
 class DataStorePreferences(preferencesDataStore: DataStore<Preferences>) {
     companion object{
         private val IS_LINEAR_LAYOUT_MANAGER = booleanPreferencesKey("isLinearLayoutManager")
+        private val CURRENT_DATE = stringPreferencesKey("currentDate")
         private val CURRENT_MONTH = stringPreferencesKey("currentMonth")
         private val IS_DATA_UPDATED = booleanPreferencesKey("isDataUpdated")
     }
@@ -31,7 +32,12 @@ class DataStorePreferences(preferencesDataStore: DataStore<Preferences>) {
             pref[IS_DATA_UPDATED] = isDataUpdated
         }
     }
-    suspend fun saveCurrentMonth(ctx:Context,month: String){
+    suspend fun saveCurrentDate(ctx:Context, date: String){
+        ctx.dataStore.edit { pref ->
+            pref[CURRENT_DATE] = date
+        }
+    }
+    suspend fun saveCurrentMonth(ctx:Context, month: String){
         ctx.dataStore.edit { pref ->
             pref[CURRENT_MONTH] = month
         }
@@ -50,6 +56,13 @@ class DataStorePreferences(preferencesDataStore: DataStore<Preferences>) {
             else throw it
         }.map { pref ->
             pref[IS_DATA_UPDATED]?:false
+        }
+    val currentDatePrefFlow: Flow<String?> = preferencesDataStore.data
+        .catch {
+            if(it is IOException) it.printStackTrace()
+            else throw it
+        }.map { pref ->
+            pref[CURRENT_DATE]
         }
     val currentMonthPrefFlow: Flow<String?> = preferencesDataStore.data
         .catch {
