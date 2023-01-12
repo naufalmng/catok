@@ -58,6 +58,16 @@ class PengaturanFragment : Fragment() {
             return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED
         }
     }
+    private fun checkPermission2(): Boolean{
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            true
+        }
+        else {
+            val write = ContextCompat.checkSelfPermission(requireActivity(),WRITE_EXTERNAL_STORAGE)
+            val read = ContextCompat.checkSelfPermission(requireActivity(),READ_EXTERNAL_STORAGE)
+            return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED
+        }
+    }
 
     private fun importCsv() {
         lifecycleScope.launch {
@@ -589,7 +599,7 @@ class PengaturanFragment : Fragment() {
                 }
             }
             editPhoto.setOnClickListener {
-                if(checkPermission()){
+                if(checkPermission2()){
                     pickAndSaveImage.launch(getString(R.string.input_type))
                     onResume()
                 }else{
