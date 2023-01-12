@@ -12,20 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import org.d3ifcool.catok.R
 import org.d3ifcool.catok.databinding.DialogPembayaranBinding
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.toRupiahFormat
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PembayaranDialog : Fragment() {
     companion object{
-        private var TAG = PembayaranDialog.javaClass.name
+        private var TAG = PembayaranDialog::class.java.name
     }
 
     private var _binding: DialogPembayaranBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val viewModel: TransaksiViewModel by viewModel()
     private lateinit var pembayaranAdapter: DataPembayaranAdapter
     private var subTotal = 0.0
     override fun onCreateView(
@@ -41,7 +40,7 @@ class PembayaranDialog : Fragment() {
     private fun setupListeners() {
         with(binding){
             spinnerJenisPembayaran.setOnSpinnerItemSelectedListener<String>{ oldIndex, oldItem, newIndex, text ->
-                binding.tilLayanan.editText?.setText(text)
+                binding.tilJenisPembayaran.editText?.setText(text)
                 sharedViewModel.jenisPembayaran.value = text
             }
             etCatatan.addTextChangedListener(object : TextWatcher{
@@ -78,11 +77,6 @@ class PembayaranDialog : Fragment() {
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-//                    if(etDiskon.getNumericValue()!=0.0){
-//                            sharedViewModel._jumlahDiskon.value = etDiskon.getNumericValue()
-//                    }else{
-//                            sharedViewModel._jumlahDiskon.value = etDiskon.getNumericValue()
-//                    }
                     if(etBayar.text.toString()!="" ){
                         sharedViewModel.jumlahBayar.value = etBayar.getNumericValue()
                         sharedViewModel.totalDenganDiskon.observe(viewLifecycleOwner){
@@ -101,11 +95,6 @@ class PembayaranDialog : Fragment() {
                                 }
                             }
                         }
-
-
-//                        sharedViewModel.subTotal.observe(viewLifecycleOwner){
-//                            binding.jumlahDiskon.text = if((it-etDiskon.getNumericValue()).toRupiahFormat() != binding.subTotal.text) (it-etDiskon.getNumericValue()).toRupiahFormat() else 0.0.toRupiahFormat()
-//                        }
                     }
                 }
             })
@@ -114,12 +103,6 @@ class PembayaranDialog : Fragment() {
                 etKembalian.setText("")
                 sharedViewModel.jumlahBayar.value = 0.0
             }
-//            etBayar.setOnFocusChangeListener { view, b ->
-//                if(view.hasFocus()){
-//
-//                }
-//            }
-
         }
         binding.etDiskon.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -129,13 +112,12 @@ class PembayaranDialog : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                Log.d(TAG, "afterTextChanged: ${binding.etKembalian.getNumericValue().toString()}")
+                Log.d(TAG, "afterTextChanged: ${binding.etKembalian.getNumericValue()}")
                 if(binding.etDiskon.text.toString()!="" ){
                     lifecycleScope.launch {
                         if(binding.etDiskon.getNumericValue()!=0.0){
                             binding.jumlahDiskon.text = binding.etDiskon.getNumericValue().toRupiahFormat()
                             binding.total.text = (subTotal-binding.etDiskon.getNumericValue()).toRupiahFormat()
-//                                sharedViewModel.totalDenganDiskon.value = sharedViewModel._subTotal.value!!.minus(etDiskon.getNumericValue())
                             sharedViewModel._jumlahDiskon.value = binding.etDiskon.getNumericValue()
                         }else{
                             sharedViewModel._jumlahDiskon.value = binding.etDiskon.getNumericValue()
@@ -145,24 +127,12 @@ class PembayaranDialog : Fragment() {
 
                         }
                     }
-
-//                        sharedViewModel.subTotal.observe(viewLifecycleOwner){
-//                            binding.jumlahDiskon.text = if((it-etDiskon.getNumericValue()).toRupiahFormat() != binding.subTotal.text) (it-etDiskon.getNumericValue()).toRupiahFormat() else 0.0.toRupiahFormat()
-//                        }
                 }
-//                        Log.d(TAG, "afterTextChanged: ${etDiskon.getNumericValue()}")
-//                        if(etDiskon.getNumericValue().toString().last() == '1') Log.d(TAG, "afterTextChanged: iya bener")
-
             }
         })
 
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        pembayaranAdapter.clearData()
-    }
 
     private fun setupRecyclerView() {
         sharedViewModel.tempDataPembayaran.observe(viewLifecycleOwner){
@@ -190,12 +160,11 @@ class PembayaranDialog : Fragment() {
         binding.spinnerJenisPembayaran.selectItemByIndex(0)
         binding.jumlahDiskon.text = (0.0).toRupiahFormat()
         sharedViewModel.jenisPembayaran.value = when(binding.spinnerJenisPembayaran.selectedIndex){
-            0 -> "CASH"
-            else -> "QRIS"
+            0 -> resources.getStringArray(R.array.item_jenis_pembayaran)[0]
+            else -> resources.getStringArray(R.array.item_jenis_pembayaran)[1]
         }
         Log.d(TAG, "setupListeners: ${sharedViewModel.jenisPembayaran.value}")
         setupListeners()
-//        setupObservers()
         setupRecyclerView()
     }
 

@@ -54,7 +54,7 @@
             android:textSize="@dimen/_12ssp"
             style="@style/SemiboldTextStyle"
             android:textColor="@color/orange"
-            android:text="Sabtu, 29 Oktober 2022"/>
+            android:text="@string/dummy_tanggal"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="No"
+        android:text="@string/no"
         android:gravity="center"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="@id/guideline1"
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="Produk"
+        android:text="@string/produk"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintTop_toTopOf="@id/nomor"
         app:layout_constraintStart_toEndOf="@id/guideline1"/>
@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/orange"
         style="@style/SemiboldTextStyle"
-        android:text="Qty"
+        android:text="@string/qty"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="@id/guideline2"
@@ -110,7 +110,7 @@
         android:textColor="@color/orange"
         android:gravity="center"
         style="@style/SemiboldTextStyle"
-        android:text="Total"
+        android:text="@string/total"
         app:layout_constraintEnd_toEndOf="@id/divider2"
         app:layout_constraintStart_toEndOf="@id/guideline3"
         app:layout_constraintTop_toTopOf="@id/qty"/>

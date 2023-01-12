@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName", "NestedLambdaShadowedImplicitParameter")
+
 package org.d3ifcool.catok.ui.beranda.transaksi
 
 import android.annotation.SuppressLint
@@ -6,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -46,10 +47,6 @@ class TransaksiDialog : Fragment() {
     private var currentDate: String = ""
     private lateinit var searchItem: MenuItem
 
-    //    var list = listOf<String>("Momogi", "Dylan", "Cepmek")
-//    for((index,value) in list.withIndex()){
-//        println("${index.plus(1)}.$value")
-//    }
     private val TAG = this.javaClass.name
     private var _binding: DialogTransaksiBinding? = null
     private val binding get() = _binding!!
@@ -59,9 +56,6 @@ class TransaksiDialog : Fragment() {
     }
     private lateinit var searchView: SearchView
     private lateinit var transaksiAdapter: TransaksiAdapter
-    private val pembayaranAdapter: DataPembayaranAdapter by lazy {
-        DataPembayaranAdapter()
-    }
     lateinit var toolbar: Toolbar
 
     private val dataStorePreferences: DataStorePreferences by lazy {
@@ -78,7 +72,7 @@ class TransaksiDialog : Fragment() {
 
         override fun onPlusButtonClick(position: Int, produk: ArrayList<ProdukEntity>, counter: Int, produkData: Produk) {
             sharedViewModel.tempDataProduk.value = produkData
-            var dataPembayaran : MutableList<DataPembayaran> = mutableListOf()
+            val dataPembayaran : MutableList<DataPembayaran> = mutableListOf()
             for(i in produkData.produkIdList!!.indices){
                 dataPembayaran.add(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.produkSatuanPerList!![i]!!, produkData.hargaProdukList!![i]!!))
             }
@@ -87,42 +81,17 @@ class TransaksiDialog : Fragment() {
             Log.d(TAG, "onPlusButtonClick: ${sharedViewModel.tempDataProduk.value}")
             binding.llHeader.resetSwitch.isChecked = true
             binding.llHeader.resetSwitch.isEnabled = true
-
-//            for(i in produkData.produkIdList!!.indices){
-////                val dataPembayaran = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
-////                sharedViewModel._tempDataPembayaran.value?.add(produkData.produkIdList!!.indexOf(produk[position].id_produk),dataPembayaran)
-//                sharedViewModel.itemPos.value = produkData.produkIdList!!.indexOf(produk[position].id_produk)
-//                sharedViewModel.qty.value = counter
-//
-////                Log.d(TAG, "onPlusButtonClick: Masuk ${produkData.produkIdList!!.indexOf(produk[position].id_produk)}")
-//
-////                if(produkData.produkIdList!![i] == sharedViewModel._tempDataPembayaran.value.indexOf()){
-////                    Log.d(TAG, "onPlusButtonClick: Masuk")
-////                }else{
-////                    sharedViewModel._tempDataPembayaran.value?.add(produkData.produkIdList!!.indexOf(produk[position].id_produk),dataPembayaran)
-////                }
-//
-//            }
-//            if(produk[position].namaProduk ?.contains() == true){
-//                sharedViewModel._tempDataPembayaran.value?.add(dataPembayaran.nomor,dataPembayaran)
-//            }else sharedViewModel._tempDataPembayaran.value?.add(dataPembayaran)
             if(counter==1){
                 setBtnSelanjutnyaTint(true)
             }
             if (counter > 1) {
                 setBtnSelanjutnyaTint(true)
-//                for(i in produkData.produkIdList!!.indices){
-//                    val dataPembayaran = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
-//                    if(sharedViewModel._tempDataPembayaran.value!![produkData.produkIdList!!.indexOf(produk[position].id_produk)].nomor == dataPembayaran.nomor){
-//                        sharedViewModel._tempDataPembayaran.value?.add(produkData.produkIdList!!.indexOf(produk[position].id_produk),dataPembayaran)
-//                    }
-//                }
             }
         }
 
 
         override fun onMinButtonClick(position: Int, produk: ArrayList<ProdukEntity>,counter: Int,produkData: Produk) {
-            var dataPembayaran : MutableList<DataPembayaran> = mutableListOf()
+            val dataPembayaran : MutableList<DataPembayaran> = mutableListOf()
 
             sharedViewModel.tempDataProduk.value = produkData
             Log.d(TAG, "onMinButtonClick: ${sharedViewModel.tempDataProduk.value}")
@@ -135,7 +104,7 @@ class TransaksiDialog : Fragment() {
                 viewModel.tempDataPembayaran = dataPembayaran
                 Log.d(TAG, "onMinButtonClick: $produkData")
 
-                Log.d(TAG, "onMinButtonClick: ${viewModel.tempDataPembayaran.toString()}")
+                Log.d(TAG, "onMinButtonClick: ${viewModel.tempDataPembayaran}")
                 Log.d(TAG, "onMinButtonClick: ${sharedViewModel.tempDataProduk.value}")
 
 
@@ -162,20 +131,8 @@ class TransaksiDialog : Fragment() {
 
                     }
                 }
-
-//                else sharedViewModel._tempDataPembayaran.value!!.removeAt(TransaksiAdapter.GridViewHolder.produkIdBeforeDeleted.value!!)
-//                sharedViewModel._tempDataPembayaran.value!!.removeAt()
-//                for(i in produkData.produkIdList!!.indices){
-//                    if(i == produkData.produkIdList!!.indexOf(produk[position].id_produk)){
-//                        sharedViewModel._tempDataPembayaran.value!!.removeAt(i)
-//                    }
-////                    dataPembayaran.remove(i,DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!))
-
-//                binding.btnSelanjutnya.isEnabled = false
-//                transaksiAdapter.resetSelection()
             }
             else{
-//                transaksiAdapter.toggleSelection(position)
                 Log.d(TAG, "onMinButtonClick: Masuk debug")
                 for(i in produkData.produkIdList!!.indices){
                     if(i == produkData.produkIdList!!.indexOf(produk[position].id_produk) && counter>0){
@@ -184,21 +141,11 @@ class TransaksiDialog : Fragment() {
 
                         if(binding.llHeader.btnSwitchLayout.background.equals(R.drawable.ic_linear_layout)){
                             Log.d(TAG, "onMinButtonClick: masuk")
-//                            TransaksiAdapter.LinearViewHolder.produkIdList.removeAt(i)
                         }
-//                        else TransaksiAdapter.GridViewHolder.produkIdList.removeAt(i)
                     }
                 }
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-
     }
 
     override fun onCreateView(
@@ -222,14 +169,13 @@ class TransaksiDialog : Fragment() {
 
     private fun setupFragmentContainer() {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.addToBackStack("dialogPembayaran")
+        transaction.addToBackStack(getString(R.string.dialog_pembayaran))
         transaction.replace(R.id.containerTransaksi,PembayaranDialog())
         transaction.commit()
     }
 
     override fun onResume() {
         super.onResume()
-//        transaksiAdapter.notifyDataSetChanged()
         if(binding.btnSelanjutnya.visibility == View.VISIBLE) sharedViewModel.isBackPressed.value = -1
     }
 
@@ -255,7 +201,6 @@ class TransaksiDialog : Fragment() {
         transaksiAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         with(binding.recyclerViewDataTransaksi) {
             isNestedScrollingEnabled = true
-            transaksiAdapter.setHasStableIds(true)
             adapter = transaksiAdapter
             setHasFixedSize(true)
         }
@@ -272,13 +217,11 @@ class TransaksiDialog : Fragment() {
     }
 
     private fun setupListeners() {
-        var prefix = "CTK"
-        var invoice = prefix+generateUuid()
+        val prefix = getString(R.string.prefix)
+        val invoice = prefix+generateUuid()
         lateinit var produkDibeli: String
         var jumlahProdukDibeli = -1
-        var currentMonth =
         with(binding) {
-//            setupSearchView()
             btnSelanjutnya.enableOnClickAnimation()
             btnBatal.enableOnClickAnimation()
             btnSimpan.enableOnClickAnimation()
@@ -288,47 +231,35 @@ class TransaksiDialog : Fragment() {
             btnSimpan.setOnClickListener {
                 produkDibeli = ""
                 for (i in sharedViewModel.tempDataProduk.value?.produkNameList!!.indices){
-                    produkDibeli += "${sharedViewModel.tempDataProduk.value?.produkNameList!![i]} (${sharedViewModel.tempDataProduk.value?.produkQtyList!![i]} ${sharedViewModel.tempDataProduk.value?.produkSatuanPerList!![i]}) :   ${sharedViewModel.tempDataProduk.value?.hargaProdukList!![i]!!.toRupiahFormatV2()}*"
+                    produkDibeli += getString(R.string.produk_dibeli_arg2,sharedViewModel.tempDataProduk.value?.produkNameList!![i],sharedViewModel.tempDataProduk.value?.produkQtyList!![i].toString(),sharedViewModel.tempDataProduk.value?.produkSatuanPerList!![i],sharedViewModel.tempDataProduk.value?.hargaProdukList!![i]!!.toRupiahFormatV2())
                 }
-//                sharedViewModel.tempDataProduk.value?.produkNameList?.forEach {
-//                    Log.d(TAG, "setupListeners: $it")
-//                    produkDibeli += "$it."
-//                }
                 jumlahProdukDibeli = sharedViewModel.tempDataProduk.value?.produkIdList?.size!!
                 val totalAkhir = if(sharedViewModel.totalDenganDiskon.value!=0.0) sharedViewModel.totalDenganDiskon.value!! else sharedViewModel._subTotal.value!!
 
                 if(sharedViewModel.jumlahBayar.value!=0.0 && sharedViewModel._jumlahDiskon.value==0.0){
                     if(sharedViewModel.jumlahBayar.value!!<sharedViewModel._subTotal.value!!){
-                        Toast.makeText(requireContext(), "Pembayaran kurang dari total bayar !", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.kurang_dari_total_bayar), Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
                 }
 
                 if(totalHarga.text.toString().contains('-')){
-                    Toast.makeText(requireContext(), "Diskon Tidak Valid", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.diskon_tidak_valid), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 if(sharedViewModel.jumlahBayar.value == 0.0) {
-                    Toast.makeText(requireContext(), "Isi pembayaran terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.isi_pembayaran_dulu), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 if(sharedViewModel._jumlahDiskon.value!=0.0){
                     if(sharedViewModel.jumlahBayar.value!!<totalAkhir) {
-                        Toast.makeText(requireContext(), "Jumlah bayar kurang dari total bayar", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.jumlah_bayar_kurang_dari_total_bayar), Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
                 }
-//                Log.d(TAG, "setupListeners: lulus")
-//                viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
-//                if(viewModel.listTransaksi.isEmpty()){
-//                    for(i in 0..1){
-//                        viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
-//                    }
-//                }else viewModel.insertTransaksi(TransaksiEntity(tanggal = getCurrentDate()))
                 viewModel.insertTransaksi(TransaksiEntity(id_transaksi = invoice, tanggal = getCurrentDate()))
                 viewModel.getListIdTransaksi()
                 viewModel.insertTransaksiProduk()
-//                viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalAkhir, bulan = getCurrentMonth()))
                 if(produkDibeli!=""){
                     Log.d(TAG, "setupListeners: masuk")
                     Log.d(TAG, "setupListeners: ${sharedViewModel.jenisPembayaran.value!!}")
@@ -339,7 +270,22 @@ class TransaksiDialog : Fragment() {
                         lifecycleScope.launch {
                             dataStorePreferences.saveDataUpdateSetting(requireContext(),true)
                         }
-                        viewModel.insertDataGrafik(GrafikEntity(id = invoice, totalTransaksi = sharedViewModel._subTotal.value!!, tanggal = currentDate))
+
+                        viewModel.getDataGrafik.observe(viewLifecycleOwner){
+                            if(it.isNullOrEmpty()){
+                                viewModel.insertDataGrafik(GrafikEntity(id = invoice, totalTransaksi = sharedViewModel._subTotal.value!!,System.currentTimeMillis(), bulanDanTahun = getCurrentMonthAndYear(), tanggal2 = getCurrentDate2()))
+                                return@observe
+                            }
+                            var isExist = true
+                            try {
+                                for (i in it){
+                                    isExist = i.tanggal2 == getCurrentDate2()
+                                }
+                            }catch (e:Exception){}
+                            finally {
+                                if(!isExist) viewModel.insertDataGrafik(GrafikEntity(id = invoice, totalTransaksi = sharedViewModel._subTotal.value!!,System.currentTimeMillis(), bulanDanTahun = getCurrentMonthAndYear(), tanggal2 = getCurrentDate2()))
+                            }
+                        }
                     }
                 }
                 Toast.makeText(requireContext(), "Transaksi Berhasil !", Toast.LENGTH_SHORT).show()
@@ -349,9 +295,6 @@ class TransaksiDialog : Fragment() {
                 if(searchView.isVisible) {
                     searchView.onActionViewCollapsed()
                     searchItem.collapseActionView()
-//                    searchView.setQuery("",false)
-//                    searchView.isIconified = true
-//                    searchView.clearFocus()
                     searchView.isVisible = false
                 }
                 setupFragmentContainer()
@@ -367,28 +310,6 @@ class TransaksiDialog : Fragment() {
                 swipeRefreshLayout.visibility = View.GONE
                 btnBatal.visibility = View.VISIBLE
                 btnSimpan.visibility = View.VISIBLE
-//                val produkData = sharedViewModel.tempDataProduk.value
-                
-//                if(sharedViewModel.qty.value!! <= 1 ){
-//                    for(i in produkData?.produkIdList!!.indices){
-//                        val dataPembayaran = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
-//                        sharedViewModel._tempDataPembayaran.value?.add(dataPembayaran)
-//                    }
-//                }
-//                if(sharedViewModel.qty.value!!>1){
-//                    for(i in produkData?.produkIdList!!.indices){
-//                        val dataPembayaran = DataPembayaran(produkData.produkIdList!![i]!!, produkData.produkNameList!![i]!!, produkData.produkQtyList!![i]!!, produkData.hargaProdukList!![i]!!)
-//                        sharedViewModel._tempDataPembayaran.value?.add(sharedViewModel.itemPos.value!!,dataPembayaran)
-//                    }
-//                }
-
-//                if(pembayaranAdapter.itemCount==0) observeTempDataProduk()
-//                viewModel.setupDataPembayaran()
-//                pembayaranAdapter.updateData(viewModel.dataPembayaran.value!!)
-//                prepareRecyclerViewPembayaran()
-//                llHeader.searchView.clearFocus()
-//                llHeader.searchView.text?.clear()
-//                findNavController().navigate(R.id.action_dataProdukFragment_to_dataProdukDialog)
             }
 
             llHeader.resetSwitch.setOnClickListener {
@@ -427,7 +348,7 @@ class TransaksiDialog : Fragment() {
                 llHeader.tvReset.visibility = View.VISIBLE
                 llHeader.title.visibility = View.GONE
                 swipeRefreshLayout.visibility = View.VISIBLE
-                childFragmentManager.popBackStack("dialogPembayaran", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                childFragmentManager.popBackStack(getString(R.string.dialog_pembayaran), FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //                observeTempDataProduk()
             }
             llHeader.btnSwitchLayout.setOnClickListener {
@@ -529,7 +450,7 @@ class TransaksiDialog : Fragment() {
         }
 
         sharedViewModel.jumlahDiskon.observe(viewLifecycleOwner){
-            var hasil = (sharedViewModel._subTotal.value!!.minus(it))
+            val hasil = (sharedViewModel._subTotal.value!!.minus(it))
             if(it!=0.0){
                 if(hasil.toString().contains("-")){
                     binding.totalHarga.text = getString(R.string.total_harga_arg,hasil.toRupiahFormatV2())
@@ -552,6 +473,8 @@ class TransaksiDialog : Fragment() {
                 viewModel.isDataTransaksiEmpty.value = it.size<1
                 setupDataProdukRecyclerView()
                 transaksiAdapter.setData(it)
+                Log.d(TAG, "getDataProduk: ${it.size}")
+                it.forEach { Log.d(TAG, "getDataProduk: $it")}
                 setupLayoutSwitcher()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
@@ -562,21 +485,14 @@ class TransaksiDialog : Fragment() {
 
     private fun observeTempDataProduk() {
         sharedViewModel.tempDataProduk.observe(viewLifecycleOwner){it ->
-            var empty = 0.0
-            var total: Double? = it?.hargaProdukList?.sumOf { it ?: 0.0 }
+            val empty = 0.0
+            val total: Double? = it?.hargaProdukList?.sumOf { it ?: 0.0 }
             Log.d(TAG, "setupObservers: total = $total")
             binding.btnSelanjutnya.isEnabled = total!=null
             setBtnSelanjutnyaTint(binding.btnSelanjutnya.isEnabled)
-//            binding.llHeader.resetSwitch.isChecked = total!=0.0
             if(sharedViewModel.hasilDiskon.value==null){
                 binding.totalHarga.text = total?.toRupiahFormat()?:empty.toRupiahFormat()
             }
-//            if(it?.produkIdList?.isNotEmpty() == true){
-//                Log.d(TAG, "setupObservers: ${it.produkIdList!!}")
-//                for (i in it.produkIdList!!.indices) {
-//                    sharedViewModel._tempDataPembayaran.add(DataPembayaran(it.produkIdList!![i]!!, it.produkNameList!![i]!!, it.produkQtyList!![i]!!, it.hargaProdukList!![i]!!))
-//                }
-//            }
         }
     }
     private fun setupMenu() {
@@ -589,39 +505,17 @@ class TransaksiDialog : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu)
                 searchItem = menu.findItem(R.id.action_search)
-                searchView = searchItem?.actionView as SearchView
+                searchView = searchItem.actionView as SearchView
                 sharedViewModel.isSearchViewVisible.observe(viewLifecycleOwner){
                     searchItem.isVisible = it
                 }
                 searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
                     .setBackgroundColor(Color.TRANSPARENT)
                 searchView.queryHint = getString(R.string.pencarian)
-//                searchView.imeOptions = EditorInfo.IME_ACTION_DONE
                 val searchAutoCompleteTextView = searchView.findViewById(resources.getIdentifier("search_src_text", "id",requireActivity().packageName)) as SearchView.SearchAutoComplete
                 searchAutoCompleteTextView.threshold = 1
                 searchView.imeOptions = EditorInfo.IME_ACTION_DONE
                 toolbar.addView(searchView)
-
-                val closeButton: ImageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView
-//                closeButton.setOnClickListener{
-//                    if(searchView.query.isNotEmpty()){
-//                        searchView.setQuery(searchView.query.removeRange(1,searchView.query.length),true)
-//                        searchView.isClickable = false
-//                        Handler(Looper.getMainLooper()).postDelayed({
-//                          searchView.setQuery("",true)
-//                            searchView.isClickable = true
-//                            searchView.onActionViewCollapsed()
-//                            searchItem.collapseActionView()
-//                        },100)
-//                    }else {
-//                        searchView.onActionViewCollapsed()
-//                        searchItem.collapseActionView()
-//                    }
-//                }
-//                searchView.setOnCloseListener {
-//                    binding.llHeader.llHeader.visibility = View.VISIBLE
-//                    false
-//                }
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(text: String?): Boolean {
 
@@ -629,12 +523,7 @@ class TransaksiDialog : Fragment() {
                     }
 
                     override fun onQueryTextChange(text: String?): Boolean {
-//                        transaksiAdapter.filter.filter(text)
-//                        if(text?.length == 0) {
-//                            binding.llHeader.llHeader.visibility = View.VISIBLE
-//                        }
                         if (text!=null) {
-//                            binding.llHeader.llHeader.visibility = View.GONE
                             searchProduk(text)
                         }else{
                             transaksiAdapter.setData(transaksiAdapter.produkList as ArrayList<ProdukEntity>)
@@ -648,7 +537,7 @@ class TransaksiDialog : Fragment() {
                 when(menuItem.itemId){
                     android.R.id.home -> {
                         if(binding.btnSelanjutnya.visibility == View.GONE) {
-                            childFragmentManager.popBackStack("dialogPembayaran",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                            childFragmentManager.popBackStack(getString(R.string.dialog_pembayaran),FragmentManager.POP_BACK_STACK_INCLUSIVE)
                             with(binding){
                                 btnBatal.visibility = View.GONE
                                 btnSimpan.visibility = View.GONE
@@ -703,16 +592,6 @@ class TransaksiDialog : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        TransaksiAdapter.LinearViewHolder.produkIdList.clear()
-//        TransaksiAdapter.LinearViewHolder.produkNameList.clear()
-//        TransaksiAdapter.LinearViewHolder.produkQtyList.clear()
-//        TransaksiAdapter.LinearViewHolder.produkPriceList.clear()
-//        TransaksiAdapter.GridViewHolder.produkIdList.clear()
-//        TransaksiAdapter.GridViewHolder.produkNameList.clear()
-//        TransaksiAdapter.GridViewHolder.produkQtyList.clear()
-//        TransaksiAdapter.GridViewHolder.produkPriceList.clear()
-//        sharedViewModel._tempDataPembayaran.value?.clear()
-//        sharedViewModel.tempDataProduk.value = null
         _binding = null
 
     }

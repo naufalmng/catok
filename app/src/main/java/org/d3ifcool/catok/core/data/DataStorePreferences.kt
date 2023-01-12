@@ -13,13 +13,17 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 const val DATA_STORE_PREFERENCE = "DATA_STORE_PREFERENCE"
+const val LAYOUT_MANAGER_PREFERENCES_KEY = "isLinearLayoutManager"
+const val DATE_PREFERENCES_KEY = "currentDate"
+const val MONTH_PREFERENCES_KEY = "currentMonth"
+const val UPDATE_STATUS_PREFERENCES_KEY = "isDataUpdated"
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATA_STORE_PREFERENCE)
 class DataStorePreferences(preferencesDataStore: DataStore<Preferences>) {
     companion object{
-        private val IS_LINEAR_LAYOUT_MANAGER = booleanPreferencesKey("isLinearLayoutManager")
-        private val CURRENT_DATE = stringPreferencesKey("currentDate")
-        private val CURRENT_MONTH = stringPreferencesKey("currentMonth")
-        private val IS_DATA_UPDATED = booleanPreferencesKey("isDataUpdated")
+        private val IS_LINEAR_LAYOUT_MANAGER = booleanPreferencesKey(LAYOUT_MANAGER_PREFERENCES_KEY)
+        private val CURRENT_DATE = stringPreferencesKey(DATE_PREFERENCES_KEY)
+        private val CURRENT_MONTH = stringPreferencesKey(MONTH_PREFERENCES_KEY)
+        private val IS_DATA_UPDATED = booleanPreferencesKey(UPDATE_STATUS_PREFERENCES_KEY)
     }
 
     suspend fun saveLayoutSetting(ctx:Context,isLinearLayoutManager: Boolean){

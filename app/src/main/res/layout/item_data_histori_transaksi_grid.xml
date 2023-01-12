@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/rootView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="-3dp"
-        android:text="07 November 2022 15.02"
+        android:text="@string/dummy_tanggal2"
         android:textColor="@color/orange"
         style="@style/BoldTextStyle"/>
 
@@ -43,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="@id/tanggal"
         app:layout_constraintTop_toBottomOf="@id/total"
         app:layout_constraintStart_toStartOf="@id/total"
-        android:text="201120221"
+        android:text="@string/dummy_invoice"
         android:textColor="@color/orange"
         android:textSize="@dimen/_10ssp"
         style="@style/MediumTextStyle"/>
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/jenisPembayaran"
         app:layout_constraintTop_toBottomOf="@id/jenisPembayaran"
-        android:text="(LUNAS)"
+        android:text="@string/dummy_status_bayar"
         android:textColor="@color/green"
         android:textStyle="bold"
         android:textSize="@dimen/_10ssp"

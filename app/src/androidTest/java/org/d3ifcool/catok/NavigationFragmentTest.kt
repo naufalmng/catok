@@ -1,28 +1,21 @@
 package org.d3ifcool.catok
 
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.d3ifcool.catok.ui.beranda.BerandaFragment
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 class NavigationFragmentTest {
     @get:Rule
-    val activityScenario = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
+    val activityScenario = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun init() {

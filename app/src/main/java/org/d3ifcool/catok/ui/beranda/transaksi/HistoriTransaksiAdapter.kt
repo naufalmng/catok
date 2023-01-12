@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -35,38 +36,14 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
 
     var historiTransaksiList = mutableListOf<HistoriTransaksiEntity>()
     var historiHistoriTransaksiFilterList : MutableList<HistoriTransaksiEntity> = ArrayList()
-//    lateinit var onItemClick: ((ProdukEntity) -> Unit)
 
     fun updateData(historiHistoriTransaksi: ArrayList<HistoriTransaksiEntity>){
-        Log.d("HistoriTransaksi", "updateData: ${historiHistoriTransaksi}")
+        Log.d("HistoriTransaksi", "updateData: $historiHistoriTransaksi")
         historiTransaksiList.clear()
         historiTransaksiList.addAll(historiHistoriTransaksi)
         historiHistoriTransaksiFilterList = historiHistoriTransaksi
         submitList(historiHistoriTransaksi)
-//        notifyItemRangeRemoved(0, produkList.size)
 
-    }
-
-    fun getAllSelection(){
-        selectionIds.clear()
-        for(i in historiHistoriTransaksiFilterList.indices){
-            val id = historiHistoriTransaksiFilterList[i].id_histori
-            selectionIds.add(id)
-            notifyDataSetChanged()
-        }
-
-    }
-
-    fun toggleSelection(position: Int){
-        val id = getItem(position).id_histori
-        Log.d("DataProdukAdapter", "toggleSelection: $id")
-        if(selectionIds.contains(id)) selectionIds.remove(id)
-        else selectionIds.add(id)
-        notifyDataSetChanged()
-    }
-
-    fun getSelection(): List<String>{
-        return selectionIds
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -86,7 +63,7 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             binding.rootView.isSelected = selectionIds.contains(id_transaksi)
             itemView.isSelected = selectionIds.contains(id_transaksi)
             binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
-            binding.tanggal.text = tanggal.toString()
+            binding.tanggal.text = tanggal
             binding.invoice.text = id_transaksi
             binding.jenisPembayaran.text = pembayaran.addUnderline()
             binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
@@ -103,13 +80,12 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
         }
         fun bind(position: Int, historiTransaksiData: ArrayList<HistoriTransaksiEntity>, handler: ClickHandler){
             val (id_transaksi,total,diskon,bayar,kembalian,catatan,produkDibeli,jumlahProdukDibeli,pembayaran,statusBayar,tanggal) = historiTransaksiData[position]
-            binding.rootView.setOnClickListener{
-//                    onItemClick.invoke(data[position])
-            }
+            val textColorRes = if(statusBayar == itemView.context.getString(R.string.lunas)) ContextCompat.getColor(itemView.context,R.color.green) else ContextCompat.getColor(itemView.context,R.color.yellow)
             binding.total.text = total.toRupiahFormat().uppercase(Locale("id","ID")).addUnderline()
-            binding.tanggal.text = tanggal.toString()
+            binding.tanggal.text = tanggal
             binding.invoice.text = id_transaksi
             binding.jenisPembayaran.text = pembayaran.addUnderline()
+            binding.statusBayar.setTextColor(textColorRes)
             binding.statusBayar.text = itemView.context.getString(R.string.status_bayar_args,statusBayar)
             itemView.isSelected = selectionIds.contains(id_transaksi)
 
@@ -145,20 +121,20 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
         return object : Filter(){
             override fun performFiltering(char: CharSequence?): FilterResults {
                 val charSearch = char.toString()
-                if(charSearch.isEmpty()) historiHistoriTransaksiFilterList = historiTransaksiList
+                historiHistoriTransaksiFilterList = if(charSearch.isEmpty()) historiTransaksiList
                 else{
                     val resultList = ArrayList<HistoriTransaksiEntity>()
                     for(item in historiTransaksiList){
-                        if(item.tanggal.toString().trim().contains(charSearch.lowercase(Locale.ROOT)) ||
+                        if(item.tanggal.trim().contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.id_histori.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.statusBayar.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.pembayaran.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
                             item.total.toString().trim().lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))
-                            ){
+                        ){
                             resultList.add(item)
                         }
                     }
-                    historiHistoriTransaksiFilterList = resultList
+                    resultList
                 }
                 return FilterResults().apply { values = historiHistoriTransaksiFilterList }
             }
@@ -166,7 +142,6 @@ class HistoriTransaksiAdapter(private val isLinearLayoutManager: Boolean = true,
             override fun publishResults(constraint: CharSequence?, result: FilterResults?) {
                 historiHistoriTransaksiFilterList = if(result?.values == null) ArrayList()
                 else result.values as ArrayList<HistoriTransaksiEntity>
-//                notifyItemRangeRemoved(0, produkFilterList.size)
                 notifyDataSetChanged()
 
             }

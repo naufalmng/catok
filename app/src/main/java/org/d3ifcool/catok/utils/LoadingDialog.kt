@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import org.d3ifcool.catok.R
 
 class LoadingDialog(private val activity: Activity) {
-    lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: AlertDialog
     fun start(){
         showDialog()
     }

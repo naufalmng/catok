@@ -53,10 +53,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="SearchViewTextStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:fontFamily">@font/poppins_regular</item>
-        <item name="android:editTextColor">@color/orange</item>
-    </style>
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/white</item>
     </style>
@@ -102,16 +98,11 @@
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
-    <style name="CustomTlTrCardView" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
-    </style>
-
     <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">10dp</item>
         <item name="cornerSizeTopLeft">10dp</item>
     </style>
 
-    <style name="Theme.Catok.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.Catok.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

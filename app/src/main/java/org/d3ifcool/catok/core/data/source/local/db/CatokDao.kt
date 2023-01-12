@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.d3ifcool.catok.core.data.source.local.entities.*
-import java.util.logging.Filter
 
 @Dao
 interface CatokDao {
@@ -24,20 +23,12 @@ interface CatokDao {
     @Query("SELECT * FROM historiTransaksi")
     fun getListDataTransaksi(): List<HistoriTransaksiEntity>
 
-//    @Query("SELECT (SELECT COUNT(*) FROM produk)")
-//    fun isDataProdukEmpty(): Int
-//
-//    @Query("SELECT (SELECT COUNT(*) FROM historiTransaksi)")
-//    fun isDataTransaksiEmpty(): LiveData<Boolean>
-
     @Query("DELETE FROM produk WHERE id_produk IN (:ids)")
     suspend fun deleteData(ids: List<Int>)
 
-//    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaksi(transaksi: TransaksiEntity)
 
-//    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaksiProduk(transaksiProduk: TransaksiProdukEntity)
 
@@ -68,8 +59,8 @@ interface CatokDao {
     @Query("SELECT * FROM grafikEntity")
     fun getListDataGrafik(): List<GrafikEntity>
 
-    @Query("SELECT * FROM grafikEntity WHERE tanggal=:tanggal")
-    fun getListDataGrafikByDate(tanggal: String): List<GrafikEntity>
+    @Query("SELECT * FROM grafikEntity WHERE bulanDanTahun=:bulanDanTahun")
+    fun getListDataGrafikByDate(bulanDanTahun: String): List<GrafikEntity>
 
     @Query("SELECT * FROM grafikEntity")
     fun getDataGrafik(): LiveData<List<GrafikEntity>>
@@ -77,7 +68,7 @@ interface CatokDao {
     @Query("DELETE FROM grafikEntity")
     suspend fun deleteDataGrafik()
 
-    @Query("UPDATE grafikEntity SET totalTransaksi = :totalTransaksi WHERE tanggal=:tanggal")
+    @Query("UPDATE grafikEntity SET totalTransaksi = :totalTransaksi WHERE tanggal2=:tanggal")
     suspend fun updateDataGrafik(totalTransaksi: Double,tanggal: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -102,17 +93,8 @@ interface CatokDao {
     @Query("SELECT * FROM historiTransaksi")
     fun getDataHistoriTransaksi(): LiveData<List<HistoriTransaksiEntity>>
 
-    @Query("SELECT * FROM historiTransaksi WHERE tanggal = :date")
-    fun getDataHistoriTransaksiByDate(date: String): LiveData<List<HistoriTransaksiEntity>>
-
-    @Query("SELECT * FROM filterGrafik ORDER BY id ASC")
-    fun getFilterGrafik(): LiveData<List<FilterGrafikEntity>>
-
-    @Query("DELETE FROM filterGrafik")
-    fun clearFilterGrafik()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFilterGrafik(filterGrafik: FilterGrafikEntity)
+    @Query("SELECT * FROM historiTransaksi WHERE statusBayar=:statusBayar")
+    fun getDataHistoriTransaksiByStatusBayar(statusBayar: String): LiveData<List<HistoriTransaksiEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReturData(returEntity: ReturEntity)
@@ -128,5 +110,9 @@ interface CatokDao {
     suspend fun deleteTransaksiById(idTransaksi: String)
     @Query("DELETE FROM transaksiProduk WHERE id_transaksi =:idHistori")
     suspend fun deleteTransaksiProdukById(idHistori: String)
+    @Query("UPDATE historiTransaksi SET statusBayar = :status  WHERE id_histori=:idHistori")
+    suspend fun updateHistoriTransaksi(status:String,idHistori: String)
+    @Query("SELECT COUNT(*) FROM grafikEntity WHERE tanggal = :tanggal")
+    fun isDataGrafikExist(tanggal: Long): Boolean
 
 }

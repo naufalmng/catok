@@ -1,11 +1,9 @@
 package org.d3ifcool.catok.ui.beranda.produk
 
 import android.annotation.SuppressLint
-import android.database.DataSetObserver
 import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -23,7 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
@@ -33,7 +30,6 @@ import org.d3ifcool.catok.databinding.FragmentDataProdukBinding
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.utils.enableOnClickAnimation
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
 
 
 @SuppressLint("ClickableViewAccessibility")
@@ -41,7 +37,6 @@ class DataProdukFragment : Fragment() {
 
     private var _binding: FragmentDataProdukBinding? = null
     private val binding get() = _binding!!
-    private var isOnActionMode = false
     lateinit var toolbar: Toolbar
 
 
@@ -58,7 +53,6 @@ class DataProdukFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDataProdukBinding.inflate(inflater, container, false)
-//        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         toolbar = inflater.inflate(R.layout.toolbar, container, false) as Toolbar
         toolbar.title = getString(R.string.data_produk)
         toolbar.collapseActionView()
@@ -78,7 +72,6 @@ class DataProdukFragment : Fragment() {
         }
         super.onViewCreated(view, savedInstanceState)
         setupMenu()
-//        binding.llHeader.searchView.setupSearchView()
         setupListeners()
         setupObservers()
         setupLayoutPreference()
@@ -160,10 +153,8 @@ class DataProdukFragment : Fragment() {
         viewModel.isDataProdukEmpty.observe(viewLifecycleOwner) {
             if (it == false) {
                 binding.dataKosong.visibility = View.GONE
-//                binding.recyclerViewDataProduk.visibility = View.VISIBLE
             } else {
                 binding.dataKosong.visibility = View.VISIBLE
-//                binding.recyclerViewDataProduk.visibility = View.GONE
             }
         }
         viewModel.getDataProduk.observe(viewLifecycleOwner) {
@@ -184,7 +175,6 @@ class DataProdukFragment : Fragment() {
 
     private fun setupListeners() {
         with(binding) {
-//            setupSearchView()
             btnTambah.enableOnClickAnimation()
             btnTambah.setOnClickListener {
                 if (SystemClock.elapsedRealtime() - viewModel.mLastClickTime < 1000){
@@ -195,14 +185,10 @@ class DataProdukFragment : Fragment() {
                 produkAdapter.resetSelection()
                 setupObservers()
                 actionMode?.finish()
-//                llHeader.searchView.clearFocus()
-//                llHeader.searchView.text?.clear()
                 findNavController().navigate(DataProdukFragmentDirections.actionDataProdukFragmentToDataProdukDialog())
             }
             llHeader.btnSwitchLayout.setOnClickListener {
                 viewModel.isLinearLayoutManager = !viewModel.isLinearLayoutManager
-//                llHeader.searchView.text?.clear()
-//                llHeader.searchView.clearFocus()
                 lifecycleScope.launch {
                     dataStorePreferences.saveLayoutSetting(
                         requireContext(), viewModel.isLinearLayoutManager
@@ -271,7 +257,8 @@ class DataProdukFragment : Fragment() {
                     menu.findItem(R.id.menu_edit).isVisible = false
                 }
                 mode?.title = produkAdapter.getSelection().size.toString()
-                menu.findItem(R.id.menu_select_all).isVisible = produkAdapter.getSelection().size >= 1
+                menu.findItem(R.id.menu_select_all).isVisible =
+                    produkAdapter.getSelection().isNotEmpty()
             }
             return true
         }
@@ -281,6 +268,7 @@ class DataProdukFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun deleteData() = AlertDialog.Builder(requireContext()).apply {
         var deleteMsg = -1
         var resultMsg = -1
@@ -316,8 +304,6 @@ class DataProdukFragment : Fragment() {
                     actionMode?.invalidate()
                 return
             }
-            val message = getString(R.string.produk_klik, produk[position].namaProduk)
-//            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         override fun onLongClick(position: Int, produk: ArrayList<ProdukEntity>): Boolean {
             if(produkAdapter.getSelection().isEmpty()) viewModel.isAllItemSelected.value = false

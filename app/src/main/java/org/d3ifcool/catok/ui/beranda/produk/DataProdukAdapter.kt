@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +34,6 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
 
     var produkList = mutableListOf<ProdukEntity>()
     var produkFilterList : MutableList<ProdukEntity> = ArrayList()
-//    lateinit var onItemClick: ((ProdukEntity) -> Unit)
 
     override fun getCurrentList(): MutableList<ProdukEntity> {
         return produkFilterList
@@ -54,7 +52,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         selectionIds.clear()
         for(i in produkFilterList.indices){
             val id = produkFilterList[i].id_produk
-            selectionIds.add(id.toInt())
+            selectionIds.add(id)
             notifyDataSetChanged()
         }
         handler.isAllItemSelected(true)
@@ -65,8 +63,8 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         if(getSelection().size != produkFilterList.size) handler.isAllItemSelected(false)
         val id = getItem(position).id_produk
         Log.d("DataProdukAdapter", "toggleSelection: $id")
-        if(selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
-        else selectionIds.add(id.toInt())
+        if(selectionIds.contains(id)) selectionIds.remove(id)
+        else selectionIds.add(id)
         notifyDataSetChanged()
     }
 
@@ -88,9 +86,9 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,modal,hargaJual,satuan,satuanPer,stok,tanggal) = produk[position]
-            binding.rootView.isSelected = selectionIds.contains(id.toInt())
-            itemView.isSelected = selectionIds.contains(id.toInt())
-            binding.nomor.text = id.toString()
+            binding.rootView.isSelected = selectionIds.contains(id)
+            itemView.isSelected = selectionIds.contains(id)
+            binding.nomor.text = (position.plus(1)).toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
             binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_2,modal.toRupiahFormat(),satuan.toString(),satuanPer)
@@ -113,11 +111,8 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         }
         fun bind(position: Int, produk: ArrayList<ProdukEntity>, handler: ClickHandler){
             val (id,barcode,namaProduk,deskripsi,modal,hargaJual,satuan,satuanPer,stok,tanggal) = produk[position]
-            binding.rootView.setOnClickListener{
-//                    onItemClick.invoke(data[position])
-            }
-            itemView.isSelected = selectionIds.contains(id.toInt())
-            binding.nomor.text = id.toString()
+            itemView.isSelected = selectionIds.contains(id)
+            binding.nomor.text = (position.plus(1)).toString()
             binding.namaProduk.text = namaProduk
             binding.deskripsi.text = deskripsi
             binding.hargaBeli.text = itemView.context.getString(R.string.modal_arg_linear,modal.toRupiahFormat(),satuan.toString(),satuanPer)
@@ -157,7 +152,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
         return object : Filter(){
             override fun performFiltering(char: CharSequence?): FilterResults {
                 val charSearch = char.toString()
-                if(charSearch.isEmpty()) produkFilterList = produkList
+                produkFilterList = if(charSearch.isEmpty()) produkList
                 else{
                     val resultList = ArrayList<ProdukEntity>()
                     for(item in produkList){
@@ -166,7 +161,7 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
                             resultList.add(item)
                         }
                     }
-                    produkFilterList = resultList
+                    resultList
                 }
                 return FilterResults().apply { values = produkFilterList }
             }
@@ -174,8 +169,6 @@ class DataProdukAdapter(private val isLinearLayoutManager: Boolean = true, priva
             override fun publishResults(constraint: CharSequence?, result: FilterResults?) {
                 produkFilterList = if(result?.values == null) ArrayList()
                 else result.values as ArrayList<ProdukEntity>
-
-//                notifyItemRangeRemoved(0, produkFilterList.size)
                 notifyDataSetChanged()
 
             }

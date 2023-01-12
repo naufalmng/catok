@@ -1,18 +1,13 @@
 package org.d3ifcool.catok.ui.beranda.transaksi
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -24,8 +19,6 @@ import org.d3ifcool.catok.databinding.ItemDataTransaksiGridBinding
 import org.d3ifcool.catok.databinding.ItemDataTransaksiLinearBinding
 import org.d3ifcool.catok.utils.toRupiahFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.log
 
 
 @SuppressLint("NotifyDataSetChanged")
@@ -35,8 +28,7 @@ class TransaksiAdapter(
     private val handler: ClickHandler
 ) : ListAdapter<ProdukEntity, RecyclerView.ViewHolder>(diffCallback) {
     companion object {
-        private var TAG = TransaksiAdapter.javaClass.name
-        val selectionIds = ArrayList<Int>()
+        private var TAG = TransaksiAdapter::class.java.name
         val diffCallback = object : DiffUtil.ItemCallback<ProdukEntity>() {
             override fun areItemsTheSame(oldItem: ProdukEntity, newItem: ProdukEntity): Boolean {
                 return oldItem.id_produk == newItem.id_produk
@@ -74,28 +66,7 @@ class TransaksiAdapter(
         }
         Log.d(TAG, "updateData: FilterListSize = ${produkFilterList.size}")
         notifyDataSetChanged()
-//        notifyItemRangeChanged(0,produkList.size)
-//        notifyItemRangeRemoved(0, produkList.size)
 
-    }
-
-
-    fun toggleSelection(position: Int) {
-        val id = getItem(position).id_produk
-        Log.d("DataProdukAdapter", "toggleSelection: $id")
-        if (selectionIds.contains(id.toInt())) selectionIds.remove(id.toInt())
-        else selectionIds.add(id.toInt())
-        notifyDataSetChanged()
-    }
-
-    fun getSelection(): List<Int> {
-        return selectionIds
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun resetSelection() {
-        selectionIds.clear()
-        notifyDataSetChanged()
     }
 
     class GridViewHolder private constructor(val binding: ItemDataTransaksiGridBinding) :
@@ -154,14 +125,6 @@ class TransaksiAdapter(
         return produkList.size
     }
 
-//    fun swapItems(itemAIndex:Int,itemBIndex:Int){
-//        val itemA = produkList[itemAIndex]
-//        val itemB = produkList[itemBIndex]
-//        produkList[itemAIndex] = itemB
-//        produkList[itemBIndex] = itemA
-//        notifyDataSetChanged()
-//    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is LinearViewHolder -> {
@@ -172,7 +135,7 @@ class TransaksiAdapter(
                     val produkList = produkList as ArrayList<ProdukEntity>
                     var counter = 0
                     if(counter >= 1) binding.min.isEnabled = true
-                    var textColor = if (binding.counter.text.toString().toInt() > 0 || counter > 0) ContextCompat.getColor(itemView.context, R.color.orange) else ContextCompat.getColor(itemView.context, R.color.abuB)
+                    val textColor = if (binding.counter.text.toString().toInt() > 0 || counter > 0) ContextCompat.getColor(itemView.context, R.color.orange) else ContextCompat.getColor(itemView.context, R.color.abuB)
                     fun unselectItemView(){
                         counter = 0
                         binding.counter.setText(0.toString())
@@ -350,14 +313,13 @@ class TransaksiAdapter(
                                     if(holder.absoluteAdapterPosition == produkList.indexOf(j)) {
                                         Log.d(TAG, "observeItem: betul = ${holder.absoluteAdapterPosition}")
                                         Log.d(TAG, "observeItem: ${produkFilterList[absoluteAdapterPosition]}")
-                                        if(tempProduk.contains(getItem(0))==false) {
+                                        if(!tempProduk.contains(getItem(0))) {
                                             unselectItemView()
                                         }
                                         else{
                                             if(!LinearViewHolder.produkIdList.contains(getItem(position).id_produk)){
                                                 unselectItemView()
                                             }else{
-//                                                if(getItem(position))
                                                 counter = LinearViewHolder.produkQtyList[LinearViewHolder.produkIdList.indexOf(id)]!!
                                                 binding.counter.setText(counter.toString())
                                                 binding.min.isEnabled = true
@@ -370,7 +332,7 @@ class TransaksiAdapter(
 
                                         }
                                     }else {
-                                        if(tempProduk.contains(getItem(holder.absoluteAdapterPosition))==false){
+                                        if(!tempProduk.contains(getItem(holder.absoluteAdapterPosition))){
                                             unselectItemView()
                                         } else{
                                             if(!LinearViewHolder.produkIdList.contains(getItem(position).id_produk)){
@@ -400,7 +362,7 @@ class TransaksiAdapter(
                     binding.removeBtn.setOnClickListener {
                         binding.counter.removeTextChangedListener(textWatcher)
                         counter = 0
-                        binding.counter.setText("0")
+                        binding.counter.setText(itemView.context.getString(R.string.zero))
                         binding.min.isEnabled = false
                         if (LinearViewHolder.produkIdList.contains(id)) {
                             Log.d(TAG, "removeBtn: ${produkFilterList[position]}")
@@ -465,7 +427,7 @@ class TransaksiAdapter(
                             alertDialog?.dismiss()
                         }
                         dialogBinding.positiveBtn.setOnClickListener {
-                            Log.d(TAG, "onBindViewHolder: ${stok}")
+                            Log.d(TAG, "onBindViewHolder: $stok")
                             if (dialogBinding.qty.text?.isNotBlank() == true){
                                 if(dialogBinding.qty.text.toString().toInt()!=0){
                                     if (dialogBinding.qty.text.toString().toInt() == 0){
@@ -475,7 +437,7 @@ class TransaksiAdapter(
                                     if (dialogBinding.qty.text.toString().toInt() > 0 && stok == 0) {
                                         Toast.makeText(
                                             itemView.context,
-                                            "Stok $namaProduk kosong !",
+                                            itemView.context.getString(R.string.stok_kosong_arg,namaProduk),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         return@setOnClickListener
@@ -483,7 +445,7 @@ class TransaksiAdapter(
                                     if (dialogBinding.qty.text.toString().toInt() > stok) {
                                         Toast.makeText(
                                             itemView.context,
-                                            "Stok tidak cukup !",
+                                            itemView.context.getString(R.string.stok_tidak_cukup),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         return@setOnClickListener
@@ -550,7 +512,7 @@ class TransaksiAdapter(
                         if (stok == 0) {
                             Toast.makeText(
                                 itemView.context,
-                                "Stok ${namaProduk} kosong !",
+                                itemView.context.getString(R.string.stok_kosong_arg,namaProduk),
                                 Toast.LENGTH_SHORT
                             ).show()
                             return@setOnClickListener
@@ -560,7 +522,7 @@ class TransaksiAdapter(
                         if (counter > stok) {
                             Toast.makeText(
                                 itemView.context,
-                                "Stok tidak cukup !",
+                                itemView.context.getString(R.string.stok_tidak_cukup),
                                 Toast.LENGTH_SHORT
                             ).show()
                             return@setOnClickListener
@@ -805,7 +767,7 @@ class TransaksiAdapter(
                     val produkList = produkList as ArrayList<ProdukEntity>
                     var counter = 0
                     if(counter >= 1) binding.min.isEnabled = true
-                    var textColor = if (binding.counter.text.toString().toInt() > 0 || counter > 0) ContextCompat.getColor(itemView.context, R.color.orange) else ContextCompat.getColor(itemView.context, R.color.abuB)
+                    val textColor = if (binding.counter.text.toString().toInt() > 0 || counter > 0) ContextCompat.getColor(itemView.context, R.color.orange) else ContextCompat.getColor(itemView.context, R.color.abuB)
                     fun unselectItemView(){
                         counter = 0
                         binding.counter.setText(0.toString())
@@ -816,7 +778,7 @@ class TransaksiAdapter(
                         binding.rootView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rectangle_10r)
                         binding.counterCardView.strokeColor = ContextCompat.getColor(itemView.context, R.color.abuB)
                     }
-                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan,satuanPer, stok, tanggal,) = produkFilterList[position]
+                    val (id, barcode, namaProduk, deskripsi, modal, hargaJual, satuan, satuanPer, stok, tanggal) = produkFilterList[position]
 
                     Log.d(
                         TAG,
@@ -983,14 +945,13 @@ class TransaksiAdapter(
                                     if(holder.absoluteAdapterPosition == produkList.indexOf(j)) {
                                         Log.d(TAG, "observeItem: betul = ${holder.absoluteAdapterPosition}")
                                         Log.d(TAG, "observeItem: ${produkFilterList[absoluteAdapterPosition]}")
-                                        if(tempProduk.contains(getItem(0))==false) {
+                                        if(!tempProduk.contains(getItem(0))) {
                                             unselectItemView()
                                         }
                                         else{
                                             if(!GridViewHolder.produkIdList.contains(getItem(position).id_produk)){
                                                 unselectItemView()
                                             }else{
-//                                                if(getItem(position))
                                                 counter = GridViewHolder.produkQtyList[GridViewHolder.produkIdList.indexOf(id)]!!
                                                 binding.counter.setText(counter.toString())
                                                 binding.min.isEnabled = true
@@ -1003,7 +964,7 @@ class TransaksiAdapter(
 
                                         }
                                     }else {
-                                        if(tempProduk.contains(getItem(holder.absoluteAdapterPosition))==false){
+                                        if(!tempProduk.contains(getItem(holder.absoluteAdapterPosition))){
                                             unselectItemView()
                                         } else{
                                             if(!GridViewHolder.produkIdList.contains(getItem(position).id_produk)){
@@ -1098,7 +1059,7 @@ class TransaksiAdapter(
                             alertDialog?.dismiss()
                         }
                         dialogBinding.positiveBtn.setOnClickListener {
-                            Log.d(TAG, "onBindViewHolder: ${stok}")
+                            Log.d(TAG, "onBindViewHolder: $stok")
                             if (dialogBinding.qty.text?.isNotBlank() == true){
                                 if(dialogBinding.qty.text.toString().toInt()!=0){
                                     if (dialogBinding.qty.text.toString().toInt() == 0){
@@ -1108,7 +1069,7 @@ class TransaksiAdapter(
                                     if (dialogBinding.qty.text.toString().toInt() > 0 && stok == 0) {
                                         Toast.makeText(
                                             itemView.context,
-                                            "Stok $namaProduk kosong !",
+                                            itemView.context.getString(R.string.stok_kosong_arg,namaProduk),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         return@setOnClickListener
@@ -1116,7 +1077,7 @@ class TransaksiAdapter(
                                     if (dialogBinding.qty.text.toString().toInt() > stok) {
                                         Toast.makeText(
                                             itemView.context,
-                                            "Stok tidak cukup !",
+                                            itemView.context.getString(R.string.stok_tidak_cukup),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         return@setOnClickListener
@@ -1137,8 +1098,6 @@ class TransaksiAdapter(
                                         R.color.abuB
                                     ))
                                 }
-
-
                             }
 
                             alertDialog?.dismiss()
@@ -1183,7 +1142,7 @@ class TransaksiAdapter(
                         if (stok == 0) {
                             Toast.makeText(
                                 itemView.context,
-                                "Stok ${namaProduk} kosong !",
+                                itemView.context.getString(R.string.stok_kosong_arg,namaProduk),
                                 Toast.LENGTH_SHORT
                             ).show()
                             return@setOnClickListener
@@ -1193,7 +1152,7 @@ class TransaksiAdapter(
                         if (counter > stok) {
                             Toast.makeText(
                                 itemView.context,
-                                "Stok tidak cukup !",
+                                itemView.context.getString(R.string.stok_tidak_cukup),
                                 Toast.LENGTH_SHORT
                             ).show()
                             return@setOnClickListener

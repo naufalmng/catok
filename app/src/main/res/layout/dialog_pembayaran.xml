@@ -8,7 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarThumbVertical="@null"
     android:scrollbarTrackVertical="@null"
-    tools:context=".ui.beranda.transaksi.PembayaranDialog">
+    tools:context=".ui.beranda.transaksi.PembayaranDialog"
+    tools:ignore="Overdraw">
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -34,7 +35,7 @@
             android:layout_marginTop="8dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilLayanan"
+                android:id="@+id/tilJenisPembayaran"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50ssp"
                 android:layout_marginStart="16dp"
@@ -111,7 +112,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="top"
                     app:expandedHintEnabled="false"
-                    android:hint="Diskon"
+                    android:hint="@string/diskon"
                     app:boxBackgroundColor="@color/white"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@drawable/edittext_stroke_selector"
@@ -126,7 +127,6 @@
                         app:localeTag="id-ID"
                         app:currencySymbol="Rp․"
                         app:maxNumberOfDecimalDigits="2"
-                        android:focusedByDefault="false"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
                         android:inputType="text"
@@ -160,7 +160,6 @@
                     app:currencySymbol="Rp․"
                     app:maxNumberOfDecimalDigits="2"
                     app:useCurrencySymbolAsHint="true"
-                    android:focusedByDefault="false"
                     style="@style/RegularTextStyle"
                     android:textSize="@dimen/_13ssp"
                     android:inputType="text"
@@ -202,7 +201,6 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 app:useCurrencySymbolAsHint="true"
-                android:focusedByDefault="false"
                 style="@style/RegularTextStyle"
                 android:textSize="@dimen/_13ssp"
                 android:inputType="text"

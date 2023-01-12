@@ -13,20 +13,18 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
 
     val getDataReturTransaksi: LiveData<ArrayList<ReturEntity>> =
         repo.getReturEntity() as LiveData<ArrayList<ReturEntity>>
-    val getFilterGrafik: LiveData<ArrayList<FilterGrafikEntity>> =
-        repo.getFilterGrafik() as LiveData<ArrayList<FilterGrafikEntity>>
     var isNavReady = MutableLiveData(true)
     var dataPembayaran = MutableLiveData<MutableList<DataPembayaran>>(null)
     var tempDataPembayaran = mutableListOf<DataPembayaran>()
     var isLinearLayoutManager = true
-    var isSuccess = MutableLiveData<Boolean>(false)
-    val dataGrafik = repo.getListDataGrafik()
+    var isSuccess = MutableLiveData(false)
+    private val dataGrafik = repo.getListDataGrafik()
 
     val getDataHistoriTransaksi: LiveData<ArrayList<HistoriTransaksiEntity>> =
         repo.getArrayListDataHistoriTransaksi() as LiveData<ArrayList<HistoriTransaksiEntity>>
 
-    fun getDataHistoriTransaksiByDate(date: String): LiveData<ArrayList<HistoriTransaksiEntity>> =
-        repo.getArrayListDataHistoriTransaksiByDate(date) as LiveData<ArrayList<HistoriTransaksiEntity>>
+    fun getDataHistoriTransaksiByStatusBayar(): LiveData<ArrayList<HistoriTransaksiEntity>> =
+        repo.getArrayListDataHistoriTransaksiByStatusBayar() as LiveData<ArrayList<HistoriTransaksiEntity>>
 
     val getDataProduk: LiveData<ArrayList<ProdukEntity>> =
         repo.getArrayListDataProduk() as LiveData<ArrayList<ProdukEntity>>
@@ -38,7 +36,7 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
         repo.getDataGrafik() as LiveData<ArrayList<GrafikEntity>>
     var listTransaksi = MutableLiveData<List<TransaksiEntity>>()
 
-    val isDataTransaksiEmpty = MutableLiveData<Boolean>(true)
+    val isDataTransaksiEmpty = MutableLiveData(true)
 
     fun searchProduk(query: String): LiveData<List<ProdukEntity>> {
         return repo.searchProduk(query).asLiveData()
@@ -46,7 +44,7 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
 
     fun updateDataGrafik(totalTransaksi: Double, tanggal: String) {
         Log.d("TransaksiViewModel", "updateDataGrafik: Masuk")
-        Log.d("TransaksiViewModel", "updateDataGrafik: ${dataGrafik?.size}")
+        Log.d("TransaksiViewModel", "updateDataGrafik: ${dataGrafik.size}")
         viewModelScope.launch(Dispatchers.IO) {
             repo.updateDataGrafik(totalTransaksi, tanggal)
         }
@@ -58,37 +56,12 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
         }
     }
 
-    fun insertReturTransaksi(returEntity: ReturEntity) {
-        viewModelScope.launch {
-            repo.insertReturData(returEntity)
-        }
-    }
-
     fun insertDataGrafik(grafikEntity: GrafikEntity) {
         Log.d("TransaksiViewModel", "insertDataGrafik: Masuk")
-        Log.d("TransaksiViewModel", "insertDataGrafik: ${dataGrafik?.size}")
+        Log.d("TransaksiViewModel", "insertDataGrafik: ${dataGrafik.size}")
         viewModelScope.launch(Dispatchers.IO) {
             repo.insertDataGrafik(grafikEntity)
         }
-//        if(dataGrafik.isEmpty()){
-//            viewModelScope.launch(Dispatchers.IO) {
-//                repo.insertDataGrafik(grafikEntity)
-//            }
-//        } else{
-//            for(i in dataGrafik.indices){
-//                Log.d("TransaksiViewModel", "insertDataGrafik: ${dataGrafik[i].bulan}")
-//                if(dataGrafik[i].bulan == getCurrentMonth()){
-//                    viewModelScope.launch(Dispatchers.IO) {
-//                        repo.updateDataGrafik(dataGrafik[i].id, grafikEntity.totalTransaksi)
-//                    }
-//                }else{
-//                    viewModelScope.launch(Dispatchers.IO) {
-//                        repo.insertDataGrafik(grafikEntity)
-//                    }
-//                }
-//            }
-//        }
-
     }
 
     fun insertTransaksi(
@@ -101,14 +74,12 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
                 repo.insertHistoriTransaksi(historiTransaksi)
             }
         }
-
-//        Log.d("TransaksiViewModel", "insertTransaksi: ${repo.getListTransaksi()}")
     }
 
     @JvmName("getListIdTransaksi1")
     fun getListIdTransaksi() {
         listTransaksi.value = repo.getListTransaksi()
-        Log.d("TransaksiViewModel", "getListIdTransaksi: ${listTransaksi}")
+        Log.d("TransaksiViewModel", "getListIdTransaksi: $listTransaksi")
     }
 
     fun insertHistoriTransaksi(historiTransaksi: HistoriTransaksiEntity) {
@@ -129,18 +100,17 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
 
     fun insertTransaksiProduk() {
         Log.d("TransaksiViewModel", "insertTransaksiProduk: ListTransaksi = $listTransaksi")
-        var listQtyProduk = mutableListOf<Int>()
+        val listQtyProduk = mutableListOf<Int>()
         fun getListIdProduk(): List<Int> {
-            var listIdProduk = mutableListOf<Int>()
+            val listIdProduk = mutableListOf<Int>()
             for (i in tempDataPembayaran) {
                 listIdProduk.add(i.nomor)
                 listQtyProduk.add(i.qty)
             }
-            return if (listIdProduk.isNotEmpty()) listIdProduk
-            else mutableListOf()
+            return listIdProduk.ifEmpty { mutableListOf() }
         }
 
-        var listIdProduk = getListIdProduk()
+        val listIdProduk = getListIdProduk()
         Log.d("TransaksiViewModel", "insertTransaksiProduk: listIdProduk = $listIdProduk")
         Log.d("TransaksiViewModel", "insertTransaksiProduk: listQtyProduk = $listQtyProduk")
         fun getIdTransaksi(): String? {
@@ -151,16 +121,16 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
             return if (id != "") id else null
         }
 
-        var idTransaksi = getIdTransaksi()
+        val idTransaksi = getIdTransaksi()
         Log.d("TransaksiViewModel", "insertTransaksiProduk: IdTransaksi = $idTransaksi")
         fun getListTransaksiProduk(): List<TransaksiProdukEntity> {
-            var listTransaksiProduk = mutableListOf<TransaksiProdukEntity>()
-            var listIdsProduk = mutableListOf<Int>()
-            var listQtysProduk = mutableListOf<Int>()
+            val listTransaksiProduk = mutableListOf<TransaksiProdukEntity>()
+            val listIdsProduk = mutableListOf<Int>()
+            val listQtysProduk = mutableListOf<Int>()
 
             if (listIdProduk.isNotEmpty() && idTransaksi != "" && listQtyProduk.isNotEmpty()) {
                 try {
-                    for(i in listIdProduk.indices){
+                    for (i in listIdProduk.indices) {
                         listIdsProduk.add(listIdProduk[i])
                         listQtysProduk.add(listQtyProduk[i])
                         listTransaksiProduk.add(
@@ -171,10 +141,9 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
                             )
                         )
                     }
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     Log.d("TransaksiViewModel", "getListTransaksiProduk: ${e.message}")
-                }
-                finally {
+                } finally {
                     viewModelScope.launch {
                         repo.insertReturData(
                             ReturEntity(
@@ -190,11 +159,10 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
                 "TransaksiViewModel",
                 "insertTransaksiProduk: listTransaksiProduk = $listTransaksiProduk"
             )
-            return if (listTransaksiProduk.isNotEmpty()) listTransaksiProduk
-            else mutableListOf()
+            return listTransaksiProduk.ifEmpty { mutableListOf() }
         }
 
-        var listTransaksiProduk = getListTransaksiProduk()
+        val listTransaksiProduk = getListTransaksiProduk()
 
         if (listTransaksiProduk.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -214,65 +182,14 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
 
     }
 
-    fun clearGraphicData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteDataGrafik()
-        }
-    }
-
-    fun clearFilterGrafik() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.clearFilterGrafik()
-        }
-    }
-
-    fun setupDataPembayaran() {
-        if (tempDataPembayaran.isNotEmpty()) {
-            dataPembayaran.value = tempDataPembayaran
-        }
-    }
-
-    fun deleteTransaksi() {
-        viewModelScope.launch {
-            repo.deleteTransaksi()
-            Log.d("TransaksiViewModel", "deleteTransaksi: ${repo.getListTransaksi()}")
-        }
-    }
-
-    fun deleteHistoriTransaksi() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteHistoriTransaksi()
-            Log.d("TransaksiViewModel", "deleteTransaksi: ${dataGrafik}")
-        }
-    }
-
-    fun deleteTransaksiProduk() {
-        viewModelScope.launch {
-            repo.deleteTransaksiProduk()
-            Log.d("TransaksiViewModel", "deleteTransaksiProduk: ${repo.getListTransaksi()}")
-        }
-    }
-
-    fun insertFilterGrafik(filterGrafik: FilterGrafikEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.insertFilterGrafik(filterGrafik)
-        }
-    }
-
-    fun deleteHistoriTransaksiByInvoice(invoice: String) {
-        viewModelScope.launch(Dispatchers.IO){
-            repo.deleteHistoriTransaksiByInvoice(invoice)
-        }
-    }
-
     fun deleteGrafikDataById(invoice: String) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repo.deleteGrafikDataById(invoice)
         }
     }
 
     fun deleteTransaksiById(idTransaksi: String) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repo.deleteTransaksiById(idTransaksi)
         }
     }
@@ -280,6 +197,12 @@ class TransaksiViewModel(private val repo: AppRepository) : ViewModel() {
     fun deleteTransaksiProdukById(idHistori: String) {
         viewModelScope.launch {
             repo.deleteTransaksiProdukById(idHistori)
+        }
+    }
+
+    fun updateHistoriTransaksiByInvoice(idHistori: String) {
+        viewModelScope.launch {
+            repo.updateHistoriTransaksiByInvoice(idHistori)
         }
     }
 }

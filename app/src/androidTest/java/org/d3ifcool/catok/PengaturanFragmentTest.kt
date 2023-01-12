@@ -1,9 +1,7 @@
 package org.d3ifcool.catok
 
-import android.Manifest
 import android.os.Environment
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers
@@ -11,7 +9,6 @@ import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.GrantPermissionRule
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -25,7 +22,7 @@ import java.io.File
 class PengaturanFragmentTest {
 
     @get:Rule
-    val activityScenario = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
+    val activityScenario = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun init() {

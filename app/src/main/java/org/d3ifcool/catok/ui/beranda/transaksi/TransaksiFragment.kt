@@ -2,9 +2,6 @@ package org.d3ifcool.catok.ui.beranda.transaksi
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -13,8 +10,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -27,25 +22,18 @@ import kotlinx.coroutines.launch
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
-import org.d3ifcool.catok.core.data.source.local.entities.GrafikEntity
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.databinding.FragmentTransaksiBinding
-import org.d3ifcool.catok.ui.grafik.GrafikFragment
-import org.d3ifcool.catok.ui.grafik.GrafikViewModel
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
-import org.d3ifcool.catok.utils.getCurrentDate2
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
 
 class TransaksiFragment : Fragment() {
 
     private var _binding: FragmentTransaksiBinding? = null
     private val binding get() = _binding!!
     private val viewModel: TransaksiViewModel by viewModel()
-    private val grafikViewModel: GrafikViewModel by viewModel()
     private lateinit var historiTransaksiAdapter: HistoriTransaksiAdapter
-    private lateinit var dataPembayaranAdapter: DataPembayaranAdapter
     lateinit var toolbar: Toolbar
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -54,8 +42,7 @@ class TransaksiFragment : Fragment() {
         DataStorePreferences(requireActivity().dataStore)
     }
 
-    private var totalTransaksi = 0.0 // 6000
-    private var tanggal = ""
+    private var totalTransaksi = 0.0
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -85,15 +72,11 @@ class TransaksiFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            viewModel.isNavReady.value = true
-//        },1000)
         sharedViewModel.isBackPressed.value = -1
     }
 
     private fun setupListeners() {
         with(binding) {
-//            setupSearchView()
             viewModel.isNavReady.observe(viewLifecycleOwner){
                 btnTambah.isClickable = it
             }
@@ -160,75 +143,19 @@ class TransaksiFragment : Fragment() {
             }
         }
         viewModel.getDataHistoriTransaksi.observe(viewLifecycleOwner) {
-//            transaksiViewModel.getDataHistoriTransaksi.observe(viewLifecycleOwner){
-//                Log.d(GrafikFragment.TAG, "dataHistoriTransaksi: $it")
-//                Log.d("GrafikFragment", "totalTransaksi: ${ viewModel.totalTransaksi.value.toString()}")
-//
-//                if(!it.isNullOrEmpty()){
-//                    result = 0.0
-//                    it.forEach { data ->
-//                        result += data.total
-//                        Log.d("GrafikFragment", "totalTransaksi: ${result}")
-//                    }
-//                    viewModel.totalTransaksi.value = viewModel.totalTransaksi.value!!+result
-//                }
-//            }
+
             if (it != null) {
                 viewModel.isDataTransaksiEmpty.value = it.size<1
-                setuprecyclerViewHistoriTransaksis()
+                setuprecyclerViewHistoriTransaksi()
                 historiTransaksiAdapter.updateData(it)
                 setupLayoutSwitcher()
                 binding.swipeRefreshLayout.isRefreshing = false
-//                totalTransaksi = 0.0
-//                sharedViewModel.totalTransaksi.value = 0.0
-//                try {
-//                    it.forEach{data->
-//                        totalTransaksi+=data.total
-//                    }
-//                }catch (e: Exception){}
-//                finally {
-//                    sharedViewModel.totalTransaksi.value = sharedViewModel.totalTransaksi.value!!+totalTransaksi
-//                }
                 Log.d("TransaksiFragment", "Total Transaksi: $totalTransaksi")
             }
         }
-//        transaksiViewModel.getDataHistoriTransaksi.observe(viewLifecycleOwner){
-//            Log.d(GrafikFragment.TAG, "dataHistoriTransaksi: $it")
-//            Log.d("GrafikFragment", "totalTransaksi: ${ viewModel.totalTransaksi.value.toString()}")
-//
-//            if(!it.isNullOrEmpty()){
-//                result = 0.0
-//                it.forEach { data ->
-//                    result += data.total
-//                    Log.d("GrafikFragment", "totalTransaksi: ${result}")
-//                }
-//                viewModel.totalTransaksi.value = viewModel.totalTransaksi.value!!+result
-//            }
-//        }
-//        viewModel.getDataGrafik.observe(viewLifecycleOwner){
-//            if(it.isNullOrEmpty()){
-//                if (totalTransaksi!=0.0) viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
-//            }
-//            else{
-//                if(getCurrentDate2() != tanggal) viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
-//                else viewModel.updateDataGrafik(totalTransaksi,tanggal)
-//            }
-//        }
-//        if(totalTransaksi==0.0){
-//            Log.d("TransaksiFragment", "setupObservers: masuk if")
-//            viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
-//        }else{
-//            Log.d("TransaksiFragment", "setupObservers: masuk else")
-//            viewModel.getDataGrafik.observe(viewLifecycleOwner){
-//                for (i in it.indices){
-//                    if(it[i].tanggal!= tanggal) viewModel.insertDataGrafik(GrafikEntity(totalTransaksi = totalTransaksi, tanggal = tanggal))
-//                    else viewModel.updateDataGrafik(totalTransaksi,tanggal)
-//                }
-//            }
-//        }
     }
 
-    private fun setuprecyclerViewHistoriTransaksis() {
+    private fun setuprecyclerViewHistoriTransaksi() {
         historiTransaksiAdapter = HistoriTransaksiAdapter(viewModel.isLinearLayoutManager, handler)
         with(binding.recyclerViewHistoriTransaksi) {
             isNestedScrollingEnabled = true

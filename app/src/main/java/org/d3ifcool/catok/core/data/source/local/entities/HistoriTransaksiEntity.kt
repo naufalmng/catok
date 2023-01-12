@@ -3,14 +3,12 @@ package org.d3ifcool.catok.core.data.source.local.entities
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.versionedparcelable.VersionedParcelize
 import kotlinx.parcelize.Parcelize
-import org.d3ifcool.catok.core.data.source.local.model.Produk
 
 @Parcelize
 @Entity(tableName = "historiTransaksi")
 data class HistoriTransaksiEntity(
-    @PrimaryKey()
+    @PrimaryKey
     val id_histori: String,
     var total: Double,
     var diskon: Double,

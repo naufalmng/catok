@@ -12,7 +12,6 @@ import org.d3ifcool.catok.core.data.repository.AppRepository
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.core.data.source.local.entities.ProdukEntity
 import org.d3ifcool.catok.core.data.source.local.entities.ProfilEntity
-import org.d3ifcool.catok.core.data.source.local.entities.TransaksiEntity
 
 class PengaturanViewModel(private val repo: AppRepository): ViewModel() {
     var isBtnBackupDataClicked: Boolean? = null
@@ -32,7 +31,7 @@ class PengaturanViewModel(private val repo: AppRepository): ViewModel() {
         }
     }
 
-    fun getProfil(): ProfilEntity{
+    private fun getProfil(): ProfilEntity{
         Log.d("PengaturanViewModel", "getProfil: ${repo.getProfil()}")
         return repo.getProfil()
     }

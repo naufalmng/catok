@@ -2,7 +2,6 @@
 <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:focusableInTouchMode="true"
@@ -67,7 +66,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -85,14 +83,13 @@
                     android:layout_marginStart="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etBar"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_55sdp"
                         android:textColor="@color/orange"
                         style="@style/RegularTextStyle"
                         android:textSize="@dimen/_13ssp"
                         android:inputType="number"
-                        android:hint="Barcode"
+                        android:hint="@string/barcode"
                         android:gravity="top"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -129,7 +126,7 @@
                     style="@style/RegularTextStyle"
                     android:textSize="@dimen/_13ssp"
                     android:inputType="text"
-                    android:hint="Nama Produk"
+                    android:hint="@string/nama_produk"
                     android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +149,7 @@
                     style="@style/RegularTextStyle"
                     android:textSize="@dimen/_13ssp"
                     android:inputType="text"
-                    android:hint="Deskripsi"
+                    android:hint="@string/deskripsi"
                     android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,7 +159,6 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilModal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

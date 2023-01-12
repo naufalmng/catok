@@ -1,5 +1,6 @@
 package org.d3ifcool.catok.ui.beranda.transaksi
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,11 @@ import org.d3ifcool.catok.core.data.source.local.model.DataPembayaran
 import org.d3ifcool.catok.databinding.ItemDataPembayaranBinding
 import org.d3ifcool.catok.utils.getCurrentDate
 import org.d3ifcool.catok.utils.toRupiahFormat
-
-class DataPembayaranAdapter() : RecyclerView.Adapter<DataPembayaranAdapter.ViewHolder>() {
+@SuppressLint("NotifyDataSetChanged")
+class DataPembayaranAdapter : RecyclerView.Adapter<DataPembayaranAdapter.ViewHolder>() {
 
     private var dataPembayaran : MutableList<DataPembayaran>? = null
-    var counter = 0
-    fun clearData(){
-        dataPembayaran?.clear()
-        notifyDataSetChanged()
-    }
+    private var counter = 0
 
     fun updateData(produkEntity: MutableList<DataPembayaran>){
         this.dataPembayaran?.clear()
@@ -46,8 +43,8 @@ class DataPembayaranAdapter() : RecyclerView.Adapter<DataPembayaranAdapter.ViewH
                     tanggal.text = getCurrentDate()
                     layoutTanggal.visibility = View.VISIBLE
                     nomor.text = getString(R.string.nomor)
-                    produk.text = getString(org.d3ifcool.catok.R.string.produk)
-                    qty.text = getString(org.d3ifcool.catok.R.string.qty)
+                    produk.text = getString(R.string.produk)
+                    qty.text = getString(R.string.qty)
                     total.text = getString(R.string.total)
                 }
             }

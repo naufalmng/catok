@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/toolbar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@drawable/ic_header"
@@ -44,7 +44,6 @@
 <!--            android:background="@drawable/et_bg_selector" />-->
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/toolbarIcon"
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"

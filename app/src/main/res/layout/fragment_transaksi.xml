@@ -52,8 +52,8 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/dataKosong"
-        android:layout_width="match_parent"
+            android:id="@+id/dataKosong"
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
@@ -81,13 +81,6 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        </FrameLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnTambah"
             android:layout_width="@dimen/_55sdp"

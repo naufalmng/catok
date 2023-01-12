@@ -8,7 +8,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -28,9 +27,7 @@ import org.d3ifcool.catok.ui.beranda.produk.DataProdukDialog
 import org.d3ifcool.catok.ui.main.MainActivity
 import org.d3ifcool.catok.utils.CatokApp
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,7 +39,7 @@ import org.mockito.Mockito.mock
 class DataProdukFragmentTest {
 
     @get:Rule
-    val activityScenario = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
+    val activityScenario = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun init() {
@@ -266,25 +263,6 @@ class DataProdukFragmentTest {
 
     }
 
-    private fun clickActionMode() = object : ViewAction {
-        val device = UiDevice.getInstance(getInstrumentation())
-        val context: Context = ApplicationProvider.getApplicationContext<CatokApp>()
-        private var longClick = longClick()
-        val btnMenu: UiObject =
-            device.findObject(UiSelector().description(context.getString(R.string.select_all)))
-
-        override fun getConstraints(): Matcher<View> {
-            return longClick.constraints
-        }
-
-        override fun getDescription(): String {
-            return " click on custom button view"
-        }
-
-        override fun perform(uiController: UiController?, view: View?) {
-//            longClick.perform()
-        }
-    }
 }
 
 //    private fun clickChildViewWithId(id: Int): ViewAction {
@@ -304,29 +282,5 @@ class DataProdukFragmentTest {
 //        }
 //    }
 
-private fun clickOnButtonAtRow(position: Int) {
-    onView(withId(R.id.recyclerViewDataProduk)).perform(
-        actionOnItemAtPosition<DataProdukAdapter.LinearViewHolder>(
-            0,
-            longClick()
-        )
-    )
-//            (position, ClickOnButtonView()))
-}
 
-class ClickOnButtonView() : ViewAction {
-    private var click = longClick()
-
-    override fun getConstraints(): Matcher<View> {
-        return click.constraints
-    }
-
-    override fun getDescription(): String {
-        return " click on custom button view"
-    }
-
-    override fun perform(uiController: UiController, view: View) {
-        //btnClickMe -> Custom row item view button
-        click.perform(uiController, view)
-    }
 }

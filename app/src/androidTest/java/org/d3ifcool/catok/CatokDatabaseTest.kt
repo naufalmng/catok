@@ -1,3 +1,4 @@
+@file:Suppress("PackageDirectoryMismatch")
 //package org.d3ifcool.catok
 //
 //import android.content.Context
@@ -12,7 +13,7 @@
 //import org.junit.Test
 //import org.junit.runner.RunWith
 //import com.google.common.truth.Truth.assertThat
-//import getOrAwaitValue
+//import org.d3ifcool.catok.getOrAwaitValue
 //import kotlinx.coroutines.ExperimentalCoroutinesApi
 //import kotlinx.coroutines.test.runTest
 //import org.d3ifcool.catok.core.data.source.local.entities.*
@@ -53,15 +54,15 @@
 //        dao.insertData(dataProduk3)
 //
 //        dao.searchProduk("tahu isi")
-//        val searchResult1 = dao.getArrayListDataProduk().getOrAwaitValue()
+//        val searchResult1 = dao.getArrayListDataProduk().org.d3ifcool.catok.getOrAwaitValue()
 //        assertThat(searchResult1).contains(dataProduk1)
 //
 //        dao.searchProduk("bala-bala")
-//        val searchResult2 = dao.getArrayListDataProduk().getOrAwaitValue()
+//        val searchResult2 = dao.getArrayListDataProduk().org.d3ifcool.catok.getOrAwaitValue()
 //        assertThat(searchResult2).contains(dataProduk2)
 //
 //        dao.searchProduk("cireng")
-//        val searchResult3 = dao.getArrayListDataProduk().getOrAwaitValue()
+//        val searchResult3 = dao.getArrayListDataProduk().org.d3ifcool.catok.getOrAwaitValue()
 //        assertThat(searchResult3).contains(dataProduk3)
 //
 //        dao.updateData(updatedProduk1)
@@ -95,11 +96,11 @@
 //        dao.insertHistoriTransaksi(historiTransaksi)
 //        val dataGrafik = GrafikEntity(id = 1,2000.0, getCurrentMonth())
 //        dao.insertDataGrafik(dataGrafik)
-//        val allProduk = dao.getArrayListDataProduk().getOrAwaitValue()
-//        val allTransaksi = dao.getDataTransaksi().getOrAwaitValue()
-//        val allTransaksiProduk = dao.getListDataTransaksiProduk().getOrAwaitValue()
-//        val allHistoriTransaksi = dao.getDataHistoriTransaksi().getOrAwaitValue()
-//        val allGrafik = dao.getDataGrafik().getOrAwaitValue()
+//        val allProduk = dao.getArrayListDataProduk().org.d3ifcool.catok.getOrAwaitValue()
+//        val allTransaksi = dao.getDataTransaksi().org.d3ifcool.catok.getOrAwaitValue()
+//        val allTransaksiProduk = dao.getListDataTransaksiProduk().org.d3ifcool.catok.getOrAwaitValue()
+//        val allHistoriTransaksi = dao.getDataHistoriTransaksi().org.d3ifcool.catok.getOrAwaitValue()
+//        val allGrafik = dao.getDataGrafik().org.d3ifcool.catok.getOrAwaitValue()
 //        assertThat(allProduk).contains(dataProduk)
 //        assertThat(allTransaksi).contains(transaksi)
 //        assertThat(allTransaksiProduk).contains(transaksiProduk)

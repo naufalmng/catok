@@ -14,9 +14,6 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import org.d3ifcool.catok.R
 import org.d3ifcool.catok.databinding.FragmentBerandaBinding
-import org.d3ifcool.catok.ui.beranda.transaksi.TransaksiViewModel
-import org.d3ifcool.catok.ui.grafik.GrafikFragment
-import org.d3ifcool.catok.ui.grafik.GrafikViewModel
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.ui.pengaturan.PengaturanViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
@@ -30,8 +27,6 @@ class BerandaFragment : Fragment() {
         ViewModelProvider(requireActivity())[SharedViewModel::class.java]
     }
     private val pengaturanViewModel: PengaturanViewModel by viewModel()
-    private val transaksiViewModel: TransaksiViewModel by viewModel()
-    private val grafikViewModel: GrafikViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +34,6 @@ class BerandaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBerandaBinding.inflate(inflater, container, false)
-//        sharedViewModel.getNamaToko.observe(viewLifecycleOwner){
-//            binding.namaToko.text = it
-//        }
         return binding.root
     }
 
@@ -53,25 +45,9 @@ class BerandaFragment : Fragment() {
         setupObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-//        transaksiViewModel.getDataHistoriTransaksi.observe(viewLifecycleOwner){
-//
-//            if(!it.isNullOrEmpty()){
-//                var result = 0.0
-//                grafikViewModel.totalTransaksi.value = 0.0
-//                it.forEach { data ->
-//                    result += data.total
-//                    Log.d("GrafikFragment", "totalTransaksi: ${result}")
-//                }
-//                grafikViewModel.totalTransaksi.value = grafikViewModel.totalTransaksi.value!!+result
-//            }
-//        }
-    }
-
     private fun setupObservers() {
         pengaturanViewModel.getDataProfil.observe(viewLifecycleOwner){
-            Log.d("PengaturanFragment", "setupObservers: ${it}")
+            Log.d("PengaturanFragment", "setupObservers: $it")
             if(it!=null){
                 binding.circleImage.load(sharedViewModel.getFotoToko.value?:it.gambar)
                 binding.namaToko.text = sharedViewModel.getNamaToko.value?:it.namaToko
