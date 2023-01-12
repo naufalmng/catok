@@ -24,8 +24,11 @@ import org.d3ifcool.catok.core.data.DataStorePreferences
 import org.d3ifcool.catok.core.data.dataStore
 import org.d3ifcool.catok.core.data.source.local.entities.HistoriTransaksiEntity
 import org.d3ifcool.catok.databinding.FragmentTransaksiBinding
+import org.d3ifcool.catok.ui.grafik.GrafikFragment
 import org.d3ifcool.catok.ui.main.SharedViewModel
 import org.d3ifcool.catok.utils.enableOnClickAnimation
+import org.d3ifcool.catok.utils.getCurrentDate
+import org.d3ifcool.catok.utils.getCurrentDate2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TransaksiFragment : Fragment() {
@@ -151,6 +154,33 @@ class TransaksiFragment : Fragment() {
                 setupLayoutSwitcher()
                 binding.swipeRefreshLayout.isRefreshing = false
                 Log.d("TransaksiFragment", "Total Transaksi: $totalTransaksi")
+            }
+        }
+        viewModel.getDataHistoriTransaksiByStatusBayar().observe(viewLifecycleOwner){
+            if(!it.isNullOrEmpty()){
+                var result = 0.0
+                try {
+                    it.forEach { data ->
+                        if (data.tanggal.substring(
+                                0,
+                                data.tanggal.length - 5
+                            ) == getCurrentDate().substring(0, data.tanggal.length - 5)
+                        ) result += data.total
+                        Log.d("GrafikFragment", "totalTransaksi: $result")
+                    }
+                } catch (e: Exception) {
+                } finally {
+                    try {
+                        Log.d("TransaksiFragment", "result: $result ")
+                        for (i in it) {
+                            if (i.tanggal == getCurrentDate2()) viewModel.updateDataGrafik(
+                                result,
+                                getCurrentDate2()
+                            )
+                        }
+                    } catch (e: Exception) {
+                    }
+                }
             }
         }
     }

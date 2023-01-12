@@ -102,65 +102,15 @@ class GrafikFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                     } finally {
+                        transaksiViewModel.updateDataGrafik(result, getCurrentDate2())
+                        viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
                         binding.lineChart.notifyDataSetChanged()
                         binding.lineChart.invalidate()
                     }
                 }
 
-//                sharedViewModel.totalTransaksi.value = sharedViewModel.totalTransaksi.value!!+result
             }
         }
-//        result = 0.0
-//        viewModel.totalTransaksi.value = 0.0
-//        transaksiViewModel.getFilterGrafik.observe(viewLifecycleOwner){
-//            listTanggal.clear()
-//            for (i in it.indices){
-//                listTanggal.add(it[i].date)
-//            }
-//            try {
-//                binding.spinnerFilter.setItems(listTanggal)
-//            }catch (e: Exception){
-//                Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//            finally {
-//                if(listTanggal.contains(currentDate)){
-//                    binding.spinnerFilter.selectItemByIndex(listTanggal.indexOf(currentDate))
-//                }
-//                else{
-//                    try {
-//                        for (i in getListDateOfMonth().indices){
-//                            transaksiViewModel.insertFilterGrafik(getListDateOfMonth()[i])
-//                        }
-//                    }catch (e:Exception){}
-//                    finally {
-//                        binding.spinnerFilter.selectItemByIndex(listTanggal.indexOf(currentDate))
-//                    }
-//                }
-//            }
-////
-////            try {
-////                Collections.sort(listTanggal,object : Comparator<String>{
-////                    override fun compare(p0: String?, p1: String?): Int {
-////                        return extractInt(p0!!) - extractInt(p1!!)
-////                    }
-////                    fun extractInt(s: String): Int {
-////                        val num = s.replace("\\D".toRegex(), "")
-////                        // return 0 if no digits found
-////                        return if (num.isEmpty()) 0 else num.toInt()
-////                    }
-////                })
-////            }finally {
-////                try {
-////                    binding.spinnerFilter.setItems(listTanggal)
-////                }finally {
-////                    try {
-////                        binding.spinnerFilter.selectItemByIndex(listTanggal.indexOf(currentDate))
-////                    }catch (e: Exception){
-////                        Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_SHORT).show()
-////                    }
-////                }
-////            }
-//        }
         dataStorePreferences.currentDatePrefFlow.asLiveData()
             .observe(viewLifecycleOwner) { date ->
                 if (date != null) {
@@ -222,15 +172,49 @@ class GrafikFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        transaksiViewModel.updateDataGrafik(result, getCurrentDate2())
-        transaksiViewModel.updateDataGrafik(result, getCurrentDate2())
-        viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
-        viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
+        transaksiViewModel.getDataHistoriTransaksiByStatusBayar().observe(viewLifecycleOwner) {
+            Log.d(TAG, "dataHistoriTransaksi: $it")
+            Log.d(
+                "GrafikFragment",
+                "totalTransaksi: ${sharedViewModel.totalTransaksi.value.toString()}"
+            )
 
+            if (!it.isNullOrEmpty()) {
+                result = 0.0
+                try {
+                    it.forEach { data ->
+                        if (data.tanggal.substring(
+                                0,
+                                data.tanggal.length - 5
+                            ) == getCurrentDate().substring(0, data.tanggal.length - 5)
+                        ) result += data.total
+                        Log.d("GrafikFragment", "totalTransaksi: $result")
+                    }
+                } catch (e: Exception) {
+                } finally {
+                    try {
+                        Log.d(TAG, "result: $result ")
+                        for (i in it) {
+                            if (i.tanggal == getCurrentDate2()) transaksiViewModel.updateDataGrafik(
+                                result,
+                                getCurrentDate2()
+                            )
+
+                        }
+                    } catch (e: Exception) {
+                    } finally {
+                        transaksiViewModel.updateDataGrafik(result, getCurrentDate2())
+                        viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
+                        binding.lineChart.notifyDataSetChanged()
+                        binding.lineChart.invalidate()
+                    }
+                }
+
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
         viewModel.getDataGrafikByDate(getCurrentMonthAndYear())
         setupChart()
 
