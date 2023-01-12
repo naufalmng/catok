@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="@drawable/rectangle_4r"
+    android:padding="16dp"
+    tools:context=".utils.LoadingDialog">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/backuping_data"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/orange"
+        android:layout_gravity="end|center"
+        android:gravity="center"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

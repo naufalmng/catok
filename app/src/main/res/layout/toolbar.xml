@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/toolbar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/ic_header"
+    android:paddingTop="0.25dp"
+    android:paddingStart="0.5dp"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
+    android:paddingEnd="8dp"
+    app:titleCentered="true"
+    app:titleTextColor="@color/white"
+    app:titleMarginTop="13dp"
+    android:theme="@style/ToolbarTheme"
+    app:popupTheme="@style/Theme.Catok.PopupOverlay">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+<!--        <androidx.appcompat.widget.AppCompatEditText-->
+<!--            android:id="@+id/searchView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/_30sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_gravity="top"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginEnd="32dp"-->
+<!--            android:textSize="@dimen/_12ssp"-->
+<!--            android:hint="@string/pencarian"-->
+<!--            android:textColor="@color/orange"-->
+<!--            android:drawableStart="@drawable/search_icon_selector"-->
+<!--            android:drawablePadding="16dp"-->
+<!--            android:maxLines="1"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:inputType="textMultiLine|textVisiblePassword"-->
+<!--            android:background="@drawable/et_bg_selector" />-->
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_gravity="center"
+
+            android:layout_marginEnd="16dp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.appbar.MaterialToolbar>
