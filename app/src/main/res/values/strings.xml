@@ -136,6 +136,8 @@
     <string name="nama_file_foto">Logo Toko.png</string>
     <string name="comma">,</string>
     <string name="minusOne">-1</string>
+    <string name="selamat_datang">Selamat Datang\ndi aplikasi CaTok</string>
+    <string name="text_onboarding">Aplikasi CaTok (Catatan Toko) ini hadir untuk mempermudah pemilik toko dalam mengelola data produk, transaksi, serta monitoring penjualan toko berdasarkan grafik.</string>
     <string name="izin_ditolak">Izin ditolak…</string>
     <string name="export_arg">Backup Telah diexport ke %1$s</string>
     <string name="tutup">Tutup</string>
