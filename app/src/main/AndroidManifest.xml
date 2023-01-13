@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.d3ifcool.catok">
 
-<!--    android:configChanges="orientation|screenSize|keyboardHidden"-->
-
     <application
         android:name=".utils.CatokApp"
         android:allowBackup="true"
@@ -13,24 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Catok">
         <activity
+            android:name=".ui.onboarding.OnBoardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SplashscreenActivity"
             android:exported="true"
             android:theme="@style/Theme.Catok.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".ui.main.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
